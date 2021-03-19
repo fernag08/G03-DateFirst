@@ -17,7 +17,7 @@ import lombok.Data;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nombreUsu;
     private String contrasena;
@@ -39,4 +39,5 @@ public class Usuario {
     @OneToMany
     @JoinColumn(name="usuario_id")
     private List<Reserva> reservas = new ArrayList<>();
+
 }

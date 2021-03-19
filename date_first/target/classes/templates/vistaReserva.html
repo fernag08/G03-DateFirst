@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva</title>
+</head>
+<body>
+    <th:block th:replace="frags/header.html"></th:block>
+        <h1>Reserva nº: <span th:text="*{r.id}">X</span></h1>
+        <h2>Inicio: <span th:text="*{r.inicio}">X</span></h2>
+        <h2>Fin: <span th:text="*{r.fin}">X</span></h2>
+        <h2>Capacidad: <span th:text="*{r.capacidad}">X</span></h2>
+        <h2>Ocupadas: <span th:text="*{r.ocupadas}">X</span></h2>
+        <p>Reserva realizada para el negocio <span th:text="*{r.negocio.nombre}">X</span> por el usuario: <span th:text="*{r.usuario.nombreUsu}">X</span></p>
+    <th:block th:replace="frags/footer.html"></th:block>
+</body>
+</html>

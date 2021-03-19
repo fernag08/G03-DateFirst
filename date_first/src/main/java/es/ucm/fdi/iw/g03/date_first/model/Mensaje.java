@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
 
 import java.util.ArrayList;
@@ -15,29 +16,17 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Negocio {
+public class Mensaje {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    private String nombre;
-    private String descripcion;
-    private String direccion;
-    private String ciudad;
-    
-    private String provincia;
-    private int codigoPostal;
+    private String mensaje;
 
-    private int plazasDisponibles;
-    private int aforoMaximo;
-    
-    private int telefono;
+    @OneToOne
+    private Usuario emisor;
+    @OneToOne
+    private Usuario receptor;
 
-    @ManyToOne
-    private Usuario propietario;
-
-    @OneToMany
-    @JoinColumn(name="negocio_id")
-    private List<Reserva> reservas = new ArrayList<>();
 }

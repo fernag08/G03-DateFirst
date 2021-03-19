@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propietario</title>
+</head>
+<body>
+    <th:block th:replace="frags/header.html"></th:block>
+        <div th:each="x, i: ${Usuario}" th:object="${x}" th:id="|usuario_*{id}|" class="datarow" >
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png" alt="mapa" width="150px" height="150px" style="float:right; margin-right:1080px">
+        <h1>Id de usuario: <span th:text="*{id}">X</span></h1>
+        <h3>Nombre: <span th:text="*{nombre}">X</span></h3>
+        <h3>Apellido 1: <span th:text="${apellido1}">X</span></h3>
+        <h3>Apellido 2: <span th:text="${apellido2}">X</span></h3>
+        <h3>DNI: <span   >X</span></h3>   <!--th:text="*{nif}" -->
+        <h3>Dirección: <span th:text="*{direccion}">X</span></h3>
+        <h3>Provincia: <span th:text="*{provincia}">X</span></h3>
+        <h3>Ciudad: <span th:text="*{ciudad}">X</span></h3>
+        <h3>Negocios </h3>
+        </div>
+
+        <table style="border:1px solid black">
+            <tr style="border:1px solid black">
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Aforo</th>
+                <th>Provincia</th>
+                <th>Ciudad</th>
+                <th>Dirección</th>
+            </tr>
+            <tr th:each="x, i: ${Negocio}" th:object="${x}" th:id="|negocio_*{id}|" class="datarow" style="border:1px solid black">
+                <td><span th:text="*{nombre}">X</span></td>
+                <td><span th:text="*{descripcion}">X</span></td>
+                <td><span th:text="*{Aforo}">X</span></td>
+                <td><span th:text="*{provincia}">X</span></td>
+                <td><span th:text="*{ciudad}">X</span></td>
+                <td><span th:text="*{direccion}">X</span></td>
+            </tr>
+        </table>
+        
+    <th:block th:replace="frags/footer.html"></th:block>
+</body>
+</html>
