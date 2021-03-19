@@ -1,11 +1,16 @@
 
 package es.ucm.fdi.iw.g03.date_first.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 
@@ -21,11 +26,20 @@ public class Reserva {
     @ManyToOne
     private Negocio negocio;
 
-    private int anio;
-    private int mes;
-    private int dia;
-    private int hora;
-    private int minuto;
+    /* puede convertirse de-a "2021-03-19T11:16:45.633Z", que también viene de JS vía new Date().toISOString();
+    */
+
+    private LocalDateTime solicitada;
     
+    private LocalDateTime inicio;
     
+    private LocalDateTime fin;
+
+    // podrían faltar mensajes
+
+
+    public List<Reserva> genera(LocalDateTime inicio, int cuantas, int duracionMinutos, int capacidadEnCadaUna) {
+        return new ArrayList<>(); // <-- implementa tu lo que falta
+    }
+
 }
