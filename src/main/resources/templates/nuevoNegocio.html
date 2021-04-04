@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear negocio</title>
+</head>
+<body>
+    <th:block th:replace="fragments/head.html"></th:block>
+    <nav th:replace="fragments/nav.html :: nav">
+		Nav goes here
+	</nav>
+   <h1>¡Crea tu nuevo negocio!</h1>
+    <form id="negocionew" class="smallform" th:action="@{/negocio/}" method="POST">
+    
+        <p>
+            <label for="nombre" class="sr-only"> Nombre del negocio: </label>
+            <input type="text" id="nombre" name="nombre" 
+            class="form-control" required="required"></input>
+        </p>
+
+        <p>
+            <label for="descripcion" class="sr-only">Descripcion:</label>
+            <input type="text" id="descripcion" name="descripcion" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="direccion" class="sr-only"> Direccion: </label>
+            <input type="text" id="direccion" name="direccion" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="ciudad" class="sr-only"> Ciudad: </label>
+            <input type="text" id="ciudad" name="ciudad" 
+              class="form-control" required="required"></input>
+        </p>
+
+        <p>
+            <label for="provincia" class="sr-only">Provincia:</label>
+            <input type="text" id="provincia" name="provincia" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="telefono" class="sr-only">Telefono:</label>
+            <input type="text" id="telefono" name="telefono" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="codigoPostal" class="sr-only">Codigo postal:</label>
+            <input type="text" id="codigoPostal" name="codigoPostal" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="plazasDisponibles" class="sr-only">Plazas disponibles:</label>
+            <input type="text" id="plazasDisponibles" name="plazasDisponibles" 
+              class="form-control" required="required"></input>
+        </p>
+        <p>
+            <label for="aforoMaximo" class="sr-only">Aforo Maximo</label>
+            <input type="text" id="aforoMaximo" name="aforoMaximo" 
+              class="form-control" required="required"></input>
+        </p>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Crear</button>
+    </form>
+
+    <img src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png" alt="mapa" width="200px" height="200px">
+
+    <th:block th:replace="fragments/footer.html"></th:block>
+</body>
+</html>
