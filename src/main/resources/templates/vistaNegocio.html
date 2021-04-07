@@ -91,6 +91,19 @@
         <input type="button" name ="Reservar" value="Reservar"></input>
         </form>
 
+    <h4>Reservas actuales</h4>
+	<ul>
+        <li th:each="r: ${reservas}">
+			<div>
+				<a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
+                <span th:text="${r}">texto de la reserva</span>
+                <form method="post" th:action="@{/reserva/{id}(id=${r.id})}" th:if="${r.estado.name() == 'LIBRE'}">
+                    <button type="submit">Solicitar</button>
+                </form>
+			</div>
+        </li>
+    </ul>
+
 
     <th:block th:replace="fragments/footer.html"></th:block>
 </body>

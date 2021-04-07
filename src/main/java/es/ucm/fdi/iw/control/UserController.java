@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -147,10 +148,12 @@ public class UserController {
 
 
 	@GetMapping("/{id}")
+	@Transactional
 	public String getUser(@PathVariable long id, Model model, HttpSession session) 			
 			throws JsonProcessingException {		
 		User u = entityManager.find(User.class, id);
 		model.addAttribute("user", u);
+		model.addAttribute("reservas", new ArrayList<>(u.getReservas()));
 
 		// construye y envía mensaje JSON
 		User requester = (User)session.getAttribute("u");
@@ -159,7 +162,7 @@ public class UserController {
 		rootNode.put("text", requester.getUsername() + " is looking up " + u.getUsername());
 		String json = mapper.writeValueAsString(rootNode);
 		
-		messagingTemplate.convertAndSend("/topic/admin", json);
+		//messagingTemplate.convertAndSend("/topic/admin", json);
 
 		return "user";
 	}	
