@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -113,14 +115,31 @@ public class NegocioController {
 	    return "redirect:/negocio/"+n.getId();
 	}
 
-	
+	@GetMapping("/{id}/genera")
+	@Transactional
+	public String generaReservas(@PathVariable long id, Model model, HttpSession session) 
+		throws JsonProcessingException {
+		
+		Negocio n = entityManager.find(Negocio.class, id);
+		LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+		LocalDateTime end = start.plusHours(5);
+		for (Reserva r : Reserva.generaReserva(start, end, 10, 30, 2, n)) {
+			entityManager.persist(r);
+		}
+		entityManager.flush();
 
+		return getNegocio(id, model, session);
+	}
 
-    @GetMapping("/{id}")
-	 public String getNegocio(@PathVariable long id, Model model, HttpSession session) 			
+	@GetMapping("/{id}")
+	@Transactional
+    public String getNegocio(@PathVariable long id, Model model, HttpSession session) 			
 	 		throws JsonProcessingException {		
 	 	Negocio n = entityManager.find(Negocio.class, id);
-	 	model.addAttribute("n", n);
+		model.addAttribute("n", n);
+			
+		// pasa a la vista todas las reservas de ese negocio
+		model.addAttribute("reservas", new ArrayList<>(n.getReservas()));
 
 	 	return "vistaNegocio";
 	}

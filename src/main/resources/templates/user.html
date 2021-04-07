@@ -67,6 +67,17 @@
 	<img th:src="@{/user/{id}/photo(id=${user.id})}">
 	</div>
 
+	<h4>Mis reservas</h4>
+	<ul>
+        <li th:each="r: ${reservas}">
+			<div>
+				<a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
+				<span th:text="${r}">texto de la reserva</span>
+			</div>
+        </li>
+    </ul>
+
+
 	<footer th:replace="fragments/footer.html :: footer">
 		Footer goes here
 	</footer>

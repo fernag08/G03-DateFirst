@@ -1,6 +1,7 @@
 package es.ucm.fdi.iw.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,9 @@ import lombok.Data;
 @Entity
 @Data
 public class Reserva {
+
+    public enum Estado { LIBRE, SOLICITADA, CONFIRMADA, CANCELADA };
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -29,29 +33,47 @@ public class Reserva {
 
     /* Puede convertirse de-a "2021-03-19T11:16:45.633Z", que también viene de JS vía new Date().toISOString();*/
 
-    private int solicitada;
+    private Estado estado;
     private int numPersonas;
-    private String inicio;
-    private String fin;
+    private LocalDateTime inicio;
+    private LocalDateTime fin;
     private int capacidad;
     private int ocupadas;
+    
+    public Reserva() {}
+    public Reserva(long id, User usuario, Negocio negocio, Estado estado, 
+        int numPersonas, LocalDateTime inicio, LocalDateTime fin, int capacidad, int ocupadas) {
+        this.id = id;
+        this.usuario = usuario;
+        this.negocio = negocio;
+        this.estado = estado;
+        this.numPersonas = numPersonas;
+        this.inicio = inicio;
+        this.fin = fin;
+        this.capacidad = capacidad;
+        this.ocupadas = ocupadas;
+    }
     
     @OneToMany
     @JoinColumn(name="reserva_id")
     private List<Message> mensajes = new ArrayList<>();
 
-    /*
-    public List<Reserva> genera(LocalDateTime inicio, LocalDateTime fin, int cuantas, int duracionMinutos, int capacidadEnCadaUna, Negocio negocio) {
+    public static List<Reserva> generaReserva(LocalDateTime inicio, LocalDateTime fin, int cuantas, int duracionMinutos, int capacidadEnCadaUna, Negocio negocio) {
         List<Reserva> listaReservas = new ArrayList<>();
-        Reserva reserva;
-        LocalDateTime iniAux; 
+        LocalDateTime prev = inicio;
         for(int i = 0; i < cuantas; i++)
         {
-            iniAux = inicio + DateTime(i*duracionMinutos);
-            reserva =  new Reserva(i, negocio, iniAux, iniAux + DateTime(duracionMinutos), capacidadEnCadaUna, 0);
-            listaReservas.add(reserva);
+            listaReservas.add(new Reserva(
+                0L, null, negocio, Estado.LIBRE, 0, 
+                prev, prev.plusMinutes(duracionMinutos), capacidadEnCadaUna, 0));
+            prev = prev.plusMinutes(duracionMinutos);
         }
         return listaReservas;
-    }*/
+    }
 
+    @Override
+    public String toString() {
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(inicio) 
+            + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(fin) + " x" + numPersonas;
+    }
 }
