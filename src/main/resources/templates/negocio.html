@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negocio</title>
+</head>
+<body>
+    <th:block th:replace="fragments/head.html"></th:block>
+    <nav th:replace="fragments/nav.html :: nav">
+		Nav goes here
+	</nav>
+  
+    <h4>Información del negocio <span th:text="${n.nombre}">X</span></h4>
+	
+	<p>Nombre del negocio: <span th:text="${n.nombre}">x</span></p>
+	<p>Descripción: <span th:text="${n.descripcion}">x</span></p>
+	<p>Dirección: <span th:text="${n.direccion}">x</span></p>
+	<p>Ciudad: <span th:text="${n.ciudad}">x</span></p>
+    <p>Provincia: <span th:text="${n.provincia}">x</span></p>
+	<p>Código Postal: <span th:text="${n.codigoPostal}">x</span></p>
+    <p>Plazas disponibles: <span th:text="${n.plazasDisponibles}">x</span></p>
+	<p>Aforo máximo: <span th:text="${n.aforoMaximo}">x</span></p>
+	<p>Teléfono: <span th:text="${n.telefono}">x</span></p>
+    
+    <div  th:if=" (${session.u.id} eq ${n.propietario.id})">
+        <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
+        <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
+        <h4>Reservas actuales</h4>
+        <ul>
+            <li th:each="r: ${reservas}">
+                    <a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
+                    <span th:text="${r}">texto de la reserva</span>
+            </li>
+        </ul>	     
+    </div>
+    
+   <div th:if="(${session.u.id} neq ${n.propietario.id})">
+        <h4 >Reservas disponibles</h4>
+        <ul>
+            <li th:each="r: ${reservas}">
+                <div th:if="${r.estado.name() == 'LIBRE'}">
+                    <a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
+                    <span th:text="${r}">texto de la reserva</span>
+                    <form method="post" th:action="@{/reserva/{id}(id=${r.id})}">
+                        <button type="submit">Solicitar</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <th:block th:replace="fragments/footer.html"></th:block>
+</body>
+</html>

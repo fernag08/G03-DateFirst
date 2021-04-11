@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+
+
+/*@NamedQueries({
+    @NamedQuery(name="User.byUsername",
+            query="SELECT u FROM User u "
+                    + "WHERE u.username = :username AND u.enabled = 1"),
+    @NamedQuery(name="User.hasUsername",
+            query="SELECT COUNT(u) "
+                    + "FROM User u "
+                    + "WHERE u.username = :username")
+})*/
 
 @Entity
 @Data
@@ -38,7 +51,7 @@ public class Reserva {
     private LocalDateTime inicio;
     private LocalDateTime fin;
     private int capacidad;
-    private int ocupadas;
+    private int ocupadas=0;
     
     public Reserva() {}
     public Reserva(long id, User usuario, Negocio negocio, Estado estado, 
@@ -54,6 +67,7 @@ public class Reserva {
         this.ocupadas = ocupadas;
     }
     
+   
     @OneToMany
     @JoinColumn(name="reserva_id")
     private List<Message> mensajes = new ArrayList<>();
@@ -73,7 +87,8 @@ public class Reserva {
 
     @Override
     public String toString() {
+        
         return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(inicio) 
-            + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(fin) + " x" + numPersonas;
+            + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(fin) + " x" + numPersonas + "Estado de la reserva:"+ estado;
     }
 }

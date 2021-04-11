@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><th:block th:replace="fragments/head :: header"/>
+	<title>Perfil</title>
+</head></head>
+<body>
+	<nav th:replace="fragments/nav.html :: nav">
+		Nav goes here
+	</nav>
+	
+	<div class="container">
+	<div class="main">
+	<h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
+		
+	<h4>Información del usuario <span th:text="${user.username}">Pepe</span></h4>
+	
+	<div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
+	<img th:src="@{/user/{id}/photo(id=${user.id})}">
+	<p>Nombre del usuario: <span th:text="${user.firstName}">x</span></p>
+	<p>Primer apellido: <span th:text="${user.lastName1}">x</span></p>
+	<p>Segundo apellido: <span th:text="${user.lastName2}">x</span></p>
+	<p>Edad: <span th:text="${user.age}">x</span></p>
+	<p>Teléfono: <span th:text="${user.tlf}">x</span></p>
+	<p>Dirección: <span th:text="${user.address}">x</span></p>
+	<p>Ciudad: <span th:text="${user.city}">x</span></p>
+	<p>Provincia: <span th:text="${user.province}">x</span></p>
+	<p>Código Postal: <span th:text="${user.postalCode}">x</span></p>
+	
+	<a th:href="@{/user/{id}/editar(id=${session.u.id})}">Editar Perfil</a>
+
+	<h4>Mis negocios</h4>
+	<ul>
+        <li th:each="n: ${negocios}">
+			<div>
+				<a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.id}">123</a>
+				<span th:text="${n}">texto del negocio</span>
+			</div>
+        </li>
+    </ul>
+
+	<h4>Mis reservas</h4>
+	<ul>
+        <li th:each="r: ${reservas}">
+			<div>
+				<a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
+				<span th:text="${r}">texto de la reserva</span>
+			</div>
+        </li>
+    </ul>
+	
+	<a th:href="@{/negocio/}" >Crea tu negocio</a>
+	
+	</div>
+	</div>
+
+	<footer th:replace="fragments/footer.html :: footer">
+		Footer goes here
+	</footer>
+	
+	
+</body>
+</html>

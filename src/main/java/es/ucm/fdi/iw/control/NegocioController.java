@@ -115,22 +115,6 @@ public class NegocioController {
 	    return "redirect:/negocio/"+n.getId();
 	}
 
-	@GetMapping("/{id}/genera")
-	@Transactional
-	public String generaReservas(@PathVariable long id, Model model, HttpSession session) 
-		throws JsonProcessingException {
-		
-		Negocio n = entityManager.find(Negocio.class, id);
-		LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-		LocalDateTime end = start.plusHours(5);
-		for (Reserva r : Reserva.generaReserva(start, end, 10, 30, 2, n)) {
-			entityManager.persist(r);
-		}
-		entityManager.flush();
-
-		return getNegocio(id, model, session);
-	}
-
 	@GetMapping("/{id}")
 	@Transactional
     public String getNegocio(@PathVariable long id, Model model, HttpSession session) 			
@@ -141,7 +125,7 @@ public class NegocioController {
 		// pasa a la vista todas las reservas de ese negocio
 		model.addAttribute("reservas", new ArrayList<>(n.getReservas()));
 
-	 	return "vistaNegocio";
+	 	return "negocio";
 	}
 
 	@PostMapping("/{id}")
@@ -171,6 +155,62 @@ public class NegocioController {
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("n", target);
 
-		return "vistaNegocio";
+		return "negocio";
 	}
+
+	@GetMapping("/{id}/editar")
+	@Transactional
+    public String editarNegocio(@PathVariable long id, Model model, HttpSession session) 			
+	 		throws JsonProcessingException {		
+	 	Negocio n = entityManager.find(Negocio.class, id);
+		model.addAttribute("n", n);
+
+	 	return "editarNegocio";
+	}
+
+	@GetMapping("/{id}/genera")
+	@Transactional
+	public String generaReservas(@PathVariable long id, Model model, HttpSession session) 
+		throws JsonProcessingException {
+
+		Negocio n = entityManager.find(Negocio.class, id);
+		model.addAttribute("n", n);
+
+		return "generarReservas";
+	}
+
+	// @PostMapping("/{id}/genera")
+	// @Transactional
+	// public String postGeneraReservas(@PathVariable long id, Model model, HttpSession session) 
+	// 	throws JsonProcessingException {
+		
+	// 	Negocio n = entityManager.find(Negocio.class, id);
+	// 	LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+	// 	LocalDateTime end = start.plusHours(5);
+	// 	for (Reserva r : Reserva.generaReserva(start, end, 10, 30, 2, n)) {
+	// 		entityManager.persist(r);
+	// 	}
+	// 	entityManager.flush();
+
+	// 	return getNegocio(id, model, session);
+	// }
+
+	// @GetMapping(value="/{id}/photo")
+	// public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
+	// 	File f = localData.getFile("negocio", ""+id);
+	// 	InputStream in;
+	// 	if (f.exists()) {
+	// 		in = new BufferedInputStream(new FileInputStream(f));
+	// 	} else {
+	// 		in = new BufferedInputStream(getClass().getClassLoader()
+	// 				.getResourceAsStream("static/img/unknowNegocio.jpg"));
+	// 	}
+	// 	return new StreamingResponseBody() {
+	// 		@Override
+	// 		public void writeTo(OutputStream os) throws IOException {
+	// 			FileCopyUtils.copy(in, os);
+	// 		}
+	// 	};
+	// }
+	
 }

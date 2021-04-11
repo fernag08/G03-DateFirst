@@ -143,7 +143,7 @@ public class UserController {
 		entityManager.flush();
 		session.setAttribute("user", u);
 
-	    return "redirect:/user/"+u.getId();
+	    return "redirect:/usuario/"+u.getId();
 	}
 
 
@@ -153,6 +153,7 @@ public class UserController {
 			throws JsonProcessingException {		
 		User u = entityManager.find(User.class, id);
 		model.addAttribute("user", u);
+		model.addAttribute("negocios", new ArrayList<>(u.getNegocios()));
 		model.addAttribute("reservas", new ArrayList<>(u.getReservas()));
 
 		// construye y envía mensaje JSON
@@ -164,7 +165,7 @@ public class UserController {
 		
 		//messagingTemplate.convertAndSend("/topic/admin", json);
 
-		return "user";
+		return "perfilUsuario";
 	}	
 	
 	@ResponseStatus(
@@ -172,45 +173,54 @@ public class UserController {
 		reason="No eres administrador, y éste no es tu perfil")  // 403
 	public static class NoEsTuPerfilException extends RuntimeException {}
 
+	@GetMapping("/{id}/editar")
+	 public String editarUsuario(@PathVariable long id, Model model, HttpSession session) 			
+	 		throws JsonProcessingException {		
+
+		User u = entityManager.find(User.class, id);
+		//User u = (User)session.getAttribute("u");
+		model.addAttribute("user", u);
+
+	 	return "editarUsuario";
+	}
+
 	@PostMapping("/{id}")
 	@Transactional
 	public String postUser(
 			HttpServletResponse response,
 			@PathVariable long id, 
-			@ModelAttribute User edited, 
-			@RequestParam(required=false) String pass2,
-			Model model, HttpSession session) throws IOException {
+			@ModelAttribute User edited,
+			@RequestParam(required=false) String pass2, 
+			Model model, HttpSession session) throws IOException 
+    {
+		
 		User target = entityManager.find(User.class, id);
-		model.addAttribute("user", target);
-		
-		User requester = (User)session.getAttribute("u");
-		if (requester.getId() != target.getId() &&
-				! requester.hasRole(Role.ADMIN)) {
-			throw new NoEsTuPerfilException();
-		}
-		
+		model.addAttribute("u", target);
+
+		//target.setPassword(encodePassword(edited.getPassword()));
+		target.setUsername(edited.getUsername());
+        target.setFirstName(edited.getFirstName());
+        target.setLastName1(edited.getLastName1());
+		target.setLastName2(edited.getLastName2());
+        target.setCity(edited.getCity());
+		target.setPostalCode(edited.getPostalCode());
+		target.setAge(edited.getAge());
+		target.setAddress(edited.getAddress());
+        target.setTlf(edited.getTlf());
+        target.setProvince(edited.getProvince());
+		target.setRoles(edited.getRoles());
+
 		if (edited.getPassword() != null && edited.getPassword().equals(pass2)) {
 			// save encoded version of password
 			target.setPassword(encodePassword(edited.getPassword()));
 		}
 
-		target.setUsername(edited.getUsername());
-		target.setFirstName(edited.getFirstName());
-		target.setLastName1(edited.getLastName1());
-		target.setLastName2(edited.getLastName1());
-		target.setAge(edited.getAge());
-		target.setAddress(edited.getAddress());
-		target.setTlf(edited.getTlf());
-		target.setCity(edited.getCity());
-		target.setProvince(edited.getProvince());
-		target.setPostalCode(edited.getPostalCode());
-
-
 		// update user session so that changes are persisted in the session, too
+		entityManager.flush();
 		session.setAttribute("u", target);
 
-		return "user";
-	}	
+		return "perfilUsuario";
+	}
 	
 	@GetMapping(value="/{id}/photo")
 	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
@@ -281,7 +291,7 @@ public class UserController {
 				! requester.hasRole(Role.ADMIN)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, 
 					"No eres administrador, y éste no es tu perfil");
-			return "user";
+			return "editarUsuario";
 		}
 		
 		log.info("Updating photo for user {}", id);
@@ -298,6 +308,6 @@ public class UserController {
 			}
 			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
 		}
-		return "user";
+		return "editarUsuario";
 	}
 }

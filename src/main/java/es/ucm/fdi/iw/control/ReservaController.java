@@ -77,6 +77,7 @@ public class ReservaController {
     @GetMapping("/{id}")
 	public String getReserva(@PathVariable long id, Model model, HttpSession session) 			
 			throws JsonProcessingException {		
+		
 		Reserva r = entityManager.find(Reserva.class, id);
 		model.addAttribute("r", r);
 
@@ -89,7 +90,7 @@ public class ReservaController {
 		
 		// messagingTemplate.convertAndSend("/topic/admin", json);
 
-		return "vistaReserva";
+		return "reserva";
 	}
 
 	@PostMapping("/{id}")
@@ -99,6 +100,7 @@ public class ReservaController {
 			@PathVariable long id, 
 			@ModelAttribute Reserva edited, 
 			Model model, HttpSession session) throws IOException {
+		
 		Reserva target = entityManager.find(Reserva.class, id);
 		model.addAttribute("r", target);
 		
@@ -109,11 +111,26 @@ public class ReservaController {
 		target.setFin(edited.getFin());
         target.setOcupadas(edited.getOcupadas());
         target.setNumPersonas(edited.getNumPersonas());
-        target.setSolicitada(edited.getSolicitada());
+        target.setEstado(edited.getEstado());
 
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("r", target);
 
-		return "vistaReserva";
+		return "reserva";
 	}
+/*
+	public int puestosDisponibles(LocalDateTime inicioT, LocalDateTime finT)
+	{
+		int disponibles=entityManager.createNamedQuery("select sum(ocupadas) from Reserva r where r.inicio=:"+inicioT"+ "and r.fin=:"finT).getResultList();
+		
+
+		Query query = entityManager.createNamedQuery("sumaOcupadas");
+		
+		query.setParameter("inicioParam", inicio);
+		query.setParameter("finParam", fin);
+		
+		int x = query.getSingleResult();
+
+	}
+	*/
 }

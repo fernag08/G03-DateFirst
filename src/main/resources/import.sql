@@ -29,9 +29,9 @@ INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direcc
  beatae vitae dicta sunt explicabo.', 'Calle Alcala 45','Hamburguseria', 30, 'Madrid', '656789675', 1	
 );
 
-INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, ocupadas, negocio_id, usuario_id) VALUES (
+<!--INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, ocupadas, negocio_id, usuario_id) VALUES (
 	1, 35, 1, '2021-04-07 10:00:00.0','2021-04-07 11:00:00.0', 25, 1, 1, 1    
-);
+);-->
 
 -- -- Unos pocos auto-mensajes de prueba
 INSERT INTO MESSAGE VALUES(1,NULL,'2020-03-23 10:48:11.074000','probando 1',1,1,1);

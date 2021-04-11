@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Leeme: DateFirst</title>
+</head>
+<body>
+	<h1>Leeme: DateFirst</h1>
+
+    <h2>Enlace al proyecto en GitHub:</h2>
+    <a href="https://github.com/fernag08/G03-DateFirst">https://github.com/fernag08/G03-DateFirst</a>
+
+	<h2>Objetivo</h2>
+	<p>
+		Una aplicación para facilitar que cualquier usuario pueda concertar una cita con cualquier comercio que esté registrado.
+	</p>
+	<p>
+		Debido a la peculiar situación en la que nos encontramos se nos ha ocurrido la idea de desarrollar una aplicación web 
+        con la que podamos facilitar mucho el trabajo de los comercios a la hora de concertar citas. En ella los comercios podrán
+        registrarse rellenando una serie de datos relevantes y lo único que tendrán que hacer es esperar a que algún usuario solicite
+        una cita. Cualquier usuario registrado en la aplicación podrá filtrar los comercios por la zona en la que se encuentran o
+        incluso buscarlos directamente por su nombre en el buscador.  
+	</p>
+
+	<p>
+		Soporta los siguientes roles:
+		<ul>
+        <li>
+            El <b>administrador</b> Será el encargado de controlar el contenido que proporciona la aplicación web, es decir, se encargará
+            de expulsar a los usuarios que hayan incumplido alguna de las normas, supervisará el contenido de los comercios registrados,
+            tratará los correos y notificaciones que le llegan por parte de los usuarios, etc.
+        </li>
+		<li>
+            El <b>usuario registrado</b> Puede reservar una cita (si hay disponibilidad en el calendario) con un negocio interesado,
+            opinar sobre el servicio recibido y poner alguna reclamación cuando lo crea conveniente. También tiene la opción de buscar
+            comercios cercanos a su lugar de residencia, por temática o directamente por su nombre. Este usuario podrá acceder a un
+            listado de sus citas reservadas. Y por último, en la pantalla principal de dicho usuario aparecerán los negocios cercanos
+            o favoritos. Si el usuario registrado es a su vez propietario de un negocio, podrá registrar en la aplicación el negocio
+            del que es propietario. También podrá editar la información en cualquier momento y recibirá una notificación cuando un usuario
+            concrete una cita. También podrá notificar al administrador de los malos comportamientos de algún usuario. Y por último,
+            en la pantalla principal de dicho usuario aparecerá una especie de bandeja de entrada con todas las citas concertadas,
+            así como la información de su negocio
+		<li>
+            Un <b>usuario no registrado</b> Solo podrá visualizar la página y ver los negocios registrados pero no podrá 
+            concretar ninguna cita ni acceder a ninguna de las funcionalidades relacionadas con los negocios registrados.
+		</li>
+		</ul>
+	</p>
+    
+	<h2>Base de datos</h2>
+	<img src="arquitectura_bbdd.PNG" alt="Esquema de la BD">
+	
+	<h2>Vistas</h2>
+    <ul>
+        <li><a href="http://localhost:8080/">DateFirst</a> Vista de la página principal, con el titulo y una breve descripción, accediendo a la página DateFirst.html
+        <li><a href="http://localhost:8080/admin">Ver admin</a> Vista perfil del admin ya existente en la BBDD accediendo a admin.html
+        <li><a href="http://localhost:8080/user/">Crear usuario</a> Vista para crear un nuevo usuario rellenando un formulario, accediendo a nuevoUsuario.html    
+        <li><a href="http://localhost:8080/user/id">Ver usuario</a> Vista del perfil de un usuario ya existente en la BBDD, accediendo a user.html
+        <li><a href="http://localhost:8080/negocio/">Crear negocio</a> Vista para la creacion de un negocio al rellenar un formulario accediendo a nuevoNegocio.html. Para ello el usuario debe de estar logueado.
+        <li><a href="http://localhost:8080/negocio/id">Ver negocio</a> Vista con la información del negocio ya existente en la BBDD, accediendo a vistaNegocio.html
+        <li><a href="http://localhost:8080/reserva/id">Ver reserva</a> Vista con información de la reserva ya existente en la BBDD, accede a vistaReserva.html
+        
+    </ul>
+    
+    <h2>Comentarios de funcionamiento</h2>
+    
+    <p>Crear un nuevo usuario: Para crear un nuevo usuario es necesario estar logueado y acceder a la direccion http://localhost:8080/user/, 
+       esta dirección nos proporciona un formulario en blanco para crear el nuevo usuario. Tenemos que solucionar que un usuario no registrado
+       pueda registrarse en la aplicación, ya que al intentar registrarse, la aplicación te regirige al login y no sabemos cambiarlo.
+    </p>
+    <p>Acceder al nuevo usuario creado: hace una redireccion a http://localhost:8080/user/id mostrando el perfil creado y guardado en BBDD,
+       puediendo modificarse.
+    </p>
+    <p>Crear un nuevo negocio: Para crear un nuevo negocio es necesario estar logueado y acceder a la dirección http://localhost:8080/negocio/, 
+       esta pagina nos da un formulario vacio que el usuario tendrá que rellenar.   
+    </p>
+    <p>Acceder al nuevo negocio creado: hace una redireccion a http://localhost:8080/negocio/id mostrando el negocio creado y guardado en BBDD, 
+       puediendo modificarse.
+    </p>
+    
+    <h2>Clases de model</h2>
+    <ul>
+        <li>src/main/java/es/ucm/fdi/iw/model/Menssage.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/model/Transferable.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/model/Negocio.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/model/Reserva.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/model/User.java</li>
+        
+       
+    </ul>
+    <h2>Clases control </h2>
+    <ul>
+        <li>src/main/java/es/ucm/fdi/iw/control/MensageController.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/control/AdminController.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/control/NegocioController.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/control/ReservaController.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/control/RootController.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/control/UserController.java</li>       
+    </ul>
+    
+
+	<h2>Recursos</h2>
+    <ul>
+        <li>
+            <a href="https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png">https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png</a>
+            <p>Extraido de google imágenes con licencia creative commons</p>
+        </li>
+    
+        <li>
+            <a href=https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png>https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png</a>
+            <p>Extraido de google imágenes con licencia creative commons</p>
+        </li>
+    
+        <li>
+            <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Calendar_icon.svg/703px-Calendar_icon.svg.png"></a>https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Calendar_icon.svg/703px-Calendar_icon.svg.png</h2>
+            <p>Extraido de google imágenes con licencia creative commons</p>
+        </li>
+    
+        <li>
+			<a href=https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg>https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg</a>
+            <p>Extraido de google imágenes con licencia creative commons</p>
+        </li>
+        <li>
+			<a href="https://app.dbdesigner.net/designer/schema/new" >https://app.dbdesigner.net/designer/schema/new </a>
+            <p>Enlace proporcionado por el profesor</p>
+        </li>
+    </ul>
+
+</body>
+</html>

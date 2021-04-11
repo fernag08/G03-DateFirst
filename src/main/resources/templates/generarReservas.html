@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear negocio</title>
+</head>
+<body>
+    <th:block th:replace="fragments/head.html"></th:block>
+    <nav th:replace="fragments/nav.html :: nav">
+		Nav goes here
+	</nav>
+   <h1>Introduce los datos necesarios para generar las reservas</h1>
+    <form id="reservasnew" class="smallform" th:action="@{/{id}/genera(id=${n.id})}" method="POST">
+    
+        <p>
+            <label for="inicio" class="sr-only"> Hora de inicio: </label>
+            <input type="text" id="inicio" name="inicio" 
+            class="form-control" required="required"></input>
+        </p>
+
+        <p>
+            <label for="fin" class="sr-only">Hora de fin:</label>
+            <input type="text" id="fin" name="fin" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="cuantas" class="sr-only"> Cuantas: </label>
+            <input type="text" id="cuantas" name="cuantas" 
+              class="form-control"  required="required"></input>
+        </p>
+
+        <p>
+            <label for="duracionEnMinutos" class="sr-only"> Duracion en minutos: </label>
+            <input type="text" id="duracionEnMinutos" name="duracionEnMinutos" 
+              class="form-control" required="required"></input>
+        </p>
+
+        <p>
+            <label for="capacidadEnCadaUna" class="sr-only"> Capacidad en cada una: </label>
+            <input type="text" id="capacidadEnCadaUna" name="capacidadEnCadaUna" 
+              class="form-control" required="required"></input>
+        </p>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Generar</button>
+    </form>
+
+    <th:block th:replace="fragments/footer.html"></th:block>
+</body>
+</html>

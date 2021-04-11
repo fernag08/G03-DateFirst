@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><th:block th:replace="fragments/head :: header"/>
+	<title>Perfil</title>
+</head></head>
+<body>
+	<nav th:replace="fragments/nav.html :: nav">
+		Nav goes here
+	</nav>
+	
+	<div class="container">
+	<div class="main">
+	<h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
+		
+	<h4>Información del negocio <span th:text="${n.nombre}">Pepe</span></h4>
+	
+	<div th:if="(${session.u.id} eq ${n.propietario.id})">
+		<!-- puedes cambiar todo -->
+		<form id="negociomod" class="smallform" th:action="@{/negocio/{id}(id=${n.id})}" method="POST">
+			
+			<label for="Nombre">Nombre</label>
+			<input name="Nombre" id="Nombre" required placeholder="Nombre" th:value="${n.nombre}"/>
+			
+			<label for="descripcion">Descripcion</label>
+			<input name="descripcion" id="descripcion" required placeholder="Descripcion" th:value="${n.descripcion}"/>	
+
+            <label for="direccion">Direccion</label>
+			<input name="direccion" id="direccion" required placeholder="Direccion" th:value="${n.direccion}"/>
+
+			<label for="ciudad">Ciudad</label>
+			<input name="ciudad" id="ciudad" required placeholder="Ciudad" th:value="${n.ciudad}"/>
+
+			<label for="provincia">Provincia</label>
+			<input name="provincia" id="provincia" required placeholder="Provincia" th:value="${n.provincia}"/>
+
+			<label for="codigoPostal">Codigo Postal</label>
+			<input name="codigoPostal" id="codigoPostal" required placeholder="Código postal" th:value="${n.codigoPostal}"/>
+			
+            <label for="plazasDisponibles">Plazas Disponibles</label>
+			<input name="plazasDisponibles" id="plazasDisponibles" required placeholder="Plazas Disponibles" th:value="${n.plazasDisponibles}"/>
+
+            <label for="aforoMaximo">Aforo Maximo</label>
+			<input name="aforoMaximo" id="aforoMaximo" required placeholder="aforoMaximo" th:value="${n.aforoMaximo}"/>
+			
+			<label for="telefono">Usuario</label>
+			<input name="telefono" id="telefono" required placeholder="telefono" th:value="${n.telefono}"/>
+			
+			<button type="submit">Modificar</button>
+		</form>
+	</div>
+
+
+	<footer th:replace="fragments/footer.html :: footer">
+		Footer goes here
+	</footer>
+	
+</body>
+</html>

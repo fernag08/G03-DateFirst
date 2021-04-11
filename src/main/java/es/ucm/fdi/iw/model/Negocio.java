@@ -30,6 +30,17 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Data
+//@NoArgsConstructor
+/*@NamedQueries({
+        @NamedQuery(name="Negocio.byNombre",
+                query="SELECT n FROM Negocio n "
+                        + "WHERE n.nombre = :nombre"),
+        @NamedQuery(name="Negocio.hasNombre",
+                query="SELECT COUNT(n) "
+                        + "FROM Negocio n "
+                        + "WHERE n.nombre = :nombre")
+})*/
+
 public class Negocio {
     
     @Id
@@ -55,5 +66,10 @@ public class Negocio {
     @OneToMany
     @JoinColumn(name="negocio_id")
     private List<Reserva> reservas = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return nombre + " " + descripcion;
+    }
 
 }

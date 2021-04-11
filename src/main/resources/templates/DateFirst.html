@@ -23,6 +23,32 @@
         qui officia deserunt mollit anim id est laborum.</p>
 
         <input type="text" placeholder="Introduce el comercio que deseas buscar" size="40"></input>
+
+        <!--<h4>Configuración</h4>
+	
+	         <ul>
+		        <li>Directorio local para archivos de usuario: <span th:text="${basePath}">tal</span>
+		        <li>Perfiles activos: <span th:each="a:${activeProfiles}" th:text="${a}">tal</span>
+		        <li>Consola h2: 
+			        <a th:href="@{/h2}" th:if="${debug} == 'true'">habilitada</a>
+			            <span th:unless="${debug} == 'true'">no habilitada</span>
+		        </li>
+	        </ul> -->
+
+        <h4> Todos los negocios </h4>
+        <ul>
+            <li th:each = "n:${negocios}">
+                <div>
+                    <a th:href="@{/negocio/{id}(id=${n.id})}">
+                        <!-- <img class="negocioImag" th:src= "@{/negocio/{id}/photo(id=$(n.id))}"> -->
+                        <span th:text="${n.nombre}">x</span>
+                        
+                    </a>
+                </div>
+            </li> 
+        </ul>
+   
+
     <th:block th:replace="fragments/footer.html"></th:block>
 </body>
 </html>
