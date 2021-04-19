@@ -33,7 +33,7 @@ import lombok.Data;
 @Data
 public class Reserva {
 
-    public enum Estado { LIBRE, SOLICITADA, CONFIRMADA, CANCELADA };
+    public enum Estado {LIBRE, SOLICITADA, CANCELADA};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,11 +51,10 @@ public class Reserva {
     private LocalDateTime inicio;
     private LocalDateTime fin;
     private int capacidad;
-    private int ocupadas=0;
     
     public Reserva() {}
     public Reserva(long id, User usuario, Negocio negocio, Estado estado, 
-        int numPersonas, LocalDateTime inicio, LocalDateTime fin, int capacidad, int ocupadas) {
+        int numPersonas, LocalDateTime inicio, LocalDateTime fin, int capacidad) {
         this.id = id;
         this.usuario = usuario;
         this.negocio = negocio;
@@ -64,31 +63,41 @@ public class Reserva {
         this.inicio = inicio;
         this.fin = fin;
         this.capacidad = capacidad;
-        this.ocupadas = ocupadas;
     }
-    
    
     @OneToMany
     @JoinColumn(name="reserva_id")
     private List<Message> mensajes = new ArrayList<>();
 
-    public static List<Reserva> generaReserva(LocalDateTime inicio, LocalDateTime fin, int cuantas, int duracionMinutos, int capacidadEnCadaUna, Negocio negocio) {
+    public static List<Reserva> generaReserva(LocalDateTime inicio, LocalDateTime fin, int cuantas, int duracionMinutos, int capacidadEnCadaUna, Negocio negocio, User user) {
         List<Reserva> listaReservas = new ArrayList<>();
         LocalDateTime prev = inicio;
-        for(int i = 0; i < cuantas; i++)
+        LocalDateTime post;
+        LocalDateTime actual = inicio;
+        int j = 0;
+       
+        post = prev.plusMinutes(duracionMinutos);
+        while(fin.isAfter(post) || fin.equals(post)) 
         {
-            listaReservas.add(new Reserva(
-                0L, null, negocio, Estado.LIBRE, 0, 
-                prev, prev.plusMinutes(duracionMinutos), capacidadEnCadaUna, 0));
+           
+            for(int i = 0; i < cuantas; i++)
+            {
+                listaReservas.add(new Reserva(0L, null, negocio, Estado.LIBRE, 
+                0, prev, post, capacidadEnCadaUna));
+               
+            }
             prev = prev.plusMinutes(duracionMinutos);
+            post = prev.plusMinutes(duracionMinutos);
+            actual = prev;
         }
+        
         return listaReservas;
     }
 
     @Override
     public String toString() {
         
-        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(inicio) 
-            + " " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(fin) + " x" + numPersonas + "Estado de la reserva:"+ estado;
+        return "Hora de inicio: " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(inicio) + "\n" +"Hora de fin: "
+            + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(fin) + "\n" +"Capacidad: " + capacidad + "\n" +"Número de personas: " + numPersonas + "\n" +"Estado de la reserva: "+ estado;
     }
 }

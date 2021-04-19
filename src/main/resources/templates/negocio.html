@@ -7,50 +7,55 @@
     <title>Negocio</title>
 </head>
 <body>
-    <th:block th:replace="fragments/head.html"></th:block>
+    <th:block th:replace="fragments/head.html"/>
     <nav th:replace="fragments/nav.html :: nav">
 		Nav goes here
 	</nav>
   
-    <h4>Información del negocio <span th:text="${n.nombre}">X</span></h4>
-	
-	<p>Nombre del negocio: <span th:text="${n.nombre}">x</span></p>
-	<p>Descripción: <span th:text="${n.descripcion}">x</span></p>
-	<p>Dirección: <span th:text="${n.direccion}">x</span></p>
-	<p>Ciudad: <span th:text="${n.ciudad}">x</span></p>
-    <p>Provincia: <span th:text="${n.provincia}">x</span></p>
-	<p>Código Postal: <span th:text="${n.codigoPostal}">x</span></p>
-    <p>Plazas disponibles: <span th:text="${n.plazasDisponibles}">x</span></p>
-	<p>Aforo máximo: <span th:text="${n.aforoMaximo}">x</span></p>
-	<p>Teléfono: <span th:text="${n.telefono}">x</span></p>
-    
-    <div  th:if=" (${session.u.id} eq ${n.propietario.id})">
-        <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
-        <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
-        <h4>Reservas actuales</h4>
-        <ul>
-            <li th:each="r: ${reservas}">
-                    <a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
-                    <span th:text="${r}">texto de la reserva</span>
-            </li>
-        </ul>	     
-    </div>
-    
-   <div th:if="(${session.u.id} neq ${n.propietario.id})">
-        <h4 >Reservas disponibles</h4>
-        <ul>
-            <li th:each="r: ${reservas}">
-                <div th:if="${r.estado.name() == 'LIBRE'}">
-                    <a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
-                    <span th:text="${r}">texto de la reserva</span>
-                    <form method="post" th:action="@{/reserva/{id}(id=${r.id})}">
-                        <button type="submit">Solicitar</button>
-                    </form>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <div class="container">
 
-    <th:block th:replace="fragments/footer.html"></th:block>
+        <h1>Información del negocio <span th:text="${n.nombre}">X</span></h1>
+        
+        <p><b>Nombre del negocio: </b><span th:text="${n.nombre}">x</span></p>
+        <p><b>Descripción: </b><span th:text="${n.descripcion}">x</span></p>
+        <p><b>Dirección: </b><span th:text="${n.direccion}">x</span></p>
+        <p><b>Ciudad: </b><span th:text="${n.ciudad}">x</span></p>
+        <p><b>Provincia: </b><span th:text="${n.provincia}">x</span></p>
+        <p><b>Código Postal: </b><span th:text="${n.codigoPostal}">x</span></p>
+        <p><b>Plazas disponibles: </b><span th:text="${n.plazasDisponibles}">x</span></p>
+        <p><b>Aforo máximo: </b><span th:text="${n.aforoMaximo}">x</span></p>
+        <p><b>Teléfono: </b><span th:text="${n.telefono}">x</span></p>
+
+
+        <div th:if="${session.u}">
+            <div th:if="(${session.u.id} eq ${n.propietario.id})">
+                <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
+                <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
+                <h4>Reservas actuales</h4>
+                <ul>
+                    <li th:each="r: ${reservas}">
+                        <a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
+                        <span th:text="${r}">texto de la reserva</span>
+                    </li>
+                </ul>
+            </div>	     
+        </div>
+            
+        
+        <div th:if="(${session.u.id} neq ${n.propietario.id})">
+            <h4 >Reservas disponibles</h4>
+            
+            <div th:each="r: ${reservas}">
+                <div th:if="${r.estado.name() == 'LIBRE'}">
+                    <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
+                    <h5 th:text="${r}">Texto de la reserva</h5>>
+                    <p><a th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <th:block th:replace="fragments/footer.html" />
 </body>
 </html>

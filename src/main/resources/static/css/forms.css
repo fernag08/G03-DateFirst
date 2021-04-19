@@ -1,0 +1,206 @@
+
+
+.login {
+	width: 50%;
+	background-color: #C2C2C2;
+	padding-bottom: 20px;
+	margin-left: 25%;
+}
+
+.login input {
+	font-family: 'Nunito', sans-serif;
+	color: #384047;
+}
+
+.login label {	
+	font-family: 'Rubik One', sans-serif;
+	color: #384047;
+	margin-left: 30px;
+	margin-top: 10px;
+}
+
+#usuLogin, #passLogin {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  font-size: 16px;
+  height: auto;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+  outline: 0;
+  padding: 15px;
+  width: 80%;
+  background-color: #e8eeef;
+  color: #8a97a0;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+}
+
+.botonLogin {
+	border:0;
+	outline:none;
+	border-radius:50px;
+	margin-top: 15px;
+	margin-left: 39%;
+	padding:15px;
+	font-size:120%;
+	font-weight:bold;
+	text-transform:uppercase;
+	background:#5fcf80;
+	color:white;
+	transition:all.5s ease;
+	-webkit-appearance: none;
+	display: flex;
+  	justify-content: center;
+}
+
+.botonLogin:hover, .botonEnviar:focus {
+	background:#1AB195;
+}
+
+.formulario {
+	background-color: white;
+	width: auto;
+	padding-left: 30px;
+	padding-bottom: 15px;
+	padding-right: 30px;
+	padding-top: 15px;
+}
+
+.formulario input[type="text"], .formulario input[type="password"] {
+	font-size:18px;
+	display:block;
+	width:40%;
+	height:100%;
+	padding:5px 10px;
+	margin-top: 10px;
+	/*margin-left: 30%; // Si queremos poner los formularios en el centro*/
+	background:none;
+	background-image:none;
+	border:1px solid #0042FF;
+	color:black;
+	border-radius:0;
+	transition:border-color .75s ease, box-shadow .25s ease;
+}
+
+.formulario input:focus, .formulario textarea:focus {
+	outline:0;
+	border-color:#091066;
+}
+
+
+.formulario .radioForm {
+	border-color: blue;
+	background-color: yellow;
+	
+}
+
+.formulario label {
+    font-size:20px;
+    color:#0042FF;
+    font-family: Candara;
+}
+
+.formulario textarea {
+	font-size:18px;
+	display:block;
+	width:40%;
+	height:100%;
+	padding:5px 10px;
+	padding-top: 10px;
+	background:none;
+	background-image:none;
+	border:1px solid;
+	color:black;
+	border-radius:0;
+	border-color:#0042FF;
+	transition:border-color .75s ease, box-shadow .25s ease;
+}
+
+.caja {	
+   height:40px;
+   overflow: hidden;
+   width: 230px;
+   position:relative;
+   background: #13232f;
+}
+
+select {
+   background: transparent;
+   border-radius: 0; 
+   border-color: #0042FF;
+   font-size: 18px;
+   color:#0042FF;
+   height: 40px;
+   padding: 5px;
+   width: 250px;
+   padding-bottom: 0;
+   padding-top: 0;
+   font-family: Candara;
+}
+
+select:focus{ outline: none;}
+
+.caja::after{
+	content:"\021e9";
+	display:table-cell;
+	padding-top:7px;
+	text-align:center;
+	width:40px;
+	height:40px;
+	background-color:#0042FF;
+	position:absolute;
+	top:0;
+	right:0px;
+   	padding-top: 12px;	
+	pointer-events: none;
+}
+
+.formulario select:focus{
+	outline:0;
+	border-color:#0042FF;
+}
+
+.caja:focus {
+	background-color:#0042FF;
+}
+
+.botonEnviar {
+	border:0;
+	outline:none;
+	border-radius:50px;
+	margin-top: 15px;
+	padding:15px;
+	font-size:120%;
+	font-weight:bold;
+	text-transform:uppercase;
+	background:#0042FF;
+	color:white;
+	transition:all.5s ease;
+	-webkit-appearance: none;
+	display: flex;
+  	justify-content: center;
+}
+
+.botonEnviar:hover, .botonEnviar:focus {
+	background:#091066;
+}
+
+input[type=”file”]{
+ width: 0.1px;
+ height: 0.1px;
+ opacity: 0;
+ overflow: hidden;
+ position: absolute;
+ z-index: -1;
+ }
+
+.formulario input[type="checkbox"] + label {
+    font-weight: bold;
+    line-height: 3em;
+    color: #0042FF;
+}
+
+.formulario input[type="checkbox"]:checked + label {
+    color: #091066;
+}

@@ -7,8 +7,11 @@
 </head>
 <body>
 	<nav th:fragment="nav">
-		<a class="logo" href="" th:href="@{/}"></a>
-		<span class="sitename">Date First</span>
+		<!--<a class="logo" href="" th:href="@{/}"></a>-->
+		<div class="title">
+			<img src="https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg" alt="Icono DateFirst" width="40px" height="40px">
+			<span class="sitename">Date First</span>
+		</div>
 
 		<div class="logx" th:if="${session.u}">
 			<a id="received" th:href="@{/message/}" th:text="${session.unread} ? '📬': '📪'">📫</a>			
@@ -21,24 +24,32 @@
 				<span th:text="${session.u.username}">Pepe</span></a>						
 		</div>
 		<div class="logx" th:unless="${session.u}">
-			<a th:href="@{/login}" href="/login">login</a>
+			<!--<form method="post" th:action="@{/login}">
+				<button th:text="Login" type="submit" href="/login">Login</button>
+			</form>
+			<form method="get" th:action="@{/user}">
+				<button th:text="Register" type="submit" href="/user">Register</button>
+			</form>-->
+			<a th:href="@{/login}" href="/login">Login</a>
+			<a th:href="@{/user/}" href="/user/">Register</a>
+
 			<!--/*
 				Esto es un comentario "thymeleaf" - no se verá en el HTML
 				El bloque de "debug" sólo está activado si application.properties tiene debug a "true"
 				(ver StartupConfig.java para ver cómo se lee el atributo y se pone en ${application.debug})
 			*/-->
-			<div class="debug" th:if="${application.debug}">
+			<!-- <div class="debug" th:if="${application.debug}">
 				<form th:action="@{/login}" method="post">
 					<input type="hidden" name="username" value="a">
 					<input type="hidden" name="password" value="aa">
 					<button type="submit">a</button>
   				</form>				
-				<form th:action="@{/login}" method="post">
+				 th:action="@{/login}" method="post">
 					<input type="hidden" name="username" value="b">
 					<input type="hidden" name="password" value="aa">
 					<button type="submit">b</button>
   				</form>
-  			</div>
+  			</div> -->
 		</div>		
 	</nav>
 </body>

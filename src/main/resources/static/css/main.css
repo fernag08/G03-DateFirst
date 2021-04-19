@@ -15,9 +15,16 @@ body {
 	flex-direction: column;
 }
 
+.img_cuerpo{
+	width: 650px;
+	height: 340px;
+	vertical-align: middle;
+	justify-content: center;
+	align-content: center;
+}
 
 /* for debugging purposes - remove borders for a cleaner look */
-div, nav, footer {
+nav, footer {
 	border-top: 1px solid gray;
 	border-bottom: 1px solid gray;
 }
@@ -51,8 +58,11 @@ nav>*{
 
 /* setup main container */
 div.container {
-	display: flex;
-	flex-wrap: wrap-reverse;
+	margin-left: 5%;
+	margin-right: 5%;
+
+	margin-top: 2%;
+	margin-bottom: 2%;
 }
 div.main {
 	flex: auto;
@@ -67,6 +77,7 @@ footer {
 }
 footer img {
 	vertical-align: middle;
+	
 }
 
 /* for compact forms */

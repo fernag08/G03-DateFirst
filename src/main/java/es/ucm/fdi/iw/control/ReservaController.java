@@ -98,7 +98,7 @@ public class ReservaController {
 	public String postReserva(
 			HttpServletResponse response,
 			@PathVariable long id, 
-			@ModelAttribute Reserva edited, 
+			@RequestParam int numPersonas, 
 			Model model, HttpSession session) throws IOException {
 		
 		Reserva target = entityManager.find(Reserva.class, id);
@@ -106,17 +106,16 @@ public class ReservaController {
 		
 		User requester = (User)session.getAttribute("u");
 
-        target.setCapacidad(edited.getCapacidad());
-		target.setInicio(edited.getInicio());
-		target.setFin(edited.getFin());
-        target.setOcupadas(edited.getOcupadas());
-        target.setNumPersonas(edited.getNumPersonas());
-        target.setEstado(edited.getEstado());
+      
+        target.setNumPersonas(numPersonas);
+        target.setEstado(Reserva.Estado.SOLICITADA);
+		target.setUsuario(requester);
+		
 
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("r", target);
 
-		return "reserva";
+		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
 /*
 	public int puestosDisponibles(LocalDateTime inicioT, LocalDateTime finT)

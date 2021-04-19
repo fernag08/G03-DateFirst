@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear negocio</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/forms.css}" href="css/forms.css" type="text/css" />
+  <title>Crear negocio</title>
 </head>
 <body>
     <th:block th:replace="fragments/head.html"></th:block>
     <nav th:replace="fragments/nav.html :: nav">
 		Nav goes here
 	</nav>
-   <h1>¡Crea tu nuevo negocio!</h1>
+
+  <div class="cuerpo">
+    <h1>¡Crea tu nuevo negocio!</h1>
     <form id="negocionew" class="smallform" th:action="@{/negocio/}" method="POST">
     
         <p>
@@ -67,11 +70,12 @@
               class="form-control" required="required"></input>
         </p>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Crear</button>
+        <button class="botonEnviar" type="submit">Crear</button>
     </form>
 
     <img src="https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png" alt="mapa" width="200px" height="200px">
-
-    <th:block th:replace="fragments/footer.html"></th:block>
+  
+  </div>
+  <th:block th:replace="fragments/footer.html"></th:block>
 </body>
 </html>

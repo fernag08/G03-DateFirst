@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.time.format.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
@@ -168,6 +169,32 @@ public class NegocioController {
 	 	return "editarNegocio";
 	}
 
+	@PostMapping("/{id}/eliminar")
+	@Transactional
+    public String eliminarNegocio(@PathVariable long id, Model model, HttpSession session) 			
+	 		throws JsonProcessingException {		
+	 	Negocio n = entityManager.find(Negocio.class, id);
+
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
+	
+		for (Reserva r : reservas){
+			entityManager.remove(r);
+		}
+		
+		entityManager.remove(n);
+		entityManager.flush();
+		
+		User u = (User)session.getAttribute("u");
+
+
+		String nextUrl = u.hasRole(User.Role.ADMIN) ? 
+			"admin/" :
+			"user/" + u.getId();
+
+			return "redirect:/"+nextUrl;
+		
+	}
+
 	@GetMapping("/{id}/genera")
 	@Transactional
 	public String generaReservas(@PathVariable long id, Model model, HttpSession session) 
@@ -179,21 +206,38 @@ public class NegocioController {
 		return "generarReservas";
 	}
 
-	// @PostMapping("/{id}/genera")
-	// @Transactional
-	// public String postGeneraReservas(@PathVariable long id, Model model, HttpSession session) 
-	// 	throws JsonProcessingException {
+	@PostMapping("/{id}/genera")
+	@Transactional
+	public String postGeneraReservas(@PathVariable long id, Model model, // ECHAR UN OJO
+					HttpSession session,
+					@RequestParam String Finicio, 
+					@RequestParam String inicio,
+					@RequestParam String Ffin,
+					@RequestParam String fin, 
+					@RequestParam int cuantas,
+					@RequestParam int duracionEnMinutos,
+					@RequestParam int capacidadEnCadaUna) 
+		throws JsonProcessingException {
 		
-	// 	Negocio n = entityManager.find(Negocio.class, id);
-	// 	LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-	// 	LocalDateTime end = start.plusHours(5);
-	// 	for (Reserva r : Reserva.generaReserva(start, end, 10, 30, 2, n)) {
-	// 		entityManager.persist(r);
-	// 	}
-	// 	entityManager.flush();
+		Negocio n = entityManager.find(Negocio.class, id);
+		User u = (User)session.getAttribute("u");
 
-	// 	return getNegocio(id, model, session);
-	// }
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		LocalDateTime inicioP = LocalDateTime.parse(Finicio+" "+inicio+":00", formatter);
+		LocalDateTime finP = LocalDateTime.parse(Ffin+" "+fin+":00", formatter);
+
+		//LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+	 	//LocalDateTime end = start.plusHours(5);
+
+		for (Reserva r : Reserva.generaReserva(inicioP, finP, cuantas, duracionEnMinutos, capacidadEnCadaUna, n, u)) {
+	 		entityManager.persist(r);
+	 	}
+		
+	 	entityManager.flush();
+
+	 	return "redirect:/negocio/"+n.getId();
+	}
 
 	// @GetMapping(value="/{id}/photo")
 	// public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		

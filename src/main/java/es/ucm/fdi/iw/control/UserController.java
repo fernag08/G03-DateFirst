@@ -46,6 +46,8 @@ import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.User.Role;
+import es.ucm.fdi.iw.model.Negocio;
+import es.ucm.fdi.iw.model.Reserva;
 //import jdk.nashorn.internal.ir.debug.PrintVisitor;
 
 /**
@@ -138,6 +140,7 @@ public class UserController {
 		u.setProvince(province);
 		u.setPostalCode(postalCode);
 		u.setRoles(roles);
+		u.setEnabled((byte)1);
 
 		entityManager.persist(u);
 		entityManager.flush();
@@ -221,6 +224,30 @@ public class UserController {
 
 		return "perfilUsuario";
 	}
+
+	@GetMapping("/{id}/eliminar")
+	@Transactional
+    public String eliminarUsuario(@PathVariable long id, Model model, HttpSession session) 			
+	 		throws JsonProcessingException {		
+	 	User u = entityManager.find(User.class, id);
+
+		ArrayList<Negocio> negocios = new ArrayList<Negocio>(u.getNegocios());
+	
+		for (Negocio n : negocios){
+			ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
+	
+			for (Reserva r : reservas){
+				entityManager.remove(r);
+			}
+			
+			entityManager.remove(n);
+		}
+
+		entityManager.remove(u);
+		entityManager.flush();
+		
+		return "dateFirst";
+	}
 	
 	@GetMapping(value="/{id}/photo")
 	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
@@ -239,6 +266,8 @@ public class UserController {
 			}
 		};
 	}
+
+	
 	
 	@PostMapping("/{id}/msg")
 	@ResponseBody
@@ -310,4 +339,5 @@ public class UserController {
 		}
 		return "editarUsuario";
 	}
+
 }
