@@ -17,16 +17,16 @@ INSERT INTO USER(id, address , age , city , enabled , first_name, last_name1 , l
     'USER', '678976568', 'b'
 );
  
-INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direccion, nombre, plazas_disponibles, provincia, telefono,propietario_id) VALUES 
+INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direccion, latitud, longitud, nombre, provincia, telefono,propietario_id) VALUES 
 (1, 35, 'Madrid', 40006, 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
  doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritati et quasi architecto
- beatae vitae dicta sunt explicabo.', 'Calle Alcalá 45','Comida Mexicana', 35, 'Madrid', '614563321', 2	
+ beatae vitae dicta sunt explicabo.', 'Avenida Orovilla 58', 40.35804197541284, -3.6898172885699143, 'Comida Mexicana', 'Madrid', '614563321', 2	
 );
 
-INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direccion, nombre, plazas_disponibles, provincia, telefono,propietario_id) VALUES 
+INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direccion, latitud, longitud, nombre, provincia, telefono,propietario_id) VALUES 
 (2, 40, 'Madrid', 40006, 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
  doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritati et quasi architecto
- beatae vitae dicta sunt explicabo.', 'Calle Alcala 45','Hamburguseria', 30, 'Madrid', '656789675', 2	
+ beatae vitae dicta sunt explicabo.', 'Calle Alcala 31', 40.41862270186089, -3.6983665022211523, 'Hamburguseria', 'Madrid', '656789675', 2	
 );
 
 <!--INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, ocupadas, negocio_id, usuario_id) VALUES (

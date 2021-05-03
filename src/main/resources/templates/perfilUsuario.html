@@ -37,17 +37,23 @@
 					<p>
 						<a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.id}">123</a>
 						<span th:text="${n}">texto del negocio</span>
-					<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-						<button th:text="Eliminar" type="submit">🗑</button>
-					</form>
+						<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
+							<button th:text="Eliminar" type="submit">🗑</button>
+						</form>
 					</p>
 				</div>
 
 				<h2>Reservas</h2>
 				<div th:each="r: ${reservas}">
-					<p>
+					<p th:if="${r.estado.name() == 'SOLICITADA'}">
 						<span th:text="${r.id}">123</span>
 						<span th:text="${r}">Texto de la reserva</span>
+						<div th:if="${r.estado.name() == 'SOLICITADA'}">
+							<form method="post" th:action="@{/reserva/{id}/cancelar(id=${r.id})}">
+								<button th:text="Cancelar" type="submit">🗑</button>
+							</form>
+							 
+						</div>
 					</p>
 				</div>
 

@@ -20,7 +20,7 @@
 
 			<div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
 				<!-- puedes cambiar todo -->
-				<form id="usermod" class="smallform" th:action="@{/user/{id}(id=${user.id})}" method="POST">
+				<form id="usermod" class="formulario" th:action="@{/user/{id}(id=${user.id})}" method="POST">
 
 					<label for="firstName">Nombre</label>
 					<input name="firstName" id="firstName" required placeholder="Nombre" th:value="${user.firstName}" />
@@ -71,16 +71,6 @@
 			</div>
 			<img th:src="@{/user/{id}/photo(id=${user.id})}">
 		</div>
-
-		<h4>Mis reservas</h4>
-		<ul>
-			<li th:each="r: ${reservas}">
-				<div>
-					<a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
-					<span th:text="${r}">texto de la reserva</span>
-				</div>
-			</li>
-		</ul>
 	</div>
 
 	<footer th:replace="fragments/footer.html :: footer">

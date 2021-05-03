@@ -8,11 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.persistence.EntityManager;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.User;
@@ -50,6 +56,27 @@ public class RootController {
 				"SELECT n FROM Negocio n").getResultList());
 	 return "DateFirst";
 	}
+
+	@PostMapping("/buscar")            // <-- en qué URL se expone, y por qué métodos (GET)       
+	@Transactional 
+    public String busca(        // <-- da igual, sólo para desarrolladores
+            Model model,
+			@RequestParam String question)        // <-- hay muchos, muchos parámetros opcionales
+    { 
+		
+
+		Negocio n = null;
+		try {
+			n = (Negocio)entityManager.createNamedQuery(
+			"negocioByNombre")
+			.setParameter("negName", question).getSingleResult();
+			
+		}catch(Exception e){
+			return "redirect:/";
+		}
+		return "redirect:/negocio/"+n.getId();
+	}
+
 	
 	@GetMapping("/chat")
 	public String chat(Model model, HttpServletRequest request) {

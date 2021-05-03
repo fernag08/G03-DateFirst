@@ -9,19 +9,20 @@
 	<nav th:fragment="nav">
 		<!--<a class="logo" href="" th:href="@{/}"></a>-->
 		<div class="title">
-			<img src="https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg" alt="Icono DateFirst" width="40px" height="40px">
-			<span class="sitename">Date First</span>
+			<a href="" th:href="@{/}"><img class="imgHeader" src="https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg" alt="Icono DateFirst" width="40px" height="40px"></a>
+			<a href="" th:href="@{/}"><span class="sitename">Date First</span></a>
 		</div>
 
 		<div class="logx" th:if="${session.u}">
 			<a id="received" th:href="@{/message/}" th:text="${session.unread} ? '📬': '📪'">📫</a>			
 			<a th:if="${session.u.hasRole('ADMIN')}" th:href="@{/admin/}">administrar</a>
 			<form th:action="@{/logout}" method="post">
-				<button type="submit">logout</button>
+				<button id="botonLogout" type="submit">logout</button>
 			</form>
 			<a th:href="@{/user/{id}(id=${session.u.id})}">
 				<img class="userthumb" th:src="@{/user/{id}/photo(id=${session.u.id})}">
-				<span th:text="${session.u.username}">Pepe</span></a>						
+				<span th:text="${session.u.username}">Pepe</span>
+			</a>				
 		</div>
 		<div class="logx" th:unless="${session.u}">
 			<!--<form method="post" th:action="@{/login}">
@@ -30,8 +31,8 @@
 			<form method="get" th:action="@{/user}">
 				<button th:text="Register" type="submit" href="/user">Register</button>
 			</form>-->
-			<a th:href="@{/login}" href="/login">Login</a>
-			<a th:href="@{/user/}" href="/user/">Register</a>
+			<a id="botonLogin" th:href="@{/login}" href="/login">Login</a>
+			<a id="botonRegistro" th:href="@{/user/}" href="/user/">Register</a>
 
 			<!--/*
 				Esto es un comentario "thymeleaf" - no se verá en el HTML

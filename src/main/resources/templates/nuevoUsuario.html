@@ -2,11 +2,11 @@
 <html 
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head><th:block th:replace="fragments/head :: header"/>
-	<link rel="stylesheet" th:href="@{/css/forms.css}" href="css/forms.css" type="text/css" />
+<head>
 	<title>Perfil</title>
 </head>
 <body>
+	<th:block th:replace="fragments/head :: header"/>
 	<nav th:replace="fragments/nav.html :: nav">
 		Nav goes here
 	</nav>
@@ -15,7 +15,7 @@
 		<div class="main">
 			<h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
 	
-			<h4>Crear nuevo usuario </h4>
+			<h4>Crear nuevo usuario</h4>
 		
 			<!-- puedes cambiar todo -->
 			<form id="usermod" class="formulario" th:action="@{/user/}" method="POST">
@@ -55,8 +55,8 @@
 				<label for="pass2">(repetida)</label>
 				<input type="password" id="pass2" required name="pass2" placeholder="Confirmación"/>
 				
-				<label for="roles">Roles</label>
-				<input type="text" id="roles" name="roles" required placeholder="Roles"/>
+				<input type="hidden" name="roles" value="USER"/>
+
 				<button type="submit" class="botonEnviar">Crear</button>
 			</form>
 		</div>

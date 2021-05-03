@@ -74,7 +74,50 @@ public class ReservaController {
 	 	return "nuevaReserva";
 	}
 
-    @GetMapping("/{id}")
+	@PostMapping("/{id}/cancelar")
+	@Transactional
+	public String cancelarReserva(
+		HttpServletResponse response,
+		@PathVariable long id, 
+		Model model, HttpSession session) throws IOException {
+	
+		Reserva target = entityManager.find(Reserva.class, id);
+		model.addAttribute("r", target);
+		
+		User requester = (User)session.getAttribute("u");
+
+        target.setEstado(Reserva.Estado.CANCELADA);
+
+		// update user session so that changes are persisted in the session, too
+		session.setAttribute("r", target);
+			
+
+		return "redirect:/user/"+requester.getId();
+	}
+	
+	@PostMapping("/{id}/habilitar")
+	@Transactional
+	public String habilitarReserva(
+		HttpServletResponse response,
+		@PathVariable long id, 
+		Model model, HttpSession session) throws IOException {		
+				
+				Reserva target = entityManager.find(Reserva.class, id);
+				model.addAttribute("r", target);
+				
+				User requester = (User)session.getAttribute("u");
+			  
+				target.setNumPersonas(0);
+				target.setEstado(Reserva.Estado.LIBRE);
+				target.setUsuario(null);
+		
+				// update user session so that changes are persisted in the session, too
+				session.setAttribute("r", target);
+
+		return "redirect:/negocio/"+target.getNegocio().getId();
+	}
+
+	@GetMapping("/{id}")
 	public String getReserva(@PathVariable long id, Model model, HttpSession session) 			
 			throws JsonProcessingException {		
 		
@@ -92,6 +135,7 @@ public class ReservaController {
 
 		return "reserva";
 	}
+
 
 	@PostMapping("/{id}")
 	@Transactional

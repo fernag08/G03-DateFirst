@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Negocio</title>
 </head>
+
 <body>
-    <th:block th:replace="fragments/head.html"/>
+    <th:block th:replace="fragments/head.html" />
     <nav th:replace="fragments/nav.html :: nav">
-		Nav goes here
-	</nav>
-  
+        Nav goes here
+    </nav>
+
     <div class="container">
 
         <h1>Información del negocio <span th:text="${n.nombre}">X</span></h1>
-        
+
         <p><b>Nombre del negocio: </b><span th:text="${n.nombre}">x</span></p>
         <p><b>Descripción: </b><span th:text="${n.descripcion}">x</span></p>
-        <p><b>Dirección: </b><span th:text="${n.direccion}">x</span></p>
-        <p><b>Ciudad: </b><span th:text="${n.ciudad}">x</span></p>
+        <p><b>Dirección: </b><span id="txtDireccion" th:text="${n.direccion}">x</span></p>
+        <p><b>Ciudad: </b><span id="txtCiudad" th:text="${n.ciudad}">x</span></p>
+        <p><b>Latitud: </b><span th:text="${n.latitud}">x</span></p>
+        <p><b>Longitud: </b><span th:text="${n.longitud}">x</span></p>
         <p><b>Provincia: </b><span th:text="${n.provincia}">x</span></p>
         <p><b>Código Postal: </b><span th:text="${n.codigoPostal}">x</span></p>
-        <p><b>Plazas disponibles: </b><span th:text="${n.plazasDisponibles}">x</span></p>
         <p><b>Aforo máximo: </b><span th:text="${n.aforoMaximo}">x</span></p>
         <p><b>Teléfono: </b><span th:text="${n.telefono}">x</span></p>
 
@@ -31,20 +34,44 @@
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
                 <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
                 <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
-                <h4>Reservas actuales</h4>
-                <ul>
-                    <li th:each="r: ${reservas}">
-                        <a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a>
-                        <span th:text="${r}">texto de la reserva</span>
-                    </li>
-                </ul>
-            </div>	     
+                <div th:if="${reservas.size() > 0}">
+                    <a th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
+
+                    <h4>Reservas actuales</h4>
+                    <ul>
+                        <li th:each="r: ${reservas}">
+                            <span th:text="${r.id}">123</span>
+                            <span th:text="${r}">texto de la reserva</span>
+                            <div th:if="${r.estado.name() == 'CANCELADA'}">
+                                <form method="post" th:action="@{/reserva/{id}/habilitar(id=${r.id})}">
+                                    <button th:text="Habilitar" type="submit">🗑</button>
+                                </form>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+                <div th:if="${reservas.size() == 0}">
+                    <h4>No hay reservas</h4>
+                </div>
+            </div>
+            <div th:if="(${session.u.id} neq ${n.propietario.id})">
+                <h4>Reservas disponibles</h4>
+                <div th:each="r: ${reservas}">
+                    <div th:if="${r.estado.name() == 'LIBRE'}">
+                        <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
+                        <h5 th:text="${r}">Texto de la reserva</h5>
+                        <p><a th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-            
-        
-        <div th:if="(${session.u.id} neq ${n.propietario.id})">
-            <h4 >Reservas disponibles</h4>
-            
+        <div th:unless="${session.u}">
+
+            <h4>Reservas disponibles</h4>
             <div th:each="r: ${reservas}">
                 <div th:if="${r.estado.name() == 'LIBRE'}">
                     <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
@@ -54,8 +81,55 @@
             </div>
         </div>
 
+        <div id="map" style="height: 400px; width: 400px;"> </div>
+
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaNti8iOWYQNmqjYvzsDeWUXW5rswnu6E&callback=initMap"
+            async defer> </script>
+
+        <script>
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    //center: { lat: parseFloat("<%= n.latitud %>"), lng: parseFloat("<%=n.longitud %>") },
+                    center: { lat: parseFloat({th:text="${n.latitud}"}), lng: parseFloat({th:text="${n.longitud}"}) },
+                    zoom: 13,
+                });             
+                map.center.lat =  parseFloat({th:text="${n.latitud}"});
+
+                var marker = new google.maps.Marker({
+                    position: { lat: parseFloat({th:text="${n.latitud}"}), lng: parseFloat({th:text="${n.longitud}"}) },
+                    map: map,
+                    //title: 'Acuario de Gijón'
+                });
+
+                //var geocoder = new google.maps.Geocoder();
+                //geocodeAddress(geocoder, map);
+            }
+
+            // function geocodeAddress(geocoder, resultsMap) {
+            //     var address = "Avenida Orovilla 58";
+            //     alert(address);
+            //     geocoder.geocode({ 'address': address }, function (results, status) {
+            //         if (status === google.maps.GeocoderStatus.OK) {
+            //             resultsMap.setCenter(results[0].geometry.location);
+            //             var marker = new google.maps.Marker({
+            //                 map: resultsMap,
+            //                 position: results[0].geometry.location
+            //             });
+
+            //         } else {
+            //             alert('La localización no fue satisfactoria por la siguiente razón: ' + status);
+            //         }
+            //     });
+            // }
+        </script>
+
+
     </div>
-    
+
+
     <th:block th:replace="fragments/footer.html" />
 </body>
+
 </html>

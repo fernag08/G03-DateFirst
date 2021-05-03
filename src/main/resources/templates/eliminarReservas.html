@@ -13,8 +13,8 @@
 	</nav>
 
     <div class="container">
-        <h1>Introduce los datos necesarios para generar las reservas</h1>
-        <form id="reservasnew" class="formulario" th:action="@{/negocio/{id}/genera(id=${n.id})}" method="POST">
+        <h1>Introduce la franja horaria de las reservas que quieres eliminar</h1>
+        <form id="reservasnew" class="formulario" th:action="@{/negocio/{id}/eliminarReservas(id=${n.id})}" method="POST">
             
             <p>
                 <label for="Finicio" class="sr-only"> Fecha de inicio: </label>
@@ -38,25 +38,7 @@
                 class="form-control"  required="required"></input>
             </p>
 
-            <p>
-                <label for="cuantas" class="sr-only"> Cuantas: </label>
-                <input type="text" id="cuantas" name="cuantas" 
-                class="form-control"  required="required"></input>
-            </p>
-
-            <p>
-                <label for="duracionEnMinutos" class="sr-only"> Duracion en minutos: </label>
-                <input type="text" id="duracionEnMinutos" name="duracionEnMinutos" 
-                class="form-control" required="required"></input>
-            </p>
-
-            <p>
-                <label for="capacidadEnCadaUna" class="sr-only"> Capacidad en cada una: </label>
-                <input type="text" id="capacidadEnCadaUna" name="capacidadEnCadaUna" 
-                class="form-control" required="required"></input>
-            </p>
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Generar</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Eliminar</button>
         </form>
     </div>
 

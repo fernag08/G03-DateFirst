@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import javax.script.*;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -64,6 +65,8 @@ public class NegocioController {
 	
 	private static final Logger log = LogManager.getLogger(RootController.class);
 
+	
+
 	@Autowired
     private EntityManager entityManager;
     
@@ -87,17 +90,15 @@ public class NegocioController {
 			@RequestParam String direccion,
 			@RequestParam String ciudad,
 			@RequestParam String provincia,
+			@RequestParam float latitud,
+			@RequestParam float longitud,
 			@RequestParam String telefono,
 			@RequestParam int codigoPostal,
 			@RequestParam int aforoMaximo,
-			@RequestParam int plazasDisponibles,
 			 Model m) throws IOException {
 				 
 		Negocio n = new Negocio();
 		model.addAttribute("n", n);
-
-		entityManager.persist(n);
-		entityManager.flush();
 
 		User requester = (User)session.getAttribute("u");
 		n.setNombre(nombre);
@@ -108,9 +109,12 @@ public class NegocioController {
 		n.setTelefono(telefono);
 		n.setAforoMaximo(aforoMaximo);
 		n.setCodigoPostal(codigoPostal);
-        n.setPlazasDisponibles(plazasDisponibles);
+		n.setLatitud(latitud);
+		n.setLongitud(longitud);
 		n.setPropietario(requester); 
 				
+		entityManager.persist(n);
+		entityManager.flush();
 		session.setAttribute("n", n);
 	     
 	    return "redirect:/negocio/"+n.getId();
@@ -151,7 +155,8 @@ public class NegocioController {
         target.setDireccion(edited.getDireccion());
         target.setTelefono(edited.getTelefono());
         target.setProvincia(edited.getProvincia());
-        target.setPlazasDisponibles(edited.getPlazasDisponibles());
+		target.setLatitud(edited.getLatitud());
+		target.setLongitud(edited.getLongitud());
 
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("n", target);
@@ -232,6 +237,48 @@ public class NegocioController {
 
 		for (Reserva r : Reserva.generaReserva(inicioP, finP, cuantas, duracionEnMinutos, capacidadEnCadaUna, n, u)) {
 	 		entityManager.persist(r);
+	 	}
+		
+	 	entityManager.flush();
+
+	 	return "redirect:/negocio/"+n.getId();
+	}
+
+	@GetMapping("/{id}/eliminarReservas")
+	@Transactional
+	public String eliminarReservas(@PathVariable long id, Model model, HttpSession session) 
+		throws JsonProcessingException {
+
+		Negocio n = entityManager.find(Negocio.class, id);
+		model.addAttribute("n", n);
+
+		return "eliminarReservas";
+	}
+
+	@PostMapping("/{id}/eliminarReservas")
+	@Transactional
+	public String postEliminaReservas(@PathVariable long id, Model model, // ECHAR UN OJO
+					HttpSession session,
+					@RequestParam String Finicio, 
+					@RequestParam String inicio,
+					@RequestParam String Ffin,
+					@RequestParam String fin) 
+		throws JsonProcessingException {
+		
+		Negocio n = entityManager.find(Negocio.class, id);
+		User u = (User)session.getAttribute("u");
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		LocalDateTime inicioP = LocalDateTime.parse(Finicio+" "+inicio+":00", formatter);
+		LocalDateTime finP = LocalDateTime.parse(Ffin+" "+fin+":00", formatter);
+
+		//LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+	 	//LocalDateTime end = start.plusHours(5);
+
+		for (Reserva r : n.getReservas()) {
+			if((r.getInicio().isBefore(finP) || r.getInicio().equals(finP)) && (r.getInicio().isAfter(inicioP) || r.getInicio().equals(inicioP)))
+	 			entityManager.remove(r);
 	 	}
 		
 	 	entityManager.flush();

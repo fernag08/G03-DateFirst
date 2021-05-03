@@ -13,16 +13,16 @@
 		Nav goes here
 	</nav>
 
-    <div class="cuerpo">
-        <form id="reservamod" class="smallform" th:action="@{/reserva/{id}(id=${r.id})}" method="POST">
+    <div class="container">
+        <form id="reservamod" class="formulario" th:action="@{/reserva/{id}(id=${r.id})}" method="POST">
             <p>
-                Reserva Nº: <span th:text="${r.id}"></span>
+                <label class="sr-only">Reserva Nº: <span th:text="${r.id}"></span></label>
             </p>
             <p>
-                Hora de inicio de reserva: <span th:text="${r.inicio}"></span>
+                <label class="sr-only">Hora de inicio de reserva: <span th:text="${r.inicio}"></span></label>
             </p>
             <p>
-                Hora de fin de reserva: <span th:text="${r.fin}"></span>
+                <label class="sr-only">Hora de fin de reserva: <span th:text="${r.fin}"></span></label>
             </p>
             <p>
                 <label for="numPersonas" class="sr-only">Número de personas: </label>

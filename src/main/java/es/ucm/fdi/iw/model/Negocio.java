@@ -30,16 +30,16 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Data
-//@NoArgsConstructor
-/*@NamedQueries({
-        @NamedQuery(name="Negocio.byNombre",
+@NoArgsConstructor
+@NamedQueries({
+        @NamedQuery(name="negocioByNombre",
                 query="SELECT n FROM Negocio n "
-                        + "WHERE n.nombre = :nombre"),
+                        + "WHERE n.nombre = :negName")/*,
         @NamedQuery(name="Negocio.hasNombre",
                 query="SELECT COUNT(n) "
                         + "FROM Negocio n "
-                        + "WHERE n.nombre = :nombre")
-})*/
+                        + "WHERE n.nombre = :nombre")*/
+})
 
 public class Negocio {
     
@@ -51,14 +51,13 @@ public class Negocio {
     private String descripcion;
     private String direccion;
     private String ciudad;
-    
     private String provincia;
     private int codigoPostal;
-
-    private int plazasDisponibles;
     private int aforoMaximo;
-    
     private String telefono;
+
+    private float latitud;
+    private float longitud;
 
     @ManyToOne
     private User propietario;
@@ -66,6 +65,10 @@ public class Negocio {
     @OneToMany
     @JoinColumn(name="negocio_id")
     private List<Reserva> reservas = new ArrayList<>();
+
+    public int getNumReservas(){
+        return reservas.size();
+    }
 
     @Override
     public String toString() {

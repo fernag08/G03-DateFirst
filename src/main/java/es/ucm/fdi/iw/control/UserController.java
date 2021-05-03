@@ -128,7 +128,6 @@ public class UserController {
 		model.addAttribute("user", u);
 
 		u.setPassword(encodePassword(password));
-		//u.setPassword(password);
 		u.setUsername(username);
 		u.setFirstName(firstName);
 		u.setLastName1(lastName1);
@@ -146,7 +145,7 @@ public class UserController {
 		entityManager.flush();
 		session.setAttribute("user", u);
 
-	    return "redirect:/usuario/"+u.getId();
+	    return "redirect:/user/"+u.getId();
 	}
 
 
@@ -199,6 +198,8 @@ public class UserController {
 		
 		User target = entityManager.find(User.class, id);
 		model.addAttribute("u", target);
+		model.addAttribute("negocios", new ArrayList<>(target.getNegocios()));
+		model.addAttribute("reservas", new ArrayList<>(target.getReservas()));
 
 		//target.setPassword(encodePassword(edited.getPassword()));
 		target.setUsername(edited.getUsername());

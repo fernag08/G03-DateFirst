@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DateFirst</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" href="css/main.css" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/cabecera.css}" href="css/cabecera.css" type="text/css" />
 </head>
 <body> 
 
@@ -30,8 +31,10 @@
             fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
             qui officia deserunt mollit anim id est laborum.</p>
 
-        <input type="text" placeholder="Introduce el comercio que deseas buscar" size="40"></input>
-
+        <form th:action="@{/buscar}" method="POST">
+                <input type="text" placeholder="Introduce el comercio que deseas buscar" size="40" name="question"/>
+                <input type="submit" value="Buscar"/>
+        </form>
         
         <h3> Todos los negocios </h3>
         <ul>
