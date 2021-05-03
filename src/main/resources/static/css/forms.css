@@ -1,20 +1,22 @@
-
-
+/*-----------------Formulario login-------------------*/
 .login {
 	width: 50%;
-	background-color: #C2C2C2;
+	background-color: #b9b9b9;
+	padding-top: 20px;
 	padding-bottom: 20px;
+	margin-top: 12%;
 	margin-left: 25%;
 }
 
 .login input {
 	font-family: 'Nunito', sans-serif;
-	color: #384047;
+	color: #2e343a;
 }
 
 .login label {	
-	font-family: 'Rubik One', sans-serif;
-	color: #384047;
+	font-family: candara;
+	font-size: 120%;
+	color: #2e343a;
 	margin-left: 30px;
 	margin-top: 10px;
 }
@@ -58,25 +60,25 @@
 	background:#1AB195;
 }
 
+/*----------------Resto de formularios--------------------*/
+
 .formulario {
-	background-color: white;
+	background-color: rgb(255, 202, 202);
+	border:2px solid gray;
 	width: auto;
-	padding-left: 30px;
-	padding-bottom: 15px;
-	padding-right: 30px;
-	padding-top: 15px;
+	padding:15px 30px;
 }
 
-.formulario input[type="text"], .formulario input[type="password"] {
+.formulario input[type="text"], .formulario input[type="password"], .formulario input[type="date"], .formulario input[type="time"] {
 	font-size:18px;
 	display:block;
 	width:40%;
 	height:100%;
 	padding:5px 10px;
 	margin-top: 10px;
+	margin-bottom: 15px;
 	/*margin-left: 30%; // Si queremos poner los formularios en el centro*/
-	background:none;
-	background-image:none;
+	background-color: #dce0e0;
 	border:1px solid #0042FF;
 	color:black;
 	border-radius:0;
@@ -168,8 +170,9 @@ select:focus{ outline: none;}
 .botonEnviar {
 	border:0;
 	outline:none;
-	border-radius:50px;
+	border-radius: 50px;
 	margin-top: 15px;
+	margin-left: 45%;
 	padding:15px;
 	font-size:120%;
 	font-weight:bold;
@@ -178,8 +181,8 @@ select:focus{ outline: none;}
 	color:white;
 	transition:all.5s ease;
 	-webkit-appearance: none;
-	display: flex;
-  	justify-content: center;
+	/*display: flex;
+  	justify-content: center;*/
 }
 
 .botonEnviar:hover, .botonEnviar:focus {

@@ -8,19 +8,18 @@
  
 html, body{ 
 	min-height:100%; 
-	margin:0; 
+	margin:0;
 }
 body {
 	display: flex;
 	flex-direction: column;
+	background-color: rgb(255, 202, 202);
 }
 
 .img_cuerpo{
 	width: 650px;
 	height: 340px;
-	vertical-align: middle;
-	justify-content: center;
-	align-content: center;
+	margin-left: 22%;
 }
 
 /* for debugging purposes - remove borders for a cleaner look */
@@ -30,29 +29,31 @@ nav, footer {
 }
 
 /* setup nav & children */
-nav {	
-	height: 40%;
+nav {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	flex-wrap: wrap;
+	background-color: rgb(106, 165, 255);
 }
 nav>*{
 	margin: 5px;
 }
 
 /* setup main container */
-div.container {
-	margin-left: 5%;
-	margin-right: 5%;
+.container {
+	padding-left: 5%;
+	padding-right: 5%;
+	padding-top: 2%;
+	padding-bottom: 2%;
 
-	margin-top: 2%;
-	margin-bottom: 2%;
+	background-color: rgb(255, 202, 202);
+	font-family: calibri;
 }
-div.main {
+.main {
 	flex: auto;
 }
-div.sidebar {
+.sidebar {
 	flex: none;
 }
 

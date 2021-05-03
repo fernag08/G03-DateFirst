@@ -12,39 +12,37 @@
 	
 	<div class="container">
 		<div class="main">
-			<h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
-				
-			<h4>Información del negocio <span th:text="${n.nombre}">Pepe</span></h4>
+			<h1>Información del negocio <span th:text="${n.nombre}">Pepe</span></h1>
 			
 			<div th:if="(${session.u.id} eq ${n.propietario.id})">
 				<!-- puedes cambiar todo -->
 				<form id="negociomod" class="formulario" th:action="@{/negocio/{id}(id=${n.id})}" method="POST">
 					
-					<label for="Nombre">Nombre</label>
-					<input name="Nombre" id="Nombre" required placeholder="Nombre" th:value="${n.nombre}"/>
+					<label for="Nombre">Nombre:</label>
+					<input type="text" name="Nombre" id="Nombre" required placeholder="Nombre" th:value="${n.nombre}"/>
 					
-					<label for="descripcion">Descripcion</label>
-					<input name="descripcion" id="descripcion" required placeholder="Descripcion" th:value="${n.descripcion}"/>	
+					<label for="descripcion">Descripción:</label>
+					<input type="text" name="descripcion" id="descripcion" required placeholder="Descripción" th:value="${n.descripcion}"/>	
 
-					<label for="direccion">Direccion</label>
-					<input name="direccion" id="direccion" required placeholder="Direccion" th:value="${n.direccion}"/>
+					<label for="direccion">Dirección:</label>
+					<input type="text" name="direccion" id="direccion" required placeholder="Dirección" th:value="${n.direccion}"/>
 
-					<label for="ciudad">Ciudad</label>
-					<input name="ciudad" id="ciudad" required placeholder="Ciudad" th:value="${n.ciudad}"/>
+					<label for="ciudad">Ciudad:</label>
+					<input type="text" name="ciudad" id="ciudad" required placeholder="Ciudad" th:value="${n.ciudad}"/>
 
-					<label for="provincia">Provincia</label>
-					<input name="provincia" id="provincia" required placeholder="Provincia" th:value="${n.provincia}"/>
+					<label for="provincia">Provincia:</label>
+					<input type="text" name="provincia" id="provincia" required placeholder="Provincia" th:value="${n.provincia}"/>
 
-					<label for="codigoPostal">Codigo Postal</label>
-					<input name="codigoPostal" id="codigoPostal" required placeholder="Código postal" th:value="${n.codigoPostal}"/>
+					<label for="codigoPostal">Codigo Postal:</label>
+					<input type="text" name="codigoPostal" id="codigoPostal" required placeholder="Código postal" th:value="${n.codigoPostal}"/>
 
-					<label for="aforoMaximo">Aforo Maximo</label>
-					<input name="aforoMaximo" id="aforoMaximo" required placeholder="aforoMaximo" th:value="${n.aforoMaximo}"/>
+					<label for="aforoMaximo">Aforo máximo:</label>
+					<input type="text" name="aforoMaximo" id="aforoMaximo" required placeholder="Aforo" th:value="${n.aforoMaximo}"/>
 					
-					<label for="telefono">Usuario</label>
-					<input name="telefono" id="telefono" required placeholder="telefono" th:value="${n.telefono}"/>
+					<label for="telefono">Teléfono:</label>
+					<input type="text" name="telefono" id="telefono" required placeholder="Teléfono" th:value="${n.telefono}"/>
 					
-					<button type="submit">Modificar</button>
+					<button type="submit" class="botonEnviar">Modificar</button>
 				</form>
 			</div>
 		</div>

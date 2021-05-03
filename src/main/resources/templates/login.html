@@ -6,25 +6,26 @@
   </meta>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   </meta>
+  <link rel="stylesheet" th:href="@{/css/main.css}" href="css/main.css" type="text/css"/>
   <link rel="stylesheet" th:href="@{/css/forms.css}" href="css/forms.css" type="text/css" />
-  <title>Login a la plantilla</title>
+  <title>Login</title>
 </head>
 
 <body>
   <div class="container">
     <form class="login" method="post" th:action="@{/login}">
-      <h2 class="form-signin-heading">Please log in</h2>
+      <!--<h2 class="form-signin-heading">Please log in</h2>-->
       <p>
-        <label for="username" class="sr-only">Username</label>
-        <input type="text" id="usuLogin" name="username" class="form-control" placeholder="Username"
+        <label for="username">Nombre de usuario</label>
+        <input type="text" id="usuLogin" name="username" placeholder="Username"
           required="required"></input>
       </p>
       <p>
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="passLogin" name="password" class="form-control" placeholder="Password"
+        <label for="password">Contraseña</label>
+        <input type="password" id="passLogin" name="password" placeholder="Password"
           required="required"></input>
       </p>
-      <button class="botonLogin" type="submit">Log in</button>
+      <button class="botonLogin" type="submit">Entrar</button>
     </form>
   </div>
 </body>
