@@ -83,24 +83,31 @@
 
         <div id="map" style="height: 400px; width: 400px;"> </div>
 
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaNti8iOWYQNmqjYvzsDeWUXW5rswnu6E&callback=initMap"
-            async defer> </script>
+        <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap">
+        </script>
 
         <script>
-            var map;
+            let map;
             function initMap() {
+                var latitud = "[[${n.latitud}]]";
+                var longitud = "[[${n.longitud}]]";
                 map = new google.maps.Map(document.getElementById('map'), {
-                    //center: { lat: parseFloat("<%= n.latitud %>"), lng: parseFloat("<%=n.longitud %>") },
-                    center: { lat: parseFloat({th:text="${n.latitud}"}), lng: parseFloat({th:text="${n.longitud}"}) },
-                    zoom: 13,
+                    center: {
+                        lat: parseFloat(latitud),
+                        lng: parseFloat(longitud)
+                    },
+                    zoom: 16,
                 });             
-                map.center.lat =  parseFloat({th:text="${n.latitud}"});
+                /*map.center.lat =  40.35804197541284;*/
 
                 var marker = new google.maps.Marker({
-                    position: { lat: parseFloat({th:text="${n.latitud}"}), lng: parseFloat({th:text="${n.longitud}"}) },
+                    position: { 
+                        lat: parseFloat(latitud),
+                        lng: parseFloat(longitud)
+                    },
                     map: map,
-                    //title: 'Acuario de Gijón'
+                    title: 'casa fer'
                 });
 
                 //var geocoder = new google.maps.Geocoder();

@@ -75,4 +75,14 @@ public class Negocio {
         return nombre + " " + descripcion;
     }
 
+    /*public String coordsAsJson(){
+        String s = "{lat: 'algo', lon: 'otracosa'}";
+        JSONObject json = new JSONObject(cadenaJson);
+        s = /*[[${n.coordsAsJson()}]] {"{lat: 'algo', lon: 'otracosa'}
+        return "";
+    }
+
+    /*[[${session.user.name}]] 'Sebastian';
+
+    /*[[${n.coordsAsJson()}]] {"{lat: 'algo', lon: 'otracosa'}*/
 }
