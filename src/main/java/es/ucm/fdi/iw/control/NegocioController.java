@@ -90,8 +90,8 @@ public class NegocioController {
 			@RequestParam String direccion,
 			@RequestParam String ciudad,
 			@RequestParam String provincia,
-			@RequestParam float latitud,
-			@RequestParam float longitud,
+			@RequestParam String latitud,
+			@RequestParam String longitud,
 			@RequestParam String telefono,
 			@RequestParam int codigoPostal,
 			@RequestParam int aforoMaximo,
@@ -111,8 +111,7 @@ public class NegocioController {
 		n.setCodigoPostal(codigoPostal);
 		n.setLatitud(latitud);
 		n.setLongitud(longitud);
-		n.setPropietario(requester); 
-				
+		n.setPropietario(requester);	
 		entityManager.persist(n);
 		entityManager.flush();
 		session.setAttribute("n", n);
@@ -157,6 +156,8 @@ public class NegocioController {
         target.setProvincia(edited.getProvincia());
 		target.setLatitud(edited.getLatitud());
 		target.setLongitud(edited.getLongitud());
+
+		model.addAttribute("reservas", new ArrayList<>(target.getReservas()));
 
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("n", target);

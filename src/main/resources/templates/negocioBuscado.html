@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negocios buscados</title>
+    <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}" href="css/perfilUsuario.css" type="text/css" />
+</head>
+
+<body>
+    <th:block th:replace="fragments/head.html" />
+    <nav th:replace="fragments/nav.html :: nav">
+        Nav goes here
+    </nav>
+
+    <h2>Negocios encontrados</h2>
+        <div th:each="n: ${listNegocios}">
+            
+            <p>
+                <a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.id}">123</a>
+                <span th:text="${n.nombre}">Texto del negocio</span>
+            </p>
+        </div>
+
+    <th:block th:replace="fragments/footer.html" />
+</body>
+
+</html>

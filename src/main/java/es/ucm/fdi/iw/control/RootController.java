@@ -61,20 +61,46 @@ public class RootController {
 	@Transactional 
     public String busca(        // <-- da igual, sólo para desarrolladores
             Model model,
-			@RequestParam String question)        // <-- hay muchos, muchos parámetros opcionales
+			@RequestParam String consulta,
+			@RequestParam String filtro)        // <-- hay muchos, muchos parámetros opcionales
     { 
 		
-
-		Negocio n = null;
+		List<Negocio> ln = null;
 		try {
-			n = (Negocio)entityManager.createNamedQuery(
-			"negocioByNombre")
-			.setParameter("negName", question).getSingleResult();
-			
+			if(filtro.equals("name")){
+				ln = (List<Negocio>)entityManager.createNamedQuery(
+				"negocioByNombre")
+				.setParameter("negName", consulta).getResultList();
+			}
+			else if(filtro.equals("city")){
+				ln = (List<Negocio>)entityManager.createNamedQuery(
+			"negocioByCiudad")
+			.setParameter("negCity", consulta).getResultList();
+			}
+			else if(filtro.equals("province")){
+				ln = (List<Negocio>)entityManager.createNamedQuery(
+			"negocioByProvincia")
+			.setParameter("negProvince", consulta).getResultList();
+			}
+			else if(filtro.equals("postalCode")){
+				
+				ln = (List<Negocio>)entityManager.createNamedQuery(
+				"negocioByCodigoPostal")
+				.setParameter("negPostCode", consulta).getResultList();
+			}
+
 		}catch(Exception e){
 			return "redirect:/";
 		}
-		return "redirect:/negocio/"+n.getId();
+		
+		if (ln.size() == 1)
+			return "redirect:/negocio/" + ln.get(0).getId(); 
+		else 
+		{
+			model.addAttribute("listNegocios", ln); 
+			return "negocioBuscado"; 
+		}
+		
 	}
 
 	

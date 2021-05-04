@@ -22,8 +22,6 @@
         <p><b>Descripción: </b><span th:text="${n.descripcion}">x</span></p>
         <p><b>Dirección: </b><span id="txtDireccion" th:text="${n.direccion}">x</span></p>
         <p><b>Ciudad: </b><span id="txtCiudad" th:text="${n.ciudad}">x</span></p>
-        <p><b>Latitud: </b><span th:text="${n.latitud}">x</span></p>
-        <p><b>Longitud: </b><span th:text="${n.longitud}">x</span></p>
         <p><b>Provincia: </b><span th:text="${n.provincia}">x</span></p>
         <p><b>Código Postal: </b><span th:text="${n.codigoPostal}">x</span></p>
         <p><b>Aforo máximo: </b><span th:text="${n.aforoMaximo}">x</span></p>
@@ -34,7 +32,11 @@
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
                 <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
                 <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
-                <div th:if="${reservas.size() > 0}">
+                
+                <div th:if="${reservas.isEmpty()}">
+                    <h4>No hay reservas</h4>
+                </div>
+                <div th:unless="${reservas.isEmpty()}">
                     <a th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
 
                     <h4>Reservas actuales</h4>
@@ -51,9 +53,7 @@
                         </li>
                     </ul>
                 </div>
-                <div th:if="${reservas.size() == 0}">
-                    <h4>No hay reservas</h4>
-                </div>
+
             </div>
             <div th:if="(${session.u.id} neq ${n.propietario.id})">
                 <h4>Reservas disponibles</h4>
@@ -83,15 +83,21 @@
 
         <div id="map" style="height: 400px; width: 400px;"> </div>
 
-        <script async
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap">
-        </script>
+        <!-- <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly">
+
+        </script> -->
+
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=places&v=weekly"
+            async></script>
 
         <script>
             let map;
             function initMap() {
                 var latitud = "[[${n.latitud}]]";
                 var longitud = "[[${n.longitud}]]";
+                var nombre = "[[${n.nombre}]]";
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {
                         lat: parseFloat(latitud),
@@ -107,7 +113,7 @@
                         lng: parseFloat(longitud)
                     },
                     map: map,
-                    title: 'casa fer'
+                    title: nombre
                 });
 
                 //var geocoder = new google.maps.Geocoder();

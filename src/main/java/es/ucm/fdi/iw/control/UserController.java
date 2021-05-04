@@ -212,7 +212,6 @@ public class UserController {
 		target.setAddress(edited.getAddress());
         target.setTlf(edited.getTlf());
         target.setProvince(edited.getProvince());
-		target.setRoles(edited.getRoles());
 
 		if (edited.getPassword() != null && edited.getPassword().equals(pass2)) {
 			// save encoded version of password

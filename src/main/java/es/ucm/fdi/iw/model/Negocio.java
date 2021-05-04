@@ -34,11 +34,17 @@ import lombok.AllArgsConstructor;
 @NamedQueries({
         @NamedQuery(name="negocioByNombre",
                 query="SELECT n FROM Negocio n "
-                        + "WHERE n.nombre = :negName")/*,
-        @NamedQuery(name="Negocio.hasNombre",
-                query="SELECT COUNT(n) "
-                        + "FROM Negocio n "
-                        + "WHERE n.nombre = :nombre")*/
+                        + "WHERE n.nombre like CONCAT(:negName, '%')"),
+        @NamedQuery(name="negocioByCiudad",
+                query="SELECT n FROM Negocio n "
+                        + "WHERE n.ciudad like CONCAT(:negCity, '%')"),
+        @NamedQuery(name="negocioByProvincia",
+                query="SELECT n FROM Negocio n "
+                        + "WHERE n.provincia like CONCAT(:negProvince, '%')"),
+        @NamedQuery(name="negocioByCodigoPostal",
+                query="SELECT n FROM Negocio n "
+                        + "WHERE n.codigoPostal like CONCAT(:negPostCode, '%')")
+    
 })
 
 public class Negocio {
@@ -56,8 +62,8 @@ public class Negocio {
     private int aforoMaximo;
     private String telefono;
 
-    private float latitud;
-    private float longitud;
+    private String latitud;
+    private String longitud;
 
     @ManyToOne
     private User propietario;
@@ -81,6 +87,7 @@ public class Negocio {
         s = /*[[${n.coordsAsJson()}]] {"{lat: 'algo', lon: 'otracosa'}
         return "";
     }
+
 
     /*[[${session.user.name}]] 'Sebastian';
 
