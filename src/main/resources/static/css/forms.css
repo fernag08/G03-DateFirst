@@ -60,6 +60,36 @@
 	background:#1AB195;
 }
 
+/*----------------Formulario de búsqueda------------------*/
+
+.formularioBusq {
+	background-color: rgb(255, 202, 202);
+	border:2px solid gray;
+	width: auto;
+	padding:15px 30px;
+}
+
+.formularioBusq input[type="text"] {
+	font-size:18px;
+	width:40%;
+	height:100%;
+	padding:5px 10px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	margin-left: 15%;
+	margin-right: 15px;
+	background-color: #dce0e0;
+	border:1px solid #0042FF;
+	color:black;
+	border-radius:0;
+	transition:border-color .75s ease, box-shadow .25s ease;
+}
+
+.formularioBusq input:focus, .formularioBusq select:focus {
+	outline:0;
+	border-color:#091066;
+}
+
 /*----------------Resto de formularios--------------------*/
 
 .formulario {

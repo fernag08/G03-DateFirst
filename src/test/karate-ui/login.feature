@@ -3,7 +3,7 @@ Feature: browser automation 1
 Background:
   # chromium bajo linux; 
   # si usas google-chrome, puedes quitar toda la parte de executable
-  * configure driver = { type: 'chrome', executable: '/usr/bin/chromium-browser', showDriverLog: true }
+  * configure driver = { type: 'chrome', showDriverLog: true }
     
   # descarga geckodriver de https://github.com/mozilla/geckodriver/releases para probar bajo firefox
   # * configure driver = { type: 'geckodriver', executable: './geckodriver', showDriverLog: true }

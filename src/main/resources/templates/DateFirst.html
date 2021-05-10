@@ -31,7 +31,7 @@
             fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
             qui officia deserunt mollit anim id est laborum.</p>
 
-        <form th:action="@{/buscar}" method="POST">
+        <form class="formularioBusq" th:action="@{/buscar}" method="POST">
                 <input type="text" placeholder="Introduce el criterio de busqueda" size="40" name="consulta"/>
                 <select name="filtro">
                     <option value="name" selected>Nombre </option>
@@ -40,7 +40,7 @@
                     <option value="postalCode">Codigo Postal</option>
                 </select>
 
-                <input type="submit" value="Buscar"/> 
+                <input type="submit" class="botonEnviar" value="Buscar"/> 
         </form>
         
         <h3> Todos los negocios </h3>
