@@ -7,10 +7,12 @@
 .sitename {
 	display: flex;
 	align-items: center;
+	margin-top: 8px;
+	margin-bottom: 8px;
 	margin-left: 20px;
 	font-size: 320%;
 	font-weight: bold;
-    font-family: candara;
+	font-family: 'Dancing Script', cursive;
 	text-decoration: none;
 	color: #000000;
 }

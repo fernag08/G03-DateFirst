@@ -4,7 +4,10 @@
  * - flexbox trick from https://stackoverflow.com/a/20352949/15472 
  *   to keep footer in its place
  * - a grid for the content div and sidebar
- */
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
  
 html, body{ 
 	min-height:100%; 
@@ -55,6 +58,21 @@ nav>*{
 }
 .sidebar {
 	flex: none;
+}
+
+.titulo {
+	font-size: 50px;
+	font-family: 'Staatliches', cursive;
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+.titulo2 {
+	font-size: 20px;
+	font-family: 'Staatliches', cursive;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 6px;
 }
 
 /* setup footer */

@@ -15,19 +15,19 @@
 	<div class="container">
 		<div class="main">
 
-			<h1>Información del usuario <span th:text="${user.username}">Pepe</span></h1>
+			<p class="titulo">Información del usuario <span th:text="${user.username}">Pepe</span></p>
 
 			<div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
 				<img th:src="@{/user/{id}/photo(id=${user.id})}" width="60px" height="60px">
-				<p><b>Nombre de usuario: </b><span th:text="${user.firstName}">x</span></p>
-				<p><b>Primer apellido: </b><span th:text="${user.lastName1}">x</span></p>
-				<p><b>Segundo apellido: </b><span th:text="${user.lastName2}">x</span></p>
-				<p><b>Edad: </b><span th:text="${user.age}">x</span></p>
-				<p><b>Teléfono: </b><span th:text="${user.tlf}">x</span></p>
-				<p><b>Dirección: </b><span th:text="${user.address}">x</span></p>
-				<p><b>Ciudad: </b><span th:text="${user.city}">x</span></p>
-				<p><b>Provincia: </b><span th:text="${user.province}">x</span></p>
-				<p><b>Código Postal: </b><span th:text="${user.postalCode}">x</span></p>
+				<p><span class="titulo2">Nombre de usuario:</span><span th:text="${user.firstName}">x</span></p>
+				<p><span class="titulo2">Primer apellido:</span><span th:text="${user.lastName1}">x</span></p>
+				<p><span class="titulo2">Segundo apellido:</span><span th:text="${user.lastName2}">x</span></p>
+				<p><span class="titulo2">Edad:</span><span th:text="${user.age}">x</span></p>
+				<p><span class="titulo2">Teléfono:</span><span th:text="${user.tlf}">x</span></p>
+				<p><span class="titulo2">Dirección:</span><span th:text="${user.address}">x</span></p>
+				<p><span class="titulo2">Ciudad:</span><span th:text="${user.city}">x</span></p>
+				<p><span class="titulo2">Provincia:</span><span th:text="${user.province}">x</span></p>
+				<p><span class="titulo2">Código Postal:</span><span th:text="${user.postalCode}">x</span></p>
 
 				<a th:href="@{/user/{id}/editar(id=${session.u.id})}">Editar Perfil</a>
 				<a th:href="@{/user/{id}/eliminar(id=${session.u.id})}">Eliminar cuenta</a>

@@ -16,16 +16,16 @@
 
     <div class="container">
 
-        <h1>Información del negocio <span th:text="${n.nombre}">X</span></h1>
+        <p class="titulo" th:text="${n.nombre}">X</p>
 
-        <p><b>Nombre del negocio: </b><span th:text="${n.nombre}">x</span></p>
-        <p><b>Descripción: </b><span th:text="${n.descripcion}">x</span></p>
-        <p><b>Dirección: </b><span id="txtDireccion" th:text="${n.direccion}">x</span></p>
-        <p><b>Ciudad: </b><span id="txtCiudad" th:text="${n.ciudad}">x</span></p>
-        <p><b>Provincia: </b><span th:text="${n.provincia}">x</span></p>
-        <p><b>Código Postal: </b><span th:text="${n.codigoPostal}">x</span></p>
-        <p><b>Aforo máximo: </b><span th:text="${n.aforoMaximo}">x</span></p>
-        <p><b>Teléfono: </b><span th:text="${n.telefono}">x</span></p>
+        <!--<p><span class="titulo2">Nombre del negocio:  </span><span th:text="${n.nombre}">x</span></p>-->
+        <p><span class="titulo2">Descripción:</span><span th:text="${n.descripcion}">x</span></p>
+        <p><span class="titulo2">Dirección:</span><span id="txtDireccion" th:text="${n.direccion}">x</span></p>
+        <p><span class="titulo2">Ciudad:</span><span id="txtCiudad" th:text="${n.ciudad}">x</span></p>
+        <p><span class="titulo2">Provincia:</span><span th:text="${n.provincia}">x</span></p>
+        <p><span class="titulo2">Código Postal:</span><span th:text="${n.codigoPostal}">x</span></p>
+        <p><span class="titulo2">Aforo máximo:</span><span th:text="${n.aforoMaximo}">x</span></p>
+        <p><span class="titulo2">Teléfono:</span><span th:text="${n.telefono}">x</span></p>
 
 
         <div th:if="${session.u}">
@@ -34,12 +34,12 @@
                 <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
                 
                 <div th:if="${reservas.isEmpty()}">
-                    <h4>No hay reservas</h4>
+                    <h3>No hay reservas</h3>
                 </div>
                 <div th:unless="${reservas.isEmpty()}">
                     <a th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
 
-                    <h4>Reservas actuales</h4>
+                    <h3>Reservas actuales</h3>
                     <ul>
                         <li th:each="r: ${reservas}">
                             <span th:text="${r.id}">123</span>
@@ -56,7 +56,7 @@
 
             </div>
             <div th:if="(${session.u.id} neq ${n.propietario.id})">
-                <h4>Reservas disponibles</h4>
+                <h3>Reservas disponibles</h3>
                 <div th:each="r: ${reservas}">
                     <div th:if="${r.estado.name() == 'LIBRE'}">
                         <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
@@ -71,7 +71,7 @@
         </div>
         <div th:unless="${session.u}">
 
-            <h4>Reservas disponibles</h4>
+            <h3>Reservas disponibles</h3>
             <div th:each="r: ${reservas}">
                 <div th:if="${r.estado.name() == 'LIBRE'}">
                     <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
