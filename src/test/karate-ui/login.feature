@@ -1,4 +1,4 @@
-Feature: browser automation 1
+Feature: login con usuario normal
 
 Background:
   # chromium bajo linux; 
@@ -16,18 +16,12 @@ Background:
   # * configure driver = { type: 'safaridriver', showDriverLog: true }
   # * configure driver = { type: 'iedriver', showDriverLog: true, httpConfig: { readTimeout: 120000 } }
   
-Scenario: try to login to github
-    and then do a google search
+Scenario: login using chrome
 
-  Given driver 'https://github.com/login'
-  And input('#login_field', 'dummy')
-  And input('#password', 'world')
-  When submit().click("input[name=commit]")
-  Then match html('#js-flash-container') contains 'Incorrect username or password.'
-  
-  Given driver 'https://google.com'
-  And input("input[name=q]", 'karate dsl')
-  When submit().click("input[name=btnI]")
-  Then waitForUrl('https://github.com/intuit/karate')
-  And match html('title') contains 'Automation Made Simple'
+  Given driver 'http://localhost:8080/'
+  * click("a[id=botonLogin]")
+  * input('#username', 'b')
+  * input('#password', 'aa')
+  * submit().click("button[type=submit]")
+  * match html('title') contains 'Perfil'
   * driver.screenshot()

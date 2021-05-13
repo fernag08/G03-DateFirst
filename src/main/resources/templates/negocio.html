@@ -31,13 +31,13 @@
         <div th:if="${session.u}">
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
                 <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
-                <a th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
+                <a id="generarReservas" th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
                 
                 <div th:if="${reservas.isEmpty()}">
                     <h3>No hay reservas</h3>
                 </div>
                 <div th:unless="${reservas.isEmpty()}">
-                    <a th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
+                    <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
 
                     <h3>Reservas actuales</h3>
                     <ul>
@@ -61,7 +61,7 @@
                     <div th:if="${r.estado.name() == 'LIBRE'}">
                         <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
                         <h5 th:text="${r}">Texto de la reserva</h5>
-                        <p><a th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
+                        <p><a th:id="'reserva_' + ${r.id}" th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
                     </div>
 
                 </div>

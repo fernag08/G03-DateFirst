@@ -223,7 +223,11 @@
 					<arguments>
 						<!-- mete aqui una linea para cada feature a probar 
 						<argument>src/test/karate-ui/login.feature</argument> -->
-						<argument>src/test/karate-ui/message.feature</argument>						
+						<!-- <argument>src/test/karate-ui/message.feature</argument>
+						<argument>src/test/karate-ui/crearNegocio.feature</argument>
+						<argument>src/test/karate-ui/registrarUsuario.feature</argument>	
+						<argument>src/test/karate-ui/hacerReserva.feature</argument>	-->
+						<argument>src/test/karate-ui/eliminarReservaYNegocio.feature</argument>						
 					</arguments>
 				</configuration>
 			</plugin>

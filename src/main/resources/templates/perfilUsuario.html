@@ -38,7 +38,7 @@
 						<a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.id}">123</a>
 						<span th:text="${n}">texto del negocio</span>
 						<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-							<button th:text="Eliminar" type="submit">🗑</button>
+							<button th:id="'negocio_' + ${n.id}" th:text="Eliminar" type="submit">🗑</button>
 						</form>
 					</p>
 				</div>
@@ -57,7 +57,7 @@
 					</p>
 				</div>
 
-				<a th:href="@{/negocio/}">Crea tu negocio</a>
+				<a id="newNegocio" th:href="@{/negocio/}">Crea tu negocio</a>
 
 			</div>
 		</div>

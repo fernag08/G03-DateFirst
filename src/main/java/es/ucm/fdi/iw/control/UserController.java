@@ -145,7 +145,7 @@ public class UserController {
 		entityManager.flush();
 		session.setAttribute("user", u);
 
-	    return "redirect:/user/"+u.getId();
+	    return "login";
 	}
 
 

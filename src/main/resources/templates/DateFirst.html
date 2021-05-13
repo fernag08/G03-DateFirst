@@ -32,22 +32,22 @@
             qui officia deserunt mollit anim id est laborum.</p>
 
         <form class="formularioBusq" th:action="@{/buscar}" method="POST">
-                <input type="text" placeholder="Introduce el criterio de busqueda" size="40" name="consulta"/>
-                <select name="filtro">
-                    <option value="name" selected>Nombre </option>
-                    <option value="city">Ciudad</option>
-                    <option value="province">Provincia</option>
-                    <option value="postalCode">Codigo Postal</option>
+                <input type="text" id="criterio" placeholder="Introduce el criterio de busqueda" size="40" name="consulta"/>
+                <select name="filtro" id="selectCriterio">
+                    <option value="name" id="name" selected>Nombre</option>
+                    <option value="city" id="city">Ciudad</option>
+                    <option value="province" id="province">Provincia</option>
+                    <option value="postalCode" id="postalCode">Codigo Postal</option>
                 </select>
 
-                <input type="submit" class="botonEnviar" value="Buscar"/> 
+                <input type="submit" id="buscarNegocio" class="botonEnviar" value="Buscar"/> 
         </form>
         
         <h3> Todos los negocios </h3>
         <ul>
             <li th:each = "n:${negocios}">
                 <div>
-                    <a th:href="@{/negocio/{id}(id=${n.id})}">
+                    <a th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}">
                         <!-- <img class="negocioImag" th:src= "@{/negocio/{id}/photo(id=$(n.id))}"> -->
                         <span th:text="${n.nombre}">x</span>
                         
