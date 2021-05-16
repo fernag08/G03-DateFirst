@@ -24,12 +24,15 @@
             <p>
                 <label class="sr-only">Hora de fin de reserva: <span th:text="${r.fin}"></span></label>
             </p>
-            <p>
-                <label for="numPersonas" class="sr-only">Número de personas: </label>
-                <input type="int" id="numPersonas" name="numPersonas" 
-                class="form-control" required="required"></input>
-            </p>
-        
+
+            <label for="numPersonas" class="sr-only">Capacidad: </label>
+            <span id="numPersonas2" name="numPersonas2" placeholder="numero" th:text="${r.capacidad}"></span>
+            
+            <p></p>
+
+            <label for="numPersonas" class="sr-only">Número de personas: </label>
+            <input type="int" id="numPersonas" required name="numPersonas" placeholder="numero"></input>
+    
             <p>
                 <label class="sr-only">Reserva realizada para el negocio <span th:text="${r.negocio.nombre}"></span></label>
             </p>
@@ -38,6 +41,20 @@
             
         </form>
     </div>
+	<script>
+		// esto es algo feo, y se podría sacar a un JS externo
+		document.addEventListener("DOMContentLoaded", () => {
+			// selecciona los campos de contraseña
+			let num = document.querySelector('#reservamod > input[type="int"]')
+            let capacidad = document.querySelector('#reservamod > span[id="numPersonas2"]')
+			// cada vez que cambie uno de ellos...
+			num.oninput = num.onchange =() => {
+				// dice que si no son iguales, el segundo no es válido
+				num.setCustomValidity(num.value <= capacidad.innerHTML ? 
+						"" : "No puedes superar la capacidad maxima");
+			}
+		});	
+	</script>
 
     <th:block th:replace="fragments/footer.html"></th:block>
    

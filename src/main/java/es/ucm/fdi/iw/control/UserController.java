@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -105,6 +106,29 @@ public class UserController {
 	 	return "nuevoUsuario";
 	}
 	
+	/*@GetMapping(path = "/{id}", produces = "application/json")
+	@Transactional // para no recibir resultados inconsistentes
+	@ResponseBody  // para indicar que no devuelve vista, sino un objeto (jsonizado)
+	public List<Negocio.Transfer> eliminaNegocio(HttpSession session) {
+		long userId = ((User)session.getAttribute("u")).getId();		
+		User u = entityManager.find(User.class, userId);
+		log.info("Generating message list for user {} ({} messages)", 
+				u.getUsername(), u.getNegocios().size());
+
+		Negocio n = entityManager.find(Negocio.class, id);
+
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
+	
+		for (Reserva r : reservas){
+			entityManager.remove(r);
+		}
+		
+		entityManager.remove(n);
+		entityManager.flush();
+
+		return  u.getNegocios().stream().map(Transferable::toTransfer).collect(Collectors.toList());
+	}*/
+
 	@PostMapping("/")
 	@Transactional
 	public String addUsuario(
@@ -148,6 +172,20 @@ public class UserController {
 	    return "login";
 	}
 
+	@GetMapping("/username")
+	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
+	public String getUser(@RequestParam (required=false) String uname) throws Exception {
+		//User u = buscaUsuarioOLanzaExcepcion(uname);
+		//User u = entityManager.find(User.class, uname);
+
+		User u = (User)entityManager.createNamedQuery(
+				"findUsername")
+				.setParameter("username", uname).getSingleResult();
+		
+		//String r = buscaUsuario(uname);
+
+		return "user"; // devuelve la cadena 'OK': gasta menos recursos
+	}
 
 	@GetMapping("/{id}")
 	@Transactional

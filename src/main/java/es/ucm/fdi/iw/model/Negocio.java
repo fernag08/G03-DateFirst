@@ -47,7 +47,7 @@ import lombok.AllArgsConstructor;
     
 })
 
-public class Negocio {
+public class Negocio implements Transferable<Negocio.Transfer> {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,15 +81,46 @@ public class Negocio {
         return nombre + " " + descripcion;
     }
 
-    /*public String coordsAsJson(){
-        String s = "{lat: 'algo', lon: 'otracosa'}";
-        JSONObject json = new JSONObject(cadenaJson);
-        s = /*[[${n.coordsAsJson()}]] {"{lat: 'algo', lon: 'otracosa'}
-        return "";
-    }
+    @Getter
+    @AllArgsConstructor
+	public static class Transfer {
+                private long id;
+                private String propietario;
+                private String nombre;
+                private String descripcion;
+                private String direccion;
+                private String ciudad;
+                private String provincia;
+                private int codigoPostal;
+                private int aforoMaximo;
+                private String telefono;
+            
+                private String latitud;
+                private String longitud;
+		
+		public Transfer(Negocio n) {
+                        this.id = n.getId();
+                        this.propietario = n.getPropietario().getUsername();
+                        this.nombre = n.getNombre();
+                        this.descripcion = n.getDescripcion();
+                        this.direccion = n.getDireccion();
+                        this.ciudad = n.getCiudad();
+                        this.provincia = n.getProvincia();
+                        this.codigoPostal = n.getCodigoPostal();
+                        this.aforoMaximo = n.getAforoMaximo();
+                        this.telefono = n.getTelefono();
+                    
+                        this.latitud = n.getLatitud();
+                        this.longitud = n.getLongitud();
+                        
+		}
+	}
 
-
-    /*[[${session.user.name}]] 'Sebastian';
-
-    /*[[${n.coordsAsJson()}]] {"{lat: 'algo', lon: 'otracosa'}*/
+	@Override
+	public Transfer toTransfer() {
+		return new Transfer(
+                        id, propietario.getUsername(), nombre, descripcion, direccion, ciudad,
+                        provincia, codigoPostal, aforoMaximo, telefono, latitud, longitud
+                );
+        }
 }

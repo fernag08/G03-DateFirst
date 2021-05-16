@@ -44,6 +44,9 @@ import lombok.AllArgsConstructor;
         @NamedQuery(name="User.byUsername",
                 query="SELECT u FROM User u "
                         + "WHERE u.username = :username AND u.enabled = 1"),
+		@NamedQuery(name="User.findUsername",
+                query="SELECT u FROM User u "
+                        + "WHERE u.username = :username"),
         @NamedQuery(name="User.hasUsername",
                 query="SELECT COUNT(u) "
                         + "FROM User u "

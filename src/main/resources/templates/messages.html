@@ -25,7 +25,7 @@
 	<div class="sidebar">
 		<form th:action="@{/user/idOfTarget/msg}" method="POST">
 		<select id="idOfTarget">
-			<option th:each="user: ${users}" th:value="${user.id}" th:text="${user.username}">mfreire</option>
+			<option th:each="user: ${users}" th:value="${user.id}" th:text="${user.username}">x</option>
 		</select>
 		<textarea id="message" placeholder="escribe al usuario seleccionado" rows="4" cols="20"></textarea>
 		<button id="sendmsg" type="submit">Enviar</button>
@@ -43,7 +43,7 @@
 	let dt = new simpleDatatables.DataTable(
 		'#datatable', { 
 		    ajax: {
-		        url: config.rootUrl + "message/received", // empieza siempre por config.rootUrl
+		        url: config.rootUrl + "message/received ", // empieza siempre por config.rootUrl
 		        load: function(xhr) {
 		        	let data = JSON.parse(xhr.responseText);
 		        	for (let i=0; i<data.length; i++) {

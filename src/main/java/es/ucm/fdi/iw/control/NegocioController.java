@@ -79,7 +79,8 @@ public class NegocioController {
 	 	
 	 	return "nuevoNegocio";
 	}
-	
+
+
 	@PostMapping("/")
 	@Transactional
 	public String addNegocio(
@@ -193,11 +194,13 @@ public class NegocioController {
 		User u = (User)session.getAttribute("u");
 
 
-		String nextUrl = u.hasRole(User.Role.ADMIN) ? 
-			"admin/" :
-			"user/" + u.getId();
+		// String nextUrl = u.hasRole(User.Role.ADMIN) ? 
+		// 	"admin/" :
+		// 	"user/" + u.getId();
 
-			return "redirect:/"+nextUrl;
+		// 	return "redirect:/"+nextUrl;
+
+		return "{\"result\": \"\"}";
 		
 	}
 
@@ -287,22 +290,60 @@ public class NegocioController {
 	 	return "redirect:/negocio/"+n.getId();
 	}
 
-	// @GetMapping(value="/{id}/photo")
-	// public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
-	// 	File f = localData.getFile("negocio", ""+id);
-	// 	InputStream in;
-	// 	if (f.exists()) {
-	// 		in = new BufferedInputStream(new FileInputStream(f));
-	// 	} else {
-	// 		in = new BufferedInputStream(getClass().getClassLoader()
-	// 				.getResourceAsStream("static/img/unknowNegocio.jpg"));
-	// 	}
-	// 	return new StreamingResponseBody() {
-	// 		@Override
-	// 		public void writeTo(OutputStream os) throws IOException {
-	// 			FileCopyUtils.copy(in, os);
-	// 		}
-	// 	};
-	// }
+	/*@GetMapping(value="/{id}/photo")
+	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
+		File f = localData.getFile("negocio", ""+id);
+		InputStream in;
+		if (f.exists()) {
+			in = new BufferedInputStream(new FileInputStream(f));
+		} else {
+			in = new BufferedInputStream(getClass().getClassLoader()
+					.getResourceAsStream("static/img/unknown-user.jpg"));
+		}
+		return new StreamingResponseBody() {
+			@Override
+			public void writeTo(OutputStream os) throws IOException {
+				FileCopyUtils.copy(in, os);
+			}
+		};
+	}
+
+	@PostMapping("/{id}/photo")
+	public String postPhoto(
+			HttpServletResponse response,
+			@RequestParam("photo") MultipartFile photo,
+			@PathVariable("id") String id, Model model, HttpSession session) throws IOException {
+		
+		Negocio n = entityManager.find(Negocio.class, id);
+		model.addAttribute("n", n);
+
+
+		User target = entityManager.find(User.class, Long.parseLong(id));
+		
+		// check permissions
+		User requester = (User)session.getAttribute("u");
+		if (requester.getId() != target.getId() &&
+				! requester.hasRole(Role.ADMIN)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, 
+					"No eres administrador, y éste no es tu perfil");
+				return "editarNegocio";
+		}
+		
+		log.info("Updating photo for negocio {}", id);
+		File f = localData.getFile("negocio", id);
+		if (photo.isEmpty()) {
+			log.info("failed to upload photo: emtpy file?");
+		} else {
+			try (BufferedOutputStream stream =
+					new BufferedOutputStream(new FileOutputStream(f))) {
+				byte[] bytes = photo.getBytes();
+				stream.write(bytes);
+			} catch (Exception e) {
+				log.warn("Error uploading " + id + " ", e);
+			}
+			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
+		}
+		return "editarNegocio";
+	}*/
 	
 }

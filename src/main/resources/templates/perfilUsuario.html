@@ -34,7 +34,7 @@
 
 				<h2>Negocios</h2>
 				<div th:each="n: ${negocios}">
-					<p>
+					<p>						
 						<a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.id}">123</a>
 						<span th:text="${n}">texto del negocio</span>
 						<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
@@ -59,9 +59,49 @@
 
 				<a id="newNegocio" th:href="@{/negocio/}">Crea tu negocio</a>
 
+				<h1>Negocios ajax</h1>
+			
+				<table class="datatable" id="datatable"></table>
+
+				<form th:action="@{/negocio/1/eliminar}" method="POST">
+					<select id="idOfTarget">
+						<option th:each="n: ${negocios}" th:value="${n.id}" th:text="${n.nombre}">x</option>
+					</select>
+					<button id="eliminarNegocio" type="submit">Enviar</button>
+				</form>
+
 			</div>
 		</div>
 	</div>
+
+	<script>
+
+	// mostrando una tabla dinámica con datos cargados del servidor vía AJAX
+	let dt = new simpleDatatables.DataTable(
+		'#datatable', { 
+		    ajax: {
+		        url: config.rootUrl + "user/" + "[[${session.u.id}]]", // empieza siempre por config.rootUrl
+		        load: (xhr) => { /* ... opcional: fechas más bonitas */ }
+		    }
+		}
+	);
+
+	// envío de mensajes vía AJAX, sin recargar la página
+	document.addEventListener("DOMContentLoaded", () => {
+		let b = document.getElementById("eliminarNegocio");
+		b.onclick = (e) => {
+			let idOfTarget = document.getElementById("idOfTarget").value;
+			idOfTarget = parseLong(idOfTarget);
+			let url = b.parentNode.action.replace("idOfTarget", idOfTarget);
+			e.preventDefault();
+			console.log(b, b.parentNode)
+			go(url, 'POST')
+				.then(d => console.log("happy", d))
+				.catch(e => console.log("sad", e))
+		}
+	});
+
+	</script>
 	<th:block th:replace="fragments/footer.html" />
 </body>
 
