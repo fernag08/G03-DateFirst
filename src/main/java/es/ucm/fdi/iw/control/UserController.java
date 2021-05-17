@@ -174,17 +174,13 @@ public class UserController {
 
 	@GetMapping("/username")
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
-	public String getUser(@RequestParam (required=false) String uname) throws Exception {
-		//User u = buscaUsuarioOLanzaExcepcion(uname);
-		//User u = entityManager.find(User.class, uname);
+	public String getUsername(@RequestParam (required=false) String uname) throws Exception {
 
-		User u = (User)entityManager.createNamedQuery(
-				"findUsername")
+		long u = (Long)entityManager.createNamedQuery(
+				"User.hasUsername")
 				.setParameter("username", uname).getSingleResult();
-		
-		//String r = buscaUsuario(uname);
 
-		return "user"; // devuelve la cadena 'OK': gasta menos recursos
+		return "{ \"count\": " + u + "}";
 	}
 
 	@GetMapping("/{id}")

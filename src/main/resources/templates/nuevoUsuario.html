@@ -76,26 +76,29 @@
 			}
 		});
 
-
 		// manejador que se ejecuta cuando la página se carga, sin machacar otros
 		document.addEventListener("DOMContentLoaded", () => {
 			// selector para elegir sobre qué elementos validar
 			let u = document.querySelectorAll('#username')[0]
 			// cada vez que cambien, los revalidamos
-			u.oninput = u.onchange = () =>{
-				u.setCustomValidity( // si "", válido; si no, inválido
-					validaUsername(u.value))
-			} 
+			u.oninput = u.onchange = validaUsername(u)
 		});
 
-		function validaUsername(username) {
-			let params = { username: username };
+		function validaUsername(u) {
+			let params = { uname: u.value };
 			// Spring Security lo añade en formularios html, pero no en Ajax
 			params[config.csrf.name] = config.csrf.value;
 			// petición en sí
-			return go(config.rootUrl + "/username", 'GET', params)
-				.then(d => "")
-				.catch(() => "nombre de usuario inválido o duplicado");
+			return go(config.rootUrl + "/user/username", 'GET', params)
+				.then(d => {
+					console.log(d.count);
+					if (d.count == 0){
+						u.setCustomValidity("")
+					}
+					else {
+						u.setCustomValidity("Este nombre de usuario ya existe")
+					}
+				});
 		}
 
 	</script>
