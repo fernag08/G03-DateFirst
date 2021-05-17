@@ -41,6 +41,23 @@
         </form>
     </div>
 
+    <script>
+		document.addEventListener("DOMContentLoaded", () => {
+            //selecciona los campos de la fecha y hora
+			let date = document.querySelectorAll('#reservasnew > input[type="date"]')
+            let time = document.querySelectorAll('#reservasnew > input[type="time"]')
+			// cada vez que cambie uno de ellos...
+			date[0].oninput = date[0].onchange = date[1].oninput = date[1].onchange = () => {
+				date[1].setCustomValidity(date[0].value <= date[1].value ? 
+						"" : "La fecha de fin debe ser después de la de inicio");
+			}
+            time[0].oninput = time[0].onchange = time[1].oninput = time[1].onchange = () => {
+				time[1].setCustomValidity(time[0].value <= time[1].value ? 
+						"" : "La hora de fin debe ser después de la de inicio");
+			}
+		});	
+	</script>
+
     <th:block th:replace="fragments/footer.html"></th:block>
 </body>
 </html>

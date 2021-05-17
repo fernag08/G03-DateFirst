@@ -59,16 +59,15 @@
 
 				<a id="newNegocio" th:href="@{/negocio/}">Crea tu negocio</a>
 
-				<h1>Negocios ajax</h1>
+				<!--<h1>Negocios ajax</h1>
 			
 				<table class="datatable" id="datatable"></table>
-
-				<form th:action="@{/negocio/1/eliminar}" method="POST">
+				<form th:action="@{/negocio/idOfTarget/eliminar}" method="POST">
 					<select id="idOfTarget">
 						<option th:each="n: ${negocios}" th:value="${n.id}" th:text="${n.nombre}">x</option>
 					</select>
 					<button id="eliminarNegocio" type="submit">Enviar</button>
-				</form>
+				</form>-->
 
 			</div>
 		</div>
@@ -76,30 +75,46 @@
 
 	<script>
 
-	// mostrando una tabla dinámica con datos cargados del servidor vía AJAX
-	let dt = new simpleDatatables.DataTable(
-		'#datatable', { 
-		    ajax: {
-		        url: config.rootUrl + "user/" + "[[${session.u.id}]]", // empieza siempre por config.rootUrl
-		        load: (xhr) => { /* ... opcional: fechas más bonitas */ }
-		    }
-		}
-	);
+		// mostrando una tabla dinámica con datos cargados del servidor vía AJAX
+		let dt = new simpleDatatables.DataTable(
+			'#datatable', { 
+				ajax: {
+					url: config.rootUrl + "/negocio/list", // empieza siempre por config.rootUrl
+					load: function(xhr) {
+						let data = JSON.parse(xhr.responseText);
+						console.log(data); // Prueba
+						for (let i=0; i<data.length; i++) {
+							let row = data[i];
+							/*row.sent = formatDate(row.sent);
+							if (row.received) {
+								row.received = formatDate(row.received);
+							}*/
+						}
+						
+						return JSON.stringify(data);
+					}
+				}
+			}
+		);
 
-	// envío de mensajes vía AJAX, sin recargar la página
-	document.addEventListener("DOMContentLoaded", () => {
-		let b = document.getElementById("eliminarNegocio");
-		b.onclick = (e) => {
-			let idOfTarget = document.getElementById("idOfTarget").value;
-			idOfTarget = parseLong(idOfTarget);
-			let url = b.parentNode.action.replace("idOfTarget", idOfTarget);
-			e.preventDefault();
-			console.log(b, b.parentNode)
-			go(url, 'POST')
-				.then(d => console.log("happy", d))
-				.catch(e => console.log("sad", e))
-		}
-	});
+		// envío de mensajes vía AJAX, sin recargar la página
+		document.addEventListener("DOMContentLoaded", () => {
+			let b = document.getElementById("eliminarNegocio");
+			b.onclick = (e) => {
+				//let idOfTarget = document.getElementById("idOfTarge").value;
+				//idOfTarget = parseLong(idOfTarget);
+				let url = b.parentNode.action.replace("idOfTarget", 1);
+				window.alert(url);
+
+				e.preventDefault();
+				console.log(b, b.parentNode)
+				go(url, 'POST',{negocios: 
+					document.getElementById("idOfTarget").value})
+					.then(d => console.log("happy", d))
+					.catch(e => console.log("sad", e))
+			}
+		});
+	
 
 	</script>
 	<th:block th:replace="fragments/footer.html" />

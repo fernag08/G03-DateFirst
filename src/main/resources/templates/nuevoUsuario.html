@@ -79,27 +79,31 @@
 		// manejador que se ejecuta cuando la página se carga, sin machacar otros
 		document.addEventListener("DOMContentLoaded", () => {
 			// selector para elegir sobre qué elementos validar
-			let u = document.querySelectorAll('#username')[0]
+			let u = document.querySelectorAll('#usermod > input[id="username"]')
 			// cada vez que cambien, los revalidamos
-			u.oninput = u.onchange = validaUsername(u)
+			u[0].oninput = u[0].onchange = () => {validaUsername(u[0])}
 		});
 
 		function validaUsername(u) {
 			let params = { uname: u.value };
+			console.log(u.value);
 			// Spring Security lo añade en formularios html, pero no en Ajax
 			params[config.csrf.name] = config.csrf.value;
 			// petición en sí
 			return go(config.rootUrl + "/user/username", 'GET', params)
 				.then(d => {
-					console.log(d.count);
+					console.log(d)
 					if (d.count == 0){
-						u.setCustomValidity("")
+						u.setCustomValidity("Este nombre de usuario no existe")
 					}
 					else {
 						u.setCustomValidity("Este nombre de usuario ya existe")
 					}
 				});
+
 		}
+
+		
 
 	</script>
 

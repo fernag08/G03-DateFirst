@@ -174,7 +174,7 @@ public class UserController {
 
 	@GetMapping("/username")
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
-	public String getUsername(@RequestParam (required=false) String uname) throws Exception {
+	public String getUsername(@RequestParam (required=false) String uname) {
 
 		long u = (Long)entityManager.createNamedQuery(
 				"User.hasUsername")

@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.script.*;
 
 import javax.persistence.EntityManager;
@@ -48,7 +50,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Message;
-
+import es.ucm.fdi.iw.model.Transferable;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Negocio;
 import es.ucm.fdi.iw.model.Reserva;
@@ -72,6 +74,9 @@ public class NegocioController {
     
     @Autowired
 	private LocalData localData;
+
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 
 	@GetMapping("/")
 	 public String getNegocio(Model model, HttpSession session) 			
@@ -176,10 +181,64 @@ public class NegocioController {
 	 	return "editarNegocio";
 	}
 
+	/* CAMILA
+	
+	@PostMapping("/eliminar")
+	@Transactional
+    public String eliminarNegocio(@RequestParam Long idOfTarge,  Model model, HttpSession session) 			
+	 		throws JsonProcessingException {	
+
+	 	Negocio n = entityManager.find(Negocio.class, idOfTarge);
+
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
+	
+		for (Reserva r : reservas){
+			entityManager.remove(r);
+		}
+		
+		entityManager.remove(n);
+		entityManager.flush();
+		
+		User u = (User)session.getAttribute("u");
+
+		String nextUrl = u.hasRole(User.Role.ADMIN) ? 
+		 	"admin/" :
+		 	"user/" + u.getId();
+
+		return "redirect:/"+nextUrl;
+		
+	}*/
+
 	@PostMapping("/{id}/eliminar")
 	@Transactional
+	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
+    public String eliminarNegocio(@PathVariable long id, 
+		@RequestBody JsonNode o, Model model, HttpSession session) 			
+	 		throws JsonProcessingException {	
+
+	 	Negocio n = entityManager.find(Negocio.class, id);
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
+		for (Reserva r : reservas){
+			entityManager.remove(r);
+		}
+		entityManager.remove(n);
+		entityManager.flush();
+		User u = (User)session.getAttribute("u");
+
+		//String nextUrl = u.hasRole(User.Role.ADMIN) ? 
+		// 	"admin/" :
+		// 	"user/" + u.getId();
+
+		//return "redirect:/"+nextUrl;
+		return "{\"result\": \"message sent.\"}";
+	}
+
+	/*@PostMapping("/{id}/eliminar")
+	@ResponseBody
+	@Transactional
     public String eliminarNegocio(@PathVariable long id, Model model, HttpSession session) 			
-	 		throws JsonProcessingException {		
+	 		throws JsonProcessingException {	
+
 	 	Negocio n = entityManager.find(Negocio.class, id);
 
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
@@ -193,15 +252,30 @@ public class NegocioController {
 		
 		User u = (User)session.getAttribute("u");
 
-
-		// String nextUrl = u.hasRole(User.Role.ADMIN) ? 
-		// 	"admin/" :
-		// 	"user/" + u.getId();
-
-		// 	return "redirect:/"+nextUrl;
-
-		return "{\"result\": \"\"}";
+		// construye json
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode rootNode = mapper.createObjectNode();
+		/*rootNode.put("from", sender.getUsername());
+		rootNode.put("to", u.getUsername());
+		rootNode.put("text", text);
+		rootNode.put("id", m.getId());*/
+		/*String json = mapper.writeValueAsString(rootNode); //crear json vacio??
 		
+		log.info("Borrando un negocio...", id, json);
+
+		messagingTemplate.convertAndSend("/user/"+u.getUsername()+"/queue/updates", json);
+		return "{\"result\": \"message sent.\"}";
+	}*/
+
+	@GetMapping(path = "/list", produces = "application/json")
+	@Transactional // para no recibir resultados inconsistentes
+	@ResponseBody  // para indicar que no devuelve vista, sino un objeto (jsonizado)
+	public List<Negocio.Transfer> retrieveMessages(HttpSession session) {
+		long userId = ((User)session.getAttribute("u")).getId();		
+		User u = entityManager.find(User.class, userId);
+		log.info("Generating negocios list for user {} ({} negocios)", 
+				u.getUsername(), u.getNegocios().size());
+		return  u.getNegocios().stream().map(Transferable::toTransfer).collect(Collectors.toList());
 	}
 
 	@GetMapping("/{id}/genera")

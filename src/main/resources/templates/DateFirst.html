@@ -18,18 +18,12 @@
     <div class="container">
         <img class="img_cuerpo" src="https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/1aaa70d7-e97d-4b2c-91c0-c765e46c59da/32ad11d9-2568-469d-a72b-fe5af21ac985.jpg" alt="Imagen DateFirst">
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-            qui officia deserunt mollit anim id est laborum.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-            qui officia deserunt mollit anim id est laborum.</p>
+        <h2>¡Bienvenido a DateFirst!</h2>
+        <p>Aquí encontrarás una gran cantidad de negocios con los que podrás concertar una cita o hacer una reserva, además
+            de utilizar nuestro buscador aplicando diferentes filtros para poder encontrar el negocio que buscas.</p>
+        <h2>¿Eres propietario de un negocio?</h2>
+        <p>Si eres propietario de un negocio puedes registrarte y dar de alta a tu negocio en DateFirst. Aquí podrás generar diferentes
+            citas o reservas que el resto de usuarios podrán solicitar para acudir a tu negocio.</p>
 
         <form class="formularioBusq" th:action="@{/buscar}" method="POST">
                 <input type="text" id="criterio" placeholder="Introduce el criterio de busqueda" size="40" name="consulta"/>
@@ -43,7 +37,7 @@
                 <input type="submit" id="buscarNegocio" class="botonEnviar" value="Buscar"/> 
         </form>
         
-        <h3> Todos los negocios </h3>
+        <h2> Todos los negocios </h2>
         <ul>
             <li th:each = "n:${negocios}">
                 <div>

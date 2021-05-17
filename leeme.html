@@ -15,34 +15,30 @@
 		Una aplicación para facilitar que cualquier usuario pueda concertar una cita con cualquier comercio que esté registrado.
 	</p>
 	<p>
-		Debido a la peculiar situación en la que nos encontramos se nos ha ocurrido la idea de desarrollar una aplicación web 
+		Debido a la peculiar situación en la que nos encontramos por causa del Covid-19 hemos tenido la idea de desarrollar una aplicación web 
         con la que podamos facilitar mucho el trabajo de los comercios a la hora de concertar citas. En ella los comercios podrán
-        registrarse rellenando una serie de datos relevantes y lo único que tendrán que hacer es esperar a que algún usuario solicite
-        una cita. Cualquier usuario registrado en la aplicación podrá filtrar los comercios por la zona en la que se encuentran o
-        incluso buscarlos directamente por su nombre en el buscador.  
+        registrarse rellenando una serie de datos relevantes y lo único que tendrán que hacer es generar las citas/reservas que quieran
+        ofrecer al público. Cualquier usuario registrado en la aplicación podrá solicitar las citas que quiera, además de poder filtrar
+        los comercios por la ciudad, provincia o código postal e incluso buscarlos directamente por su nombre en el buscador. 
 	</p>
 
 	<p>
 		Soporta los siguientes roles:
 		<ul>
         <li>
-            El <b>administrador</b> Será el encargado de controlar el contenido que proporciona la aplicación web, es decir, se encargará
-            de expulsar a los usuarios que hayan incumplido alguna de las normas, supervisará el contenido de los comercios registrados,
-            tratará los correos y notificaciones que le llegan por parte de los usuarios, etc.
+            El <b>administrador</b> será el encargado de controlar el contenido que proporciona la aplicación web, es decir, se encargará
+            de expulsar a los usuarios que hayan incumplido alguna de las normas, supervisará el contenido de los comercios registrados y 
+            podrá eliminar dichos comercios en caso de ser necesario.
         </li>
 		<li>
-            El <b>usuario registrado</b> Puede reservar una cita (si hay disponibilidad en el calendario) con un negocio interesado,
-            opinar sobre el servicio recibido y poner alguna reclamación cuando lo crea conveniente. También tiene la opción de buscar
-            comercios cercanos a su lugar de residencia, por temática o directamente por su nombre. Este usuario podrá acceder a un
-            listado de sus citas reservadas. Y por último, en la pantalla principal de dicho usuario aparecerán los negocios cercanos
-            o favoritos. Si el usuario registrado es a su vez propietario de un negocio, podrá registrar en la aplicación el negocio
-            del que es propietario. También podrá editar la información en cualquier momento y recibirá una notificación cuando un usuario
-            concrete una cita. También podrá notificar al administrador de los malos comportamientos de algún usuario. Y por último,
-            en la pantalla principal de dicho usuario aparecerá una especie de bandeja de entrada con todas las citas concertadas,
-            así como la información de su negocio
+            El <b>usuario registrado</b> puede visualizar todos los negocios que están registrados en la aplicación web. Podrá 
+            solicitar cualquier reserva disponible en el negocio que quiera, además de poder cancelarla en cualquier momento. Si el
+            usuario registrado es propietario de un negocio podrá registrarlo en la aplicación rellenando un formulario con los datos 
+            más importantes del mismo, también podrá editar dichos datos y eliminar el negocio. El propietario también podrá generar 
+            reservas que el resto de usuarios podrán solicitar y también podrá eliminarlas en caso de ser necesario.
 		<li>
-            Un <b>usuario no registrado</b> Solo podrá visualizar la página y ver los negocios registrados pero no podrá 
-            concretar ninguna cita ni acceder a ninguna de las funcionalidades relacionadas con los negocios registrados.
+            Un <b>usuario no registrado</b> solo podrá visualizar la página y ver los negocios registrados, pero no podrá 
+            solicitar ninguna cita ni acceder a ninguna de las funcionalidades relacionadas con los negocios registrados.
 		</li>
 		</ul>
 	</p>
@@ -52,31 +48,58 @@
 	
 	<h2>Vistas</h2>
     <ul>
-        <li><a href="http://localhost:8080/">DateFirst</a> Vista de la página principal, con el titulo, una breve descripción, una lista con los comercios registrados y un buscador que te permite hacer una búsqueda de un negocio concreto o filtrar de diferentes formas.
-        <li><a href="http://localhost:8080/admin">Ver admin</a> Vista del perfil del administrador existente en la BBDD accediendo a admin.html
-        <li><a href="http://localhost:8080/user/">Crear usuario</a> Vista para crear un nuevo usuario rellenando un formulario, accediendo a nuevoUsuario.html    
-        <li><a href="http://localhost:8080/user/id">Ver usuario</a> Vista del perfil de un usuario existente en la BBDD, accediendo a user.html
-        <li><a href="http://localhost:8080/negocio/">Crear negocio</a> Vista para registrar un nuevo negocio al rellenar un formulario accediendo a nuevoNegocio.html. Para ello el usuario debe de estar logueado.
-        <li><a href="http://localhost:8080/negocio/id">Ver negocio</a> Vista con la información del negocio existente en la BBDD, accediendo a vistaNegocio.html
-        <li><a href="http://localhost:8080/reserva/id">Ver reserva</a> Vista con información de la reserva existente en la BBDD, accede a vistaReserva.html
-        
+        <li><a href="http://localhost:8080/">DateFirst</a> Vista de la página principal, con el titulo, una breve descripción, una lista con los comercios registrados y un buscador que te permite hacer una búsqueda de un negocio concreto o filtrar de diferentes formas. Accede a DateFirst.html
+        <li><a href="http://localhost:8080/admin">Ver admin</a> Vista del perfil del administrador existente en la BBDD. Accede a admin.html
+        <li><a href="http://localhost:8080/user/">Crear usuario</a> Vista para crear un nuevo usuario rellenando un formulario. Accede a nuevoUsuario.html
+        <li><a href="http://localhost:8080/user/id">Ver usuario</a> Vista del perfil de un usuario existente en la BBDD. Accede a user.html
+        <li><a href="http://localhost:8080/user/id/editar">Editar usuario</a> Vista del perfil de un usuario, pero en esta ocasión con la posibilidad de editar sus datos para actualizar su perfil. Accede a editarUsuario.html
+        <li><a href="http://localhost:8080/negocio/">Crear negocio</a> Vista para registrar un nuevo negocio al rellenar un formulario accediendo a nuevoNegocio.html. Para ello el usuario debe de estar logueado
+        <li><a href="http://localhost:8080/negocio/id">Ver negocio</a> Vista con la información del negocio existente en la BBDD. Accede a vistaNegocio.html
+        <li><a href="http://localhost:8080/negocio/id/editar">Editar negocio</a> Vista con los datos de un negocio, pero en esta ocasión con la posibilidad de editar sus datos para actualizar el negocio. Accede a editarNegocio.html
+        <li><a href="http://localhost:8080/negocio/id/genera">Generar reservas</a> Vista con un formulario para rellenar los datos necesarios para generar reservas de un negocio. Accede a generarReservas.html
+        <li><a href="http://localhost:8080/negocio/id/eliminarReservas">Eliminar reservas</a> Vista con un formulario para seleccionar la franja horaria y el día de las reservas que se quieren eliminar. Accede a eliminarReservas.html
+        <li><a href="http://localhost:8080/reserva/id">Ver reserva</a> Vista con información de la reserva solicitada en la que el usuario tendrá que rellenar el campo perteneciente al número de personas. Accede a reserva.html
     </ul>
+    <h2>Funcionamiento</h2>
+    <p>
+       Al acceder a la pagina puede registrarse un usuario, loguearse, o naverar sin identificarse, si se quiere registrar un usuario
+       se deben rellenar todos los campos y asegurarse que las contraseñas coinciden ya que está bajo la validación de contraseñas.
+    </p>
+    <p>
+       Un usuario registrado será capaz de crear un negocio, pero también de hacer reservas en otros negocios y gestionar sus reservas
+       así como eliminar los negocios.
+    </p>
+    <p>
+        Generar reservas: Después de que un nuevo negocio haya sido creado, puedes acceder a él para ver su información desde la página de inicio.
+        Una vez ahí, si eres el propietario del negocio, tienes la opción de editar el negocio o generar reservas para ese negocio. Al pulsar en
+        generar, debes rellenar un formulario donde validamos que la fecha y hora de fin sea posterior a la fecha y hora de inicio. Después de
+        completar el formulario, al volver a la página del negocio se muestran las reservas que tiene el negocio.
+    </p>
+    <p>
+        Solicitar una reserva: Un usuario registrado puede solicitar una reserva rellenando un formulario en el que se debe indicar el número 
+        de personas que asistiran, en este formulario también existe una validación para asegurarnos que el número de asistentes no es 
+        mayor que el número de plazas disponibles en dichas reservas.
+    </p>
+    <p>
+        Cancelar una reserva: Cuando un usuario solicita una reserva, puede verla desde su perfil y tiene la posibilidad de cancelarla. Cuando
+        la cancela, la reserva queda como cancelada y es el propietario del negocio el que puede activar otra vez la reserva como libre desde su
+        perfil de usuario.
+    </p>
+    <p>
+        Eliminar reservas generadas: Tras generar reservas el propietario del negocio puede elegir eliminar ciertas reservas de modo que ya no esten
+        disponibles, para ello se debe indicar el rango de fechas en el que se desea eliminar la reserva y el rango de horas eliminandose todas aquellas 
+        reservas que se inicien en dicho rango, incluyendo los limites.
+    </p>
+    <p>
+        Búsqueda de negocios: En la página de inicio de la aplicación, existe un campo de búsqueda donde puedes buscar el negocio que deseas a través de
+        los filtros que hay al lado. Según el filtro que pongas, si la búsqueda obtiene un solo resultado, te redirecciona a ese negocio buscado. En cambio,
+        si la búsqueda obtiene más de un resultado, te redirecciona a una vista con todos los resultados obtenidos para que allí selecciones el negocio que
+        deseas.
+    </p>
     
     <h2>Comentarios de funcionamiento</h2>
     
-    <p>Crear un nuevo usuario: Para crear un nuevo usuario es necesario estar logueado y acceder a la direccion http://localhost:8080/user/, 
-       esta dirección nos proporciona un formulario en blanco para crear el nuevo usuario. Tenemos que solucionar que un usuario no registrado
-       pueda registrarse en la aplicación, ya que al intentar registrarse, la aplicación te regirige al login y no sabemos cambiarlo.
-    </p>
-    <p>Acceder al nuevo usuario creado: hace una redireccion a http://localhost:8080/user/id mostrando el perfil creado y guardado en BBDD,
-       puediendo modificarse.
-    </p>
-    <p>Crear un nuevo negocio: Para crear un nuevo negocio es necesario estar logueado y acceder a la dirección http://localhost:8080/negocio/, 
-       esta pagina nos da un formulario vacio que el usuario tendrá que rellenar.   
-    </p>
-    <p>Acceder al nuevo negocio creado: hace una redireccion a http://localhost:8080/negocio/id mostrando el negocio creado y guardado en BBDD, 
-       puediendo modificarse.
-    </p>
+    <p></p>
     
     <h2>Clases de model</h2>
     <ul>
@@ -85,12 +108,10 @@
         <li>src/main/java/es/ucm/fdi/iw/model/Negocio.java</li>
         <li>src/main/java/es/ucm/fdi/iw/model/Reserva.java</li>
         <li>src/main/java/es/ucm/fdi/iw/model/User.java</li>
-        
-       
     </ul>
-    <h2>Clases control </h2>
+    <h2>Clases control</h2>
     <ul>
-        <li>src/main/java/es/ucm/fdi/iw/control/MensageController.java</li>
+        <li>src/main/java/es/ucm/fdi/iw/control/MessageController.java</li>
         <li>src/main/java/es/ucm/fdi/iw/control/AdminController.java</li>
         <li>src/main/java/es/ucm/fdi/iw/control/NegocioController.java</li>
         <li>src/main/java/es/ucm/fdi/iw/control/ReservaController.java</li>
@@ -105,17 +126,7 @@
             <a href="https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png">https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png</a>
             <p>Extraido de google imágenes con licencia creative commons</p>
         </li>
-    
-        <li>
-            <a href=https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png>https://cdn.pixabay.com/photo/2019/07/19/09/54/map-4348394_1280.png</a>
-            <p>Extraido de google imágenes con licencia creative commons</p>
-        </li>
-    
-        <li>
-            <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Calendar_icon.svg/703px-Calendar_icon.svg.png"></a>https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Calendar_icon.svg/703px-Calendar_icon.svg.png</h2>
-            <p>Extraido de google imágenes con licencia creative commons</p>
-        </li>
-    
+
         <li>
 			<a href=https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg>https://cdn.pixabay.com/photo/2018/12/24/16/53/shop-icon-3893222_1280.jpg</a>
             <p>Extraido de google imágenes con licencia creative commons</p>
@@ -126,6 +137,20 @@
         </li>
 
     </ul>
-<p>Existe un botón para eliminar reservas cuya hora de inicio este en la franja horaria indicada</p>
+
+    <h2>Cosas que no funcionan</h2>
+    <ul>
+        <li>
+            <p>Al eliminar un negocio, se elimina correctamente pero solo se muestran los resultados
+                después de recargar la página.
+            </p>
+        </li>
+        <li>
+            <p>Comprobar en la pagina nuevoUsuario que el nombre de usuario con el que te quieres registrar
+                no existe y mostrar un mensaje de alerta.
+            </p>
+        </li>
+    </ul>
+
 </body>
 </html>
