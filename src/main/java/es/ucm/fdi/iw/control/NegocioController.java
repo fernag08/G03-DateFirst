@@ -234,8 +234,8 @@ public class NegocioController {
 	}*/
 
 	@PostMapping("/{id}/eliminar")
-	@ResponseBody
 	@Transactional
+	@ResponseBody
     public String eliminarNegocio(@PathVariable long id, Model model, HttpSession session) 			
 	 		throws JsonProcessingException {	
 
@@ -264,7 +264,7 @@ public class NegocioController {
 		log.info("Borrando un negocio...", id, json);
 
 		messagingTemplate.convertAndSend("/user/"+u.getUsername()+"/queue/updates", json);
-		return "{ \"id\": " + id + "}";
+		return "{\"id\": " + id + "}";
 	}
 
 	@GetMapping(path = "/list", produces = "application/json")
