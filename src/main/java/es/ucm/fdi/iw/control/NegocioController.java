@@ -209,7 +209,7 @@ public class NegocioController {
 		
 	}*/
 
-	@PostMapping("/{id}/eliminar")
+	/*@PostMapping("/{id}/eliminar")
 	@Transactional
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
     public String eliminarNegocio(@PathVariable long id, 
@@ -231,9 +231,9 @@ public class NegocioController {
 
 		//return "redirect:/"+nextUrl;
 		return "{\"result\": \"message sent.\"}";
-	}
+	}*/
 
-	/*@PostMapping("/{id}/eliminar")
+	@PostMapping("/{id}/eliminar")
 	@ResponseBody
 	@Transactional
     public String eliminarNegocio(@PathVariable long id, Model model, HttpSession session) 			
@@ -259,13 +259,13 @@ public class NegocioController {
 		rootNode.put("to", u.getUsername());
 		rootNode.put("text", text);
 		rootNode.put("id", m.getId());*/
-		/*String json = mapper.writeValueAsString(rootNode); //crear json vacio??
+		String json = mapper.writeValueAsString(rootNode); //crear json vacio??
 		
 		log.info("Borrando un negocio...", id, json);
 
 		messagingTemplate.convertAndSend("/user/"+u.getUsername()+"/queue/updates", json);
-		return "{\"result\": \"message sent.\"}";
-	}*/
+		return "{ \"id\": " + id + "}";
+	}
 
 	@GetMapping(path = "/list", produces = "application/json")
 	@Transactional // para no recibir resultados inconsistentes
@@ -275,6 +275,7 @@ public class NegocioController {
 		User u = entityManager.find(User.class, userId);
 		log.info("Generating negocios list for user {} ({} negocios)", 
 				u.getUsername(), u.getNegocios().size());
+
 		return  u.getNegocios().stream().map(Transferable::toTransfer).collect(Collectors.toList());
 	}
 
