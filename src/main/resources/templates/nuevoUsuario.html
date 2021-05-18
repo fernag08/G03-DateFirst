@@ -2,114 +2,105 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-	<title>Registro</title>
+    <title>Registro</title>
 </head>
 
 <body>
-	<th:block th:replace="fragments/head :: header" />
-	<nav th:replace="fragments/nav.html :: nav">
-		Nav goes here
-	</nav>
+    <th:block th:replace="fragments/head :: header" />
+    <nav th:replace="fragments/nav.html :: nav">
+        Nav goes here
+    </nav>
 
-	<div class="container">
-		<div class="main">
-			<h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
+    <div class="container">
+        <div class="main">
+            <h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
 
-			<h4>Crear nuevo usuario</h4>
+            <h4>Crear nuevo usuario</h4>
 
-			<!-- puedes cambiar todo -->
-			<form id="usermod" class="formulario" th:action="@{/user/}" method="POST">
+            <!-- puedes cambiar todo -->
+            <form id="usermod" class="formulario" th:action="@{/user/}" method="POST">
 
-				<label for="firstName">Nombre:</label>
-				<input type="text" name="firstName" id="firstName" required placeholder="Nombre" />
+                <label for="firstName">Nombre:</label>
+                <input type="text" name="firstName" id="firstName" required placeholder="Nombre" />
 
-				<label for="lastName1">Primer apellido:</label>
-				<input type="text" name="lastName1" id="lastName1" required placeholder="Apellido 1" />
+                <label for="lastName1">Primer apellido:</label>
+                <input type="text" name="lastName1" id="lastName1" required placeholder="Apellido 1" />
 
-				<label for="lastName2">Segundo apellido:</label>
-				<input type="text" name="lastName2" id="lastName2" required placeholder="Apellido 2" />
+                <label for="lastName2">Segundo apellido:</label>
+                <input type="text" name="lastName2" id="lastName2" required placeholder="Apellido 2" />
 
-				<label for="age">Edad:</label>
-				<input type="text" name="age" id="age" required placeholder="Edad" />
+                <label for="age">Edad:</label>
+                <input type="text" name="age" id="age" required placeholder="Edad" />
 
-				<label for="tlf">Teléfono:</label>
-				<input type="text" name="tlf" id="tlf" required placeholder="Teléfono" />
+                <label for="tlf">Teléfono:</label>
+                <input type="text" name="tlf" id="tlf" required placeholder="Teléfono" />
 
-				<label for="address">Dirección:</label>
-				<input type="text" name="address" id="address" required placeholder="Dirección" />
+                <label for="address">Dirección:</label>
+                <input type="text" name="address" id="address" required placeholder="Dirección" />
 
-				<label for="city">Ciudad:</label>
-				<input type="text" name="city" id="city" required placeholder="Ciudad" />
+                <label for="city">Ciudad:</label>
+                <input type="text" name="city" id="city" required placeholder="Ciudad" />
 
-				<label for="province">Provincia:</label>
-				<input type="text" name="province" id="province" required placeholder="Provincia" />
+                <label for="province">Provincia:</label>
+                <input type="text" name="province" id="province" required placeholder="Provincia" />
 
-				<label for="postalCode">Código postal:</label>
-				<input type="text" name="postalCode" id="postalCode" required placeholder="Código postal" />
+                <label for="postalCode">Código postal:</label>
+                <input type="text" name="postalCode" id="postalCode" required placeholder="Código postal" />
 
-				<label for="username">Usuario:</label>
-				<input type="text" name="username" id="username" required placeholder="Nombre de usuario" />
+                <label for="username">Usuario:</label>
+                <input type="text" name="username" id="username" required placeholder="Nombre de usuario" />
 
-				<label for="password">Contraseña:</label>
-				<input type="password" id="password" required name="password" placeholder="Contraseña" />
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" required name="password" placeholder="Contraseña" />
 
-				<label for="pass2">Confirmar contraseña:</label>
-				<input type="password" id="pass2" required name="pass2" placeholder="Confirmación" />
+                <label for="pass2">Confirmar contraseña:</label>
+                <input type="password" id="pass2" required name="pass2" placeholder="Confirmación" />
 
-				<input type="hidden" name="roles" value="USER" />
+                <input type="hidden" name="roles" value="USER" />
 
-				<button id="btnCrearUser" type="submit" class="botonEnviar">Crear</button>
-			</form>
-		</div>
-	</div>
+                <button id="btnCrearUser" type="submit" class="botonEnviar">Crear</button>
+            </form>
+        </div>
+    </div>
 
-	<script>
-		// esto es algo feo, y se podría sacar a un JS externo
-		document.addEventListener("DOMContentLoaded", () => {
-			// selecciona los campos de contraseña
-			let ps = document.querySelectorAll('#usermod > input[type="password"]')
-			// cada vez que cambie uno de ellos...
-			ps[0].oninput = ps[0].onchange = ps[1].oninput = ps[1].onchange = () => {
-				// dice que si no son iguales, el segundo no es válido
-				ps[1].setCustomValidity(ps[0].value === ps[1].value ?
-					"" : "Ambas contraseñas tienen que coincidir");
-			}
-		});
+    <script>
+        // esto es algo feo, y se podría sacar a un JS externo
+        document.addEventListener("DOMContentLoaded", () => {
+            // selecciona los campos de contraseña
+            let ps = document.querySelectorAll('#usermod > input[type="password"]')
+                // cada vez que cambie uno de ellos...
+            ps[0].oninput = ps[0].onchange = ps[1].oninput = ps[1].onchange = () => {
+                // dice que si no son iguales, el segundo no es válido
+                ps[1].setCustomValidity(ps[0].value === ps[1].value ?
+                    "" : "Ambas contraseñas tienen que coincidir");
+            }
+        });
 
-		// manejador que se ejecuta cuando la página se carga, sin machacar otros
-		document.addEventListener("DOMContentLoaded", () => {
-			// selector para elegir sobre qué elementos validar
-			let u = document.querySelectorAll('#usermod > input[id="username"]')
-			// cada vez que cambien, los revalidamos
-			u[0].oninput = u[0].onchange = () => {validaUsername(u[0])}
-		});
+        // manejador que se ejecuta cuando la página se carga, sin machacar otros
+        document.addEventListener("DOMContentLoaded", () => {
+            // selector para elegir sobre qué elementos validar
+            let u = document.querySelectorAll('#usermod > input[id="username"]')[0]
+                // cada vez que cambien, los revalidamos
+            u.oninput = u.onchange = () => validaUsername(u)
+        });
 
-		function validaUsername(u) {
-			let params = { uname: u.value };
-			console.log(u.value);
-			// Spring Security lo añade en formularios html, pero no en Ajax
-			params[config.csrf.name] = config.csrf.value;
-			// petición en sí
-			return go(config.rootUrl + "/user/username", 'GET', params)
-				.then(d => {
-					console.log(d)
-					if (d.count == 0){
-						u.setCustomValidity("Este nombre de usuario no existe")
-					}
-					else {
-						u.setCustomValidity("Este nombre de usuario ya existe")
-					}
-				});
+        function validaUsername(u) {
+            return go(config.rootUrl + "/user/username?uname=" + u.value, 'GET', {})
+                .then(d => {
+                    console.log(d)
+                    if (d.count == 0) {
+                        u.setCustomValidity(""); // campo valido: sin error!
+                    } else {
+                        u.setCustomValidity("Este nombre de usuario ya existe")
+                    }
+                });
 
-		}
+        }
+    </script>
 
-		
-
-	</script>
-
-	<footer th:replace="fragments/footer.html :: footer">
-		Footer goes here
-	</footer>
+    <footer th:replace="fragments/footer.html :: footer">
+        Footer goes here
+    </footer>
 
 </body>
 
