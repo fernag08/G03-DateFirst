@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import es.ucm.fdi.iw.model.User.Role;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +69,6 @@ public class NegocioController {
 	
 	private static final Logger log = LogManager.getLogger(RootController.class);
 
-	
-
 	@Autowired
     private EntityManager entityManager;
     
@@ -79,7 +79,7 @@ public class NegocioController {
 	private SimpMessagingTemplate messagingTemplate;
 
 	@GetMapping("/")
-	 public String getNegocio(Model model, HttpSession session) 			
+	 public String nuevoNegocio(Model model, HttpSession session) 			
 	 		throws JsonProcessingException {		
 	 	
 	 	return "nuevoNegocio";
@@ -107,6 +107,7 @@ public class NegocioController {
 		model.addAttribute("n", n);
 
 		User requester = (User)session.getAttribute("u");
+
 		n.setNombre(nombre);
 		n.setDescripcion(descripcion);
 		n.setDireccion(direccion);
@@ -141,15 +142,19 @@ public class NegocioController {
 	@PostMapping("/{id}")
 	@Transactional
 	public String postNegocio(
-			HttpServletResponse response,
 			@PathVariable long id, 
 			@ModelAttribute Negocio edited, 
 			Model model, HttpSession session) throws IOException 
     {
-		Negocio target = entityManager.find(Negocio.class, id);
-		model.addAttribute("n", target);
 
-        User requester = (User)session.getAttribute("u");
+		Negocio target = entityManager.find(Negocio.class, id);
+		User requester = (User)session.getAttribute("u");
+
+		if(!compruebaPropietario(requester, target)){		
+			return "redirect:/negocio/"+ target.getId();
+		}
+
+		model.addAttribute("n", target);
 		
         target.setNombre(edited.getNombre());
         target.setDireccion(edited.getDireccion());
@@ -239,7 +244,12 @@ public class NegocioController {
     public String eliminarNegocio(@PathVariable long id, Model model, HttpSession session) 			
 	 		throws JsonProcessingException {	
 
-	 	Negocio n = entityManager.find(Negocio.class, id);
+		Negocio n = entityManager.find(Negocio.class, id);
+		User requester = (User)session.getAttribute("u");
+
+		if(!compruebaPropietario(requester, n)){		
+			return "DateFirst";
+		}
 
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
 	
@@ -306,13 +316,14 @@ public class NegocioController {
 		Negocio n = entityManager.find(Negocio.class, id);
 		User u = (User)session.getAttribute("u");
 
+		if(!compruebaPropietario(u, n)){		
+			return "redirect:/negocio/"+ n.getId();
+		}
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 		LocalDateTime inicioP = LocalDateTime.parse(Finicio+" "+inicio+":00", formatter);
 		LocalDateTime finP = LocalDateTime.parse(Ffin+" "+fin+":00", formatter);
-
-		//LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-	 	//LocalDateTime end = start.plusHours(5);
 
 		for (Reserva r : Reserva.generaReserva(inicioP, finP, cuantas, duracionEnMinutos, capacidadEnCadaUna, n, u)) {
 	 		entityManager.persist(r);
@@ -347,13 +358,14 @@ public class NegocioController {
 		Negocio n = entityManager.find(Negocio.class, id);
 		User u = (User)session.getAttribute("u");
 
+		if(!compruebaPropietario(u, n)){		
+			return "redirect:/negocio/"+ n.getId();
+		}
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 		LocalDateTime inicioP = LocalDateTime.parse(Finicio+" "+inicio+":00", formatter);
 		LocalDateTime finP = LocalDateTime.parse(Ffin+" "+fin+":00", formatter);
-
-		//LocalDateTime start = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-	 	//LocalDateTime end = start.plusHours(5);
 
 		for (Reserva r : n.getReservas()) {
 			if((r.getInicio().isBefore(finP) || r.getInicio().equals(finP)) && (r.getInicio().isAfter(inicioP) || r.getInicio().equals(inicioP)))
@@ -363,6 +375,18 @@ public class NegocioController {
 	 	entityManager.flush();
 
 	 	return "redirect:/negocio/"+n.getId();
+	}
+
+	public boolean compruebaPropietario(User u, Negocio n){
+		if (u.getId() != n.getPropietario().getId() &&
+				!u.hasRole(Role.ADMIN)) {
+			
+			log.warn("El usuario " + u.getUsername() + " está intentando realizar una acción no está permitida en el negocio " + n.getNombre());
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/*@GetMapping(value="/{id}/photo")

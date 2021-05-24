@@ -23,7 +23,7 @@
 			</form>
 			<a id="fotoNombre" th:href="@{/user/{id}(id=${session.u.id})}">
 				<img class="userthumb" th:src="@{/user/{id}/photo(id=${session.u.id})}">
-				<span id="username" th:text="${session.u.username}">Pepe</span>
+				<span id="usernameN" th:text="${session.u.username}">Pepe</span>
 			</a>				
 		</div>
 		<div class="logx" th:unless="${session.u}">

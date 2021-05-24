@@ -1,6 +1,6 @@
 /*-----------------Formulario login-------------------*/
 .login {
-	width: 50%;
+	width: 40%;
 	background-color: #b9b9b9;
 	padding-top: 20px;
 	padding-bottom: 20px;
@@ -11,14 +11,20 @@
 .login input {
 	font-family: 'Nunito', sans-serif;
 	color: #2e343a;
+	font-size: 100%;
+	margin-left: 15px;
 }
 
 .login label {	
 	font-family: candara;
 	font-size: 120%;
 	color: #2e343a;
-	margin-left: 30px;
+	margin-left: 80px;
 	margin-top: 10px;
+}
+
+#labelLogin {
+	margin-left: 142px;
 }
 
 #usuLogin, #passLogin {

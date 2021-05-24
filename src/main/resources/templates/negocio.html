@@ -105,7 +105,6 @@
                     },
                     zoom: 16,
                 });             
-                /*map.center.lat =  40.35804197541284;*/
 
                 var marker = new google.maps.Marker({
                     position: { 
@@ -115,29 +114,9 @@
                     map: map,
                     title: nombre
                 });
-
-                //var geocoder = new google.maps.Geocoder();
-                //geocodeAddress(geocoder, map);
             }
 
-            // function geocodeAddress(geocoder, resultsMap) {
-            //     var address = "Avenida Orovilla 58";
-            //     alert(address);
-            //     geocoder.geocode({ 'address': address }, function (results, status) {
-            //         if (status === google.maps.GeocoderStatus.OK) {
-            //             resultsMap.setCenter(results[0].geometry.location);
-            //             var marker = new google.maps.Marker({
-            //                 map: resultsMap,
-            //                 position: results[0].geometry.location
-            //             });
-
-            //         } else {
-            //             alert('La localización no fue satisfactoria por la siguiente razón: ' + status);
-            //         }
-            //     });
-            // }
         </script>
-
 
     </div>
 
