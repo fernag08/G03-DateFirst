@@ -75,6 +75,107 @@ nav>*{
 	margin-right: 6px;
 }
 
+.tituloPortada {
+	font-family: 'Staatliches', cursive;
+	font-size: 55px;
+	margin-top: 25px;
+	margin-bottom: 10px;
+}
+
+.tituloPortada2 {
+	font-family: 'Staatliches', cursive;
+	font-size: 40px;
+	margin-top: 25px;
+	margin-bottom: 15px;
+}
+
+.contNegocios {
+	/*margin-left: 8%;*/
+}
+
+.divNegocios {
+	float: left;
+	width: 30%;
+	height: 360px;
+	border: 1px solid black;
+	text-align: center;
+	margin: 16px;
+	/*padding: 6px;*/
+	background-color: white;
+}
+
+.divNegocio1 {
+	background-color: rgb(106, 165, 255);
+	font-family: 'Staatliches', cursive;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.nombreNeg {
+	text-decoration: none;
+	font-size: 150%;
+	color: black;
+}
+
+.divNegocio2 {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.descripcionNeg {
+	text-align: justify;
+	padding-left: 15px;
+    padding-right: 15px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.divNegocio3 {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.botonNeg {
+	transition: 0.5s all;
+	padding: 10px;
+	background-color: rgb(255, 116, 116);
+	text-decoration: none;
+	color: black;
+	border: 2px solid black;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+}
+
+.botonNeg:hover {
+	transition: 0.7s all;
+	color: white;
+	font-style: italic;
+	background-color: black;
+}
+
+.botonesNegocio {
+
+	display: flex;
+	justify-content: flex-start;
+}
+
+.enlacesNegocio {
+
+	float: left;
+	margin-top: 24px;
+	margin-left: 35px;
+}
+
+.enlacesNegocio > a {
+	margin-right: 10px;
+	text-decoration: none;
+	color: black;
+	padding: 4px;
+	background-color: rgb(255, 116, 116);
+	border: 1px solid black;
+}
+
 /* setup footer */
 footer {
   margin-top:auto; 
@@ -83,6 +184,11 @@ footer img {
 	vertical-align: middle;
 	
 }
+
+/*
+----------------------------
+----------------------------
+*/
 
 /* for compact forms */
 .smallform input {

@@ -33,14 +33,15 @@
 
 			<table class="adminTable">
 				<tr>
-					<th>Nombre & Enlace
-					<th>Deshabilitar (🔒) ó Habilitar (🔓)
+					<th>Nombre & Enlace</th>
+					<th>Deshabilitar (🔒) ó Habilitar (🔓)</th>
 				<tr th:each="u: ${users}">
-					<td><a th:href="@{/user/{id}(id=${u.id})}" th:text="${u.username}">Pepe</a>
+					<td><a th:href="@{/user/{id}(id=${u.id})}" th:text="${u.username}">Pepe</a></td>
 					<td>
 						<form method="post" th:action="@{/admin/toggleuser(id=${u.id})}">
 							<button th:text="${u.enabled eq 1 ? '🔓 → 🔒' : '🔒 → 🔓'}" type="submit">🗑</button>
 						</form>
+					</td>
 				</tr>
 			</table>
 
@@ -49,15 +50,23 @@
 
 			<table class="adminTable">
 				<tr>
-					<th>Negocio
-					<th>Eliminar (🗑)
+					<th>Negocio</th>
+					<th>Habilitar/Deshabilitar</th>
+					<th>Eliminar (🗑)</th>
+				</tr>
 						
 				<tr th:each="n: ${negocios}">
-					<td><a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.nombre}">X</a>
+					<td><a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.nombre}">X</a></td>
+					<td>
+						<form method="post" th:action="@{/admin/toggleBusiness(id=${n.id})}">
+							<button th:text="${n.enabled eq 1 ? '🔓 → 🔒' : '🔒 → 🔓'}" type="submit">🗑</button>
+						</form>
+					</td>
 					<td>
 						<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
 							<button th:text="Eliminar" type="submit" >🗑</button>
 						</form>
+					</td>
 				</tr>
 			</table>
 

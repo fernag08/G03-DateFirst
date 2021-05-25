@@ -118,7 +118,8 @@ public class NegocioController {
 		n.setCodigoPostal(codigoPostal);
 		n.setLatitud(latitud);
 		n.setLongitud(longitud);
-		n.setPropietario(requester);	
+		n.setPropietario(requester);
+		n.setEnabled((byte)0);	
 		entityManager.persist(n);
 		entityManager.flush();
 		session.setAttribute("n", n);
@@ -381,7 +382,7 @@ public class NegocioController {
 		if (u.getId() != n.getPropietario().getId() &&
 				!u.hasRole(Role.ADMIN)) {
 			
-			log.warn("El usuario " + u.getUsername() + " está intentando realizar una acción no está permitida en el negocio " + n.getNombre());
+			log.warn("El usuario " + u.getUsername() + " esta intentando realizar una accion que no esta permitida en el negocio " + n.getNombre());
 
 			return false;
 		}

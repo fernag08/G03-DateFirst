@@ -45,12 +45,15 @@
 		// esto es algo feo, y se podría sacar a un JS externo
 		document.addEventListener("DOMContentLoaded", () => {
 			// selecciona los campos de contraseña
-			let num = document.querySelector('#reservamod > input[type="int"]')
-            let capacidad = document.querySelector('#reservamod > span[id="numPersonas2"]')
-			// cada vez que cambie uno de ellos...
-			num.oninput = num.onchange =() => {
+			//let num = document.querySelector('#reservamod > input[type="int"]')
+            let num = document.getElementById("numPersonas");
+            let envio = document.getElementById("solicitar");
+            //let capacidad = document.querySelector('#reservamod > span[id="numPersonas2"]')
+			let capacidad = "[[${r.capacidad}]]";
+            // cada vez que cambie uno de ellos...
+			envio.onclick = () => {              
 				// dice que si no son iguales, el segundo no es válido
-				num.setCustomValidity(num.value <= capacidad.innerHTML ? 
+				num.setCustomValidity(num.value <= capacidad ? 
 						"" : "No puedes superar la capacidad maxima");
 			}
 		});	

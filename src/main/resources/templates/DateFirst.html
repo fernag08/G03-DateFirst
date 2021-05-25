@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,50 +9,71 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" href="css/main.css" type="text/css" />
     <link rel="stylesheet" th:href="@{/css/cabecera.css}" href="css/cabecera.css" type="text/css" />
 </head>
-<body> 
 
-    <th:block th:replace="fragments/head.html"/>
+<body>
+
+    <th:block th:replace="fragments/head.html" />
     <nav th:replace="fragments/nav.html :: nav">
-            Nav goes here
+        Nav goes here
     </nav>
 
     <div class="container">
-        <img class="img_cuerpo" src="https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/1aaa70d7-e97d-4b2c-91c0-c765e46c59da/32ad11d9-2568-469d-a72b-fe5af21ac985.jpg" alt="Imagen DateFirst">
+        <img class="img_cuerpo"
+            src="https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/1aaa70d7-e97d-4b2c-91c0-c765e46c59da/32ad11d9-2568-469d-a72b-fe5af21ac985.jpg"
+            alt="Imagen DateFirst">
 
-        <h2>¡Bienvenido a DateFirst!</h2>
-        <p>Aquí encontrarás una gran cantidad de negocios con los que podrás concertar una cita o hacer una reserva, además
+        <p class="tituloPortada">¡Bienvenido a DateFirst!</p>
+        <p>Aquí encontrarás una gran cantidad de negocios con los que podrás concertar una cita o hacer una reserva,
+            además
             de utilizar nuestro buscador aplicando diferentes filtros para poder encontrar el negocio que buscas.</p>
-        <h2>¿Eres propietario de un negocio?</h2>
-        <p>Si eres propietario de un negocio puedes registrarte y dar de alta a tu negocio en DateFirst. Aquí podrás generar diferentes
+        <p class="tituloPortada2">¿Eres propietario de un negocio?</p>
+        <p>Si eres propietario de un negocio puedes registrarte y dar de alta a tu negocio en DateFirst. Aquí podrás
+            generar diferentes
             citas o reservas que el resto de usuarios podrán solicitar para acudir a tu negocio.</p>
 
         <form class="formularioBusq" th:action="@{/buscar}" method="POST">
-                <input type="text" id="criterio" placeholder="Introduce el criterio de busqueda" size="40" name="consulta"/>
-                <select name="filtro" id="selectCriterio">
-                    <option value="name" id="name" selected>Nombre</option>
-                    <option value="city" id="city">Ciudad</option>
-                    <option value="province" id="province">Provincia</option>
-                    <option value="postalCode" id="postalCode">Codigo Postal</option>
-                </select>
+            <input type="text" id="criterio" placeholder="Introduce el criterio de busqueda" size="40"
+                name="consulta" />
+            <select name="filtro" id="selectCriterio">
+                <option value="name" id="name" selected>Nombre</option>
+                <option value="city" id="city">Ciudad</option>
+                <option value="province" id="province">Provincia</option>
+                <option value="postalCode" id="postalCode">Codigo Postal</option>
+            </select>
 
-                <input type="submit" id="buscarNegocio" class="botonEnviar" value="Buscar"/> 
+            <input type="submit" id="buscarNegocio" class="botonEnviar" value="Buscar" />
         </form>
-        
-        <h2> Todos los negocios </h2>
-        <ul>
-            <li th:each = "n:${negocios}">
-                <div>
-                    <a th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}">
-                        <!-- <img class="negocioImag" th:src= "@{/negocio/{id}/photo(id=$(n.id))}"> -->
-                        <span th:text="${n.nombre}">x</span>
-                        
-                    </a>
+
+        <p class="tituloPortada2">Todos los negocios</p>
+        <div class="contNegocios">
+            <div th:each="n:${negocios}">
+                <div th:if="${n.enabled == 1}">
+                    <div class="divNegocios">
+                        <div class="divNegocio1">
+                            <a class="nombreNeg" th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}"
+                                th:text="${n.nombre}">
+                                <!-- <img class="negocioImag" th:src= "@{/negocio/{id}/photo(id=$(n.id))}"> -->
+                            </a>
+                        </div>
+
+                        <div class="divNegocio2">
+                            <span class="descripcionNeg" th:text="${n.descripcion}">x</span>
+                            <span th:text="${n.direccion}">x</span>
+                            <span th:text="${n.ciudad}">x</span>
+
+                            <div class="divNegocio3">
+                                <a class="botonNeg" th:href="@{/negocio/{id}(id=${n.id})}">¡Quiero saber más!</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </li> 
-        </ul>
-   
+                <div th:unless="${n.enabled == 1}"></div>
+            </div>
+        </div>
+
     </div>
 
     <th:block th:replace="fragments/footer.html"></th:block>
 </body>
+
 </html>

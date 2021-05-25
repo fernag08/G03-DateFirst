@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/calendario.css}" href="css/calendario.css" type="text/css" />
     <title>Negocio</title>
 </head>
 
@@ -16,7 +17,17 @@
 
     <div class="container">
 
-        <p class="titulo" th:text="${n.nombre}">X</p>
+        <div class="botonesNegocio">
+            <p class="titulo" th:text="${n.nombre}">X</p>
+
+            <div th:if="${session.u}">
+                <div class="enlacesNegocio" th:if="(${session.u.id} eq ${n.propietario.id})">
+                    <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
+                    <a id="generarReservas" th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
+                </div>
+            </div>
+        </div>
+        
 
         <!--<p><span class="titulo2">Nombre del negocio:  </span><span th:text="${n.nombre}">x</span></p>-->
         <p><span class="titulo2">Descripción:</span><span th:text="${n.descripcion}">x</span></p>
@@ -27,12 +38,8 @@
         <p><span class="titulo2">Aforo máximo:</span><span th:text="${n.aforoMaximo}">x</span></p>
         <p><span class="titulo2">Teléfono:</span><span th:text="${n.telefono}">x</span></p>
 
-
         <div th:if="${session.u}">
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
-                <a th:href="@{/negocio/{id}/editar(id=${n.id})}">Editar negocio</a>
-                <a id="generarReservas" th:href="@{/negocio/{id}/genera(id=${n.id})}">Generar reservas</a>
-                
                 <div th:if="${reservas.isEmpty()}">
                     <h3>No hay reservas</h3>
                 </div>
@@ -81,6 +88,13 @@
             </div>
         </div>
 
+        <div id="calendario">
+            <table>
+    
+            </table>
+    
+        </div>
+
         <div id="map" style="height: 400px; width: 400px;"> </div>
 
         <!-- <script async
@@ -117,6 +131,82 @@
             }
 
         </script>
+
+<script type="text/javascript">
+    
+   
+
+    window.onload = function(){
+    
+    var dias = ['Lu','Ma','Mi','Ju','Vi','Sa','Do']
+    var mes = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE']
+    
+    //creamos objeto fecha y calculamos los días que tiene el mes, al usar miFecha.getFullYear() ya tendremos correcto el año bisiesto
+    var miFecha = new Date();
+    var diasDelMes = (Date.UTC(miFecha.getFullYear(), miFecha.getMonth()+1,1) -  Date.UTC(miFecha.getFullYear(), miFecha.getMonth(),1))/1000/60/60/24;
+    
+    //centramos div
+    document.getElementById("calendario").style.left = (document.body.clientWidth-600)/2 + "px";
+    
+    //creamos variables para usarlas como nodos y redimensionamos la tabla
+    var th, tr,td, text;
+    var table = document.getElementsByTagName("table")[0];
+    table.style.width = "300px";
+    table.style.height = "300px";
+    table.style.margin = "0 auto";
+    
+    //CAPTION como cabecera de la tabla, donde irá "MES de AÑO"
+    var caption = document.createElement("caption");
+    var captionText = document.createTextNode(mes[miFecha.getMonth()] + " DE " + miFecha.getFullYear());
+    caption.appendChild(captionText);
+    table.appendChild(caption);
+    
+    //creamos los días de la tabla
+    tr = document.createElement("tr");
+        for(var i=0; i<7;i++){
+            th = document.createElement("th");
+            text = document.createTextNode(dias[i]);
+            th.appendChild(text);
+            tr.appendChild(th);
+        }
+    table.appendChild(tr);	
+    
+    //Creamos calendario, num serán los días y dateTemp una fecha temporal para saber por cual día empieza el mes miFecha.getMonth() del año miFecha.getFullYear() (para saber bisiestos)
+   
+    var num=1;
+    var dateTemp = new Date(miFecha.getFullYear()+'-'+(miFecha.getMonth()+1)+'-1');
+    
+        for(var i = 0; i<6;i++){
+            tr = document.createElement("tr");
+            for(var j=1;j<8;j++){
+                
+                td = document.createElement("td");
+                td.style.color = "red";
+                td.id="";
+                td.addEventListener('click', () => {
+                    window.alert();
+                });
+                if((((j<dateTemp.getDay()) || (dateTemp.getDay()==0&&j!=7)) && i==0) || (num>diasDelMes)){
+                    
+                    text = document.createTextNode("");
+                    td.appendChild(text);
+                    
+                }else{
+                    text = document.createTextNode((num++)+"\nReservas Disponibles:");
+                    //div = document.createElement("div");
+                    td.appendChild(text);
+                }
+                
+                tr.appendChild(td);
+                
+            }
+            table.appendChild(tr);
+        }
+        
+    }
+
+    
+    </script>
 
     </div>
 

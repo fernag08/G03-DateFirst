@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.Negocio;
 
 /**
  * Admin-only controller
@@ -71,4 +72,19 @@ public class AdminController {
 		}
 		return index(model);
 	}	
+
+	@PostMapping("/toggleBusiness")
+	@Transactional
+	public String delBusiness(Model model,	@RequestParam long id) {
+		Negocio target = entityManager.find(Negocio.class, id);
+		if (target.getEnabled() == 1) {
+			
+			// disable negocio
+			target.setEnabled((byte)0); 
+		} else {
+			// enable negocio
+			target.setEnabled((byte)1);
+		}
+		return index(model);
+	}
 }

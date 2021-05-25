@@ -19,10 +19,12 @@
         <p class="titulo">Negocios encontrados</p>
 
         <div th:each="n: ${listNegocios}">
-            <p>
-                <a th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.id}">123</a>
-                <span th:text="${n.nombre}">Texto del negocio</span>
-            </p>
+            <div th:if="${n.enabled == 1}">
+                <p>
+                    <a th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}" ><img src="https://cdn.pixabay.com/photo/2012/04/02/16/03/back-24838__340.png"></a>
+                    <span th:text="${n.nombre}">Texto del negocio</span>
+                </p>
+            </div>
         </div>
     </div>
 

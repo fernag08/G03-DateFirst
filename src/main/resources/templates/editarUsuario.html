@@ -14,7 +14,7 @@
 
 	<div class="container">
 		<div class="main">
-			<h1>Información del usuario <span th:text="${user.username}">Pepe</span></h1>
+			<p class="titulo">Editar perfil del usuario <span th:text="${user.username}">Pepe</span></p>
 
 			<div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
 				<!-- puedes cambiar todo -->

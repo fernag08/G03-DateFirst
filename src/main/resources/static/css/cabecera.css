@@ -98,6 +98,22 @@ div#registroYlogin a:hover {
 	background-color: rgba(219, 0, 0, 0.925);
 }
 
+#received {
+	text-decoration: none;
+	text-align: center;
+	padding: 8px;
+	font-family: candara;
+	font-size: 18px;
+	background-color: rgb(255, 241, 52);
+	color: #000000;
+	border-radius: 6px;
+	border: 2px solid black;
+}
+
+#received:hover{
+	background-color: rgb(230, 214, 0);
+}
+
 #botonAdmin { /* Botón de cerrar sesión */
 	text-decoration: none;
 	text-align: center;

@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -105,29 +106,6 @@ public class UserController {
 	 	
 	 	return "nuevoUsuario";
 	}
-	
-	/*@GetMapping(path = "/{id}", produces = "application/json")
-	@Transactional // para no recibir resultados inconsistentes
-	@ResponseBody  // para indicar que no devuelve vista, sino un objeto (jsonizado)
-	public List<Negocio.Transfer> eliminaNegocio(HttpSession session) {
-		long userId = ((User)session.getAttribute("u")).getId();		
-		User u = entityManager.find(User.class, userId);
-		log.info("Generating message list for user {} ({} messages)", 
-				u.getUsername(), u.getNegocios().size());
-
-		Negocio n = entityManager.find(Negocio.class, id);
-
-		ArrayList<Reserva> reservas = new ArrayList<Reserva>(n.getReservas());
-	
-		for (Reserva r : reservas){
-			entityManager.remove(r);
-		}
-		
-		entityManager.remove(n);
-		entityManager.flush();
-
-		return  u.getNegocios().stream().map(Transferable::toTransfer).collect(Collectors.toList());
-	}*/
 
 	@PostMapping("/")
 	@Transactional
@@ -145,7 +123,6 @@ public class UserController {
 			@RequestParam String city,
 			@RequestParam String province,
 			@RequestParam String postalCode,
-			@RequestParam String roles,
 			 Model m) throws IOException {
 				 
 		User u = new User();
@@ -162,7 +139,7 @@ public class UserController {
 		u.setCity(city);
 		u.setProvince(province);
 		u.setPostalCode(postalCode);
-		u.setRoles(roles);
+		u.setRoles(Role.USER + "");
 		u.setEnabled((byte)1);
 
 		entityManager.persist(u);
@@ -192,15 +169,6 @@ public class UserController {
 		model.addAttribute("negocios", new ArrayList<>(u.getNegocios()));
 		model.addAttribute("reservas", new ArrayList<>(u.getReservas()));
 
-		// construye y envía mensaje JSON
-		User requester = (User)session.getAttribute("u");
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectNode rootNode = mapper.createObjectNode();
-		rootNode.put("text", requester.getUsername() + " is looking up " + u.getUsername());
-		String json = mapper.writeValueAsString(rootNode);
-		
-		//messagingTemplate.convertAndSend("/topic/admin", json);
-
 		return "perfilUsuario";
 	}	
 	
@@ -214,7 +182,7 @@ public class UserController {
 	 		throws JsonProcessingException {		
 
 		User u = entityManager.find(User.class, id);
-		//User u = (User)session.getAttribute("u");
+
 		model.addAttribute("user", u);
 
 	 	return "editarUsuario";
@@ -231,6 +199,12 @@ public class UserController {
     {
 		
 		User target = entityManager.find(User.class, id);
+		User requester = (User)session.getAttribute("u");
+
+		if(!compruebaPropietario(requester, target)){		
+			return "redirect:/user/"+ requester.getId();
+		}
+
 		model.addAttribute("u", target);
 		model.addAttribute("negocios", new ArrayList<>(target.getNegocios()));
 		model.addAttribute("reservas", new ArrayList<>(target.getReservas()));
@@ -259,11 +233,16 @@ public class UserController {
 		return "perfilUsuario";
 	}
 
-	@GetMapping("/{id}/eliminar")
+	@PostMapping("/{id}/eliminar")
 	@Transactional
     public String eliminarUsuario(@PathVariable long id, Model model, HttpSession session) 			
 	 		throws JsonProcessingException {		
 	 	User u = entityManager.find(User.class, id);
+		User requester = (User)session.getAttribute("u");
+
+		if(!compruebaPropietario(requester, u)){		
+			return "DateFirst";
+		}
 
 		ArrayList<Negocio> negocios = new ArrayList<Negocio>(u.getNegocios());
 	
@@ -279,8 +258,11 @@ public class UserController {
 
 		entityManager.remove(u);
 		entityManager.flush();
+
+		session.invalidate();
+		SecurityContextHolder.clearContext();
 		
-		return "dateFirst";
+		return "redirect:/";
 	}
 	
 	@GetMapping(value="/{id}/photo")
@@ -300,8 +282,6 @@ public class UserController {
 			}
 		};
 	}
-
-	
 	
 	@PostMapping("/{id}/msg")
 	@ResponseBody
@@ -350,11 +330,9 @@ public class UserController {
 		
 		// check permissions
 		User requester = (User)session.getAttribute("u");
-		if (requester.getId() != target.getId() &&
-				! requester.hasRole(Role.ADMIN)) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, 
-					"No eres administrador, y éste no es tu perfil");
-			return "editarUsuario";
+		
+		if(!compruebaPropietario(requester, target)){		
+			return "redirect:/user/"+ requester.getId();
 		}
 		
 		log.info("Updating photo for user {}", id);
@@ -372,6 +350,18 @@ public class UserController {
 			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
 		}
 		return "editarUsuario";
+	}
+
+	public boolean compruebaPropietario(User req, User u){
+		if (req.getId() != u.getId() &&
+				!req.hasRole(Role.ADMIN)) {
+			
+			log.warn("El usuario " + req.getUsername() + " esta intentando realizar una accion que no esta permitida con el usuario " + u.getUsername());
+
+			return false;
+		}
+
+		return true;
 	}
 
 }

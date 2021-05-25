@@ -64,6 +64,8 @@ public class Negocio implements Transferable<Negocio.Transfer> {
 
     private String latitud;
     private String longitud;
+    private byte enabled;
+
 
     @ManyToOne
     private User propietario;
@@ -97,6 +99,7 @@ public class Negocio implements Transferable<Negocio.Transfer> {
             
                 private String latitud;
                 private String longitud;
+                private byte enabled;
 		
 		public Transfer(Negocio n) {
                         this.id = n.getId();
@@ -112,6 +115,7 @@ public class Negocio implements Transferable<Negocio.Transfer> {
                     
                         this.latitud = n.getLatitud();
                         this.longitud = n.getLongitud();
+                        this.enabled = n.getEnabled();
                         
 		}
 	}
@@ -120,7 +124,7 @@ public class Negocio implements Transferable<Negocio.Transfer> {
 	public Transfer toTransfer() {
 		return new Transfer(
                         id, propietario.getUsername(), nombre, descripcion, direccion, ciudad,
-                        provincia, codigoPostal, aforoMaximo, telefono, latitud, longitud
+                        provincia, codigoPostal, aforoMaximo, telefono, latitud, longitud, enabled
                 );
         }
 }

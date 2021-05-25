@@ -73,6 +73,7 @@
 	border:2px solid gray;
 	width: auto;
 	padding:15px 30px;
+	margin-bottom: 50px;
 }
 
 .formularioBusq input[type="text"] {

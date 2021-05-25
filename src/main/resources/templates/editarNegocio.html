@@ -12,7 +12,7 @@
 	
 	<div class="container">
 		<div class="main">
-			<h1>Información del negocio <span th:text="${n.nombre}">Pepe</span></h1>
+			<p class="titulo">Editar negocio <span th:text="${n.nombre}">Pepe</span></p>
 			
 			<div th:if="(${session.u.id} eq ${n.propietario.id})">
 				<!-- puedes cambiar todo -->

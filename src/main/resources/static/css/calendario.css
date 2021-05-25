@@ -1,0 +1,12 @@
+#calendario {
+    width: 70%;
+    height: 400px;
+    margin: 100px;
+    border: 1px solid black;
+    font-size: 24px;
+}
+
+th,
+td {
+    text-align: center;
+}

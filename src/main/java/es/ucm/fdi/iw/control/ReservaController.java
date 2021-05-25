@@ -48,6 +48,7 @@ import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Negocio;
 import es.ucm.fdi.iw.model.Reserva;
+import es.ucm.fdi.iw.model.User.Role;
 
 
 /**
@@ -82,9 +83,13 @@ public class ReservaController {
 		Model model, HttpSession session) throws IOException {
 	
 		Reserva target = entityManager.find(Reserva.class, id);
-		model.addAttribute("r", target);
-		
 		User requester = (User)session.getAttribute("u");
+
+		if(!compruebaPropietario(requester, target)){		
+			return "redirect:/user/"+ requester.getId();
+		}
+
+		model.addAttribute("r", target);
 
         target.setEstado(Reserva.Estado.CANCELADA);
 
@@ -101,18 +106,26 @@ public class ReservaController {
 		HttpServletResponse response,
 		@PathVariable long id, 
 		Model model, HttpSession session) throws IOException {		
-				
-				Reserva target = entityManager.find(Reserva.class, id);
-				model.addAttribute("r", target);
-				
-				User requester = (User)session.getAttribute("u");
-			  
-				target.setNumPersonas(0);
-				target.setEstado(Reserva.Estado.LIBRE);
-				target.setUsuario(null);
-		
-				// update user session so that changes are persisted in the session, too
-				session.setAttribute("r", target);
+			
+			Reserva target = entityManager.find(Reserva.class, id);
+			User requester = (User)session.getAttribute("u");
+
+			if (requester.getId() != target.getNegocio().getPropietario().getId() &&
+				!requester.hasRole(Role.ADMIN)) {
+			
+				log.warn("El usuario " + requester.getUsername() + " esta intentando realizar una accion que no esta permitida en la reserva " + target.getId() + " del negocio " + target.getNegocio().getNombre() + " hecha por el usuario " + target.getUsuario().getUsername());
+
+				return "redirect:/user/"+ requester.getId();
+			}
+
+			model.addAttribute("r", target);
+			
+			target.setNumPersonas(0);
+			target.setEstado(Reserva.Estado.LIBRE);
+			target.setUsuario(null);
+	
+			// update user session so that changes are persisted in the session, too
+			session.setAttribute("r", target);
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
@@ -161,19 +174,16 @@ public class ReservaController {
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
-/*
-	public int puestosDisponibles(LocalDateTime inicioT, LocalDateTime finT)
-	{
-		int disponibles=entityManager.createNamedQuery("select sum(ocupadas) from Reserva r where r.inicio=:"+inicioT"+ "and r.fin=:"finT).getResultList();
-		
 
-		Query query = entityManager.createNamedQuery("sumaOcupadas");
-		
-		query.setParameter("inicioParam", inicio);
-		query.setParameter("finParam", fin);
-		
-		int x = query.getSingleResult();
+	public boolean compruebaPropietario(User req, Reserva r){
+		if (req.getId() != r.getUsuario().getId() &&
+				!req.hasRole(Role.ADMIN)) {
+			
+			log.warn("El usuario " + req.getUsername() + " esta intentando realizar una accion que no esta permitida en la reserva " + r.getId() + " del negocio " + r.getNegocio().getNombre() + " hecha por el usuario " + r.getUsuario().getUsername());
 
+			return false;
+		}
+
+		return true;
 	}
-	*/
 }

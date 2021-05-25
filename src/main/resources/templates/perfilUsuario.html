@@ -18,9 +18,15 @@
 	<div class="container">
 		<div class="main">
 
-			<p class="titulo">Información del usuario <span th:text="${user.username}">Pepe</span></p>
-
 			<div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
+				<div class="botonesNegocio">
+					<p class="titulo">Información del usuario <span th:text="${user.username}">Pepe</span></p>
+					
+					<div class="enlacesNegocio">
+						<a th:href="@{/user/{id}/editar(id=${session.u.id})}">Editar Perfil</a>
+					</div>
+				</div>
+				
 				<img th:src="@{/user/{id}/photo(id=${user.id})}" width="60px" height="60px">
 				<p><span class="titulo2">Nombre de usuario:</span><span th:text="${user.firstName}">x</span></p>
 				<p><span class="titulo2">Primer apellido:</span><span th:text="${user.lastName1}">x</span></p>
@@ -31,9 +37,6 @@
 				<p><span class="titulo2">Ciudad:</span><span th:text="${user.city}">x</span></p>
 				<p><span class="titulo2">Provincia:</span><span th:text="${user.province}">x</span></p>
 				<p><span class="titulo2">Código Postal:</span><span th:text="${user.postalCode}">x</span></p>
-
-				<a th:href="@{/user/{id}/editar(id=${session.u.id})}">Editar Perfil</a>
-				<a th:href="@{/user/{id}/eliminar(id=${session.u.id})}">Eliminar cuenta</a>
 
 				<h2>Negocios</h2>
 				<table>
@@ -66,6 +69,10 @@
 				</div>
 
 				<a id="newNegocio" th:href="@{/negocio/}">Crea tu negocio</a>
+
+				<form method="post" th:action="@{/user/{id}/eliminar(id=${session.u.id})}">
+					<button type="submit">Eliminar cuenta</button>
+				</form>
 
 			</div>
 		</div>
