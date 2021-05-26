@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!--<p><span class="titulo2">Nombre del negocio:  </span><span th:text="${n.nombre}">x</span></p>-->
         <p><span class="titulo2">Descripción:</span><span th:text="${n.descripcion}">x</span></p>
@@ -40,33 +40,78 @@
 
         <div th:if="${session.u}">
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
-                <div th:if="${reservas.isEmpty()}">
-                    <h3>No hay reservas</h3>
-                </div>
-                <div th:unless="${reservas.isEmpty()}">
-                    <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
-
+                <div class="botonesReserva">
                     <h3>Reservas actuales</h3>
-                    <ul>
-                        <li th:each="r: ${reservas}">
-                            <span th:text="${r.id}">123</span>
-                            <span th:text="${r}">texto de la reserva</span>
-                            <div th:if="${r.estado.name() == 'CANCELADA'}">
-                                <form method="post" th:action="@{/reserva/{id}/habilitar(id=${r.id})}">
-                                    <button th:text="Habilitar" type="submit">🗑</button>
-                                </form>
+                    <div class="enlacesReserva">
+                        <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
+                    </div>
+                </div>
+                <div class="contReservas">
+                    <div th:if="${reservas.isEmpty()}">
+                        <h3>No hay reservas</h3>
+                    </div>
+                    <div th:unless="${reservas.isEmpty()}">
+                        
+                        <div th:each="r: ${reservas}">
+                            <div class="divReservas">
+                                <div class="divReserva1">
+                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
+                                            th:text="${r.id}">x</span> del negocio <span
+                                            th:text="${r.negocio.nombre}">x</span>
+                                    </p>
+
+                                </div>
+                                <div class="divReserva2">
+                                    <span th:if="${r.estado.name() != 'LIBRE'}">
+                                        Usuario de reserva: <span class="infoReserva"
+                                            th:text="${r.usuario.username}">x</span></span>
+                                    <span>Inicio reserva: <span class="infoReserva"
+                                            th:text="${r.inicio}">x</span></span>
+                                    <span>Fin reserva: <span class="infoReserva" th:text="${r.fin}">x</span></span>
+                                    <span>Numero de personas: <span class="infoReserva"
+                                            th:text="${r.numPersonas}">x</span></span>
+                                    <span>Estado de reserva: <span class="infoReserva"
+                                            th:text="${r.estado.name()}">x</span></span>
+                                    <div class="divReserva3">
+                                        <div th:if="${r.estado.name() == 'CANCELADA'}">
+                                            <form method="post" th:action="@{/reserva/{id}/habilitar(id=${r.id})}">
+                                                <button class="botonRes" th:text="Habilitar" type="submit">Habilitar</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${r.estado.name() == 'SOLICITADA'}">
+                                            <form method="post" th:action="@{/reserva/{id}/confirmar(id=${r.id})}">
+                                                <button class="botonRes" th:text="Confirmar" type="submit">Confirmar</button>
+                                            </form>
+                                            <form method="post" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
+                                                <button class="botonRes" th:text="Cancelar" type="submit">Cancelar</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${r.estado.name() == 'CONFIRMADA'}">
+                                            <form method="post" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
+                                                <button class="botonRes" th:text="Cancelar" type="submit">Cancelar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
 
-                        </li>
-                    </ul>
+                           
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
+
+
             <div th:if="(${session.u.id} neq ${n.propietario.id})">
                 <h3>Reservas disponibles</h3>
                 <div th:each="r: ${reservas}">
                     <div th:if="${r.estado.name() == 'LIBRE'}">
                         <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
+
                         <h5 th:text="${r}">Texto de la reserva</h5>
                         <p><a th:id="'reserva_' + ${r.id}" th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
                     </div>
@@ -90,126 +135,125 @@
 
         <div id="calendario">
             <table>
-    
+
             </table>
-    
+
         </div>
 
         <div id="map" style="height: 400px; width: 400px;"> </div>
 
-        <!-- <script async
+    </div>
+
+    <!-- <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=places&v=weekly">
 
         </script> -->
 
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly"
-            async></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly"
+        async></script>
 
-        <script>
-            let map;
-            function initMap() {
-                var latitud = "[[${n.latitud}]]";
-                var longitud = "[[${n.longitud}]]";
-                var nombre = "[[${n.nombre}]]";
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: {
-                        lat: parseFloat(latitud),
-                        lng: parseFloat(longitud)
-                    },
-                    zoom: 16,
-                });             
+    <script>
+        let map;
+        function initMap() {
+            var latitud = "[[${n.latitud}]]";
+            var longitud = "[[${n.longitud}]]";
+            var nombre = "[[${n.nombre}]]";
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: parseFloat(latitud),
+                    lng: parseFloat(longitud)
+                },
+                zoom: 16,
+            });
 
-                var marker = new google.maps.Marker({
-                    position: { 
-                        lat: parseFloat(latitud),
-                        lng: parseFloat(longitud)
-                    },
-                    map: map,
-                    title: nombre
-                });
-            }
-
-        </script>
-
-<script type="text/javascript">
-    
-   
-
-    window.onload = function(){
-    
-    var dias = ['Lu','Ma','Mi','Ju','Vi','Sa','Do']
-    var mes = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE']
-    
-    //creamos objeto fecha y calculamos los días que tiene el mes, al usar miFecha.getFullYear() ya tendremos correcto el año bisiesto
-    var miFecha = new Date();
-    var diasDelMes = (Date.UTC(miFecha.getFullYear(), miFecha.getMonth()+1,1) -  Date.UTC(miFecha.getFullYear(), miFecha.getMonth(),1))/1000/60/60/24;
-    
-    //centramos div
-    document.getElementById("calendario").style.left = (document.body.clientWidth-600)/2 + "px";
-    
-    //creamos variables para usarlas como nodos y redimensionamos la tabla
-    var th, tr,td, text;
-    var table = document.getElementsByTagName("table")[0];
-    table.style.width = "300px";
-    table.style.height = "300px";
-    table.style.margin = "0 auto";
-    
-    //CAPTION como cabecera de la tabla, donde irá "MES de AÑO"
-    var caption = document.createElement("caption");
-    var captionText = document.createTextNode(mes[miFecha.getMonth()] + " DE " + miFecha.getFullYear());
-    caption.appendChild(captionText);
-    table.appendChild(caption);
-    
-    //creamos los días de la tabla
-    tr = document.createElement("tr");
-        for(var i=0; i<7;i++){
-            th = document.createElement("th");
-            text = document.createTextNode(dias[i]);
-            th.appendChild(text);
-            tr.appendChild(th);
+            var marker = new google.maps.Marker({
+                position: {
+                    lat: parseFloat(latitud),
+                    lng: parseFloat(longitud)
+                },
+                map: map,
+                title: nombre
+            });
         }
-    table.appendChild(tr);	
-    
-    //Creamos calendario, num serán los días y dateTemp una fecha temporal para saber por cual día empieza el mes miFecha.getMonth() del año miFecha.getFullYear() (para saber bisiestos)
-   
-    var num=1;
-    var dateTemp = new Date(miFecha.getFullYear()+'-'+(miFecha.getMonth()+1)+'-1');
-    
-        for(var i = 0; i<6;i++){
-            tr = document.createElement("tr");
-            for(var j=1;j<8;j++){
-                
-                td = document.createElement("td");
-                td.style.color = "red";
-                td.id="";
-                td.addEventListener('click', () => {
-                    window.alert();
-                });
-                if((((j<dateTemp.getDay()) || (dateTemp.getDay()==0&&j!=7)) && i==0) || (num>diasDelMes)){
-                    
-                    text = document.createTextNode("");
-                    td.appendChild(text);
-                    
-                }else{
-                    text = document.createTextNode((num++)+"\nReservas Disponibles:");
-                    //div = document.createElement("div");
-                    td.appendChild(text);
-                }
-                
-                tr.appendChild(td);
-                
-            }
-            table.appendChild(tr);
-        }
-        
-    }
 
-    
     </script>
 
-    </div>
+    <script type="text/javascript">
 
+
+
+        window.onload = function () {
+
+            var dias = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do']
+            var mes = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
+
+            //creamos objeto fecha y calculamos los días que tiene el mes, al usar miFecha.getFullYear() ya tendremos correcto el año bisiesto
+            var miFecha = new Date();
+            var diasDelMes = (Date.UTC(miFecha.getFullYear(), miFecha.getMonth() + 1, 1) - Date.UTC(miFecha.getFullYear(), miFecha.getMonth(), 1)) / 1000 / 60 / 60 / 24;
+
+            //centramos div
+            document.getElementById("calendario").style.left = (document.body.clientWidth - 600) / 2 + "px";
+
+            //creamos variables para usarlas como nodos y redimensionamos la tabla
+            var th, tr, td, text;
+            var table = document.getElementsByTagName("table")[0];
+            table.style.width = "300px";
+            table.style.height = "300px";
+            table.style.margin = "0 auto";
+
+            //CAPTION como cabecera de la tabla, donde irá "MES de AÑO"
+            var caption = document.createElement("caption");
+            var captionText = document.createTextNode(mes[miFecha.getMonth()] + " DE " + miFecha.getFullYear());
+            caption.appendChild(captionText);
+            table.appendChild(caption);
+
+            //creamos los días de la tabla
+            tr = document.createElement("tr");
+            for (var i = 0; i < 7; i++) {
+                th = document.createElement("th");
+                text = document.createTextNode(dias[i]);
+                th.appendChild(text);
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+
+            //Creamos calendario, num serán los días y dateTemp una fecha temporal para saber por cual día empieza el mes miFecha.getMonth() del año miFecha.getFullYear() (para saber bisiestos)
+
+            var num = 1;
+            var dateTemp = new Date(miFecha.getFullYear() + '-' + (miFecha.getMonth() + 1) + '-1');
+
+            for (var i = 0; i < 6; i++) {
+                tr = document.createElement("tr");
+                for (var j = 1; j < 8; j++) {
+
+                    td = document.createElement("td");
+                    td.style.color = "red";
+                    td.id = "";
+                    td.addEventListener('click', () => {
+                        window.alert();
+                    });
+                    if ((((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) || (num > diasDelMes)) {
+
+                        text = document.createTextNode("");
+                        td.appendChild(text);
+
+                    } else {
+                        text = document.createTextNode((num++));
+                        //div = document.createElement("div");
+                        td.appendChild(text);
+                    }
+
+                    tr.appendChild(td);
+
+                }
+                table.appendChild(tr);
+            }
+
+        }
+
+
+    </script>
 
     <th:block th:replace="fragments/footer.html" />
 </body>

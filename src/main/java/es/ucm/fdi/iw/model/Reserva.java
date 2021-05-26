@@ -33,7 +33,7 @@ import lombok.Data;
 @Data
 public class Reserva {
 
-    public enum Estado {LIBRE, SOLICITADA, CANCELADA};
+    public enum Estado {LIBRE, SOLICITADA, CANCELADA, CONFIRMADA};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,7 +97,7 @@ public class Reserva {
     @Override
     public String toString() {
         
-        return "Hora de inicio: " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(inicio) + "\n" +"Hora de fin: "
+        return  "Hora de inicio: " + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(inicio) + "\n" +"Hora de fin: "
             + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(fin) + "\n" +"Capacidad: " + capacidad + "\n" +"Número de personas: " + numPersonas + "\n" +"Estado de la reserva: "+ estado;
     }
 }

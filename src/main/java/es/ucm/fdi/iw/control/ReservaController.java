@@ -119,10 +119,69 @@ public class ReservaController {
 			}
 
 			model.addAttribute("r", target);
-			
+
 			target.setNumPersonas(0);
 			target.setEstado(Reserva.Estado.LIBRE);
 			target.setUsuario(null);
+				
+	
+			// update user session so that changes are persisted in the session, too
+			session.setAttribute("r", target);
+
+		return "redirect:/negocio/"+target.getNegocio().getId();
+	}
+	//Este metodo se encarga de cambiar el estado de una reserva a cancelada
+	@PostMapping("/{id}/eliminar")
+	@Transactional
+	public String eliminarReserva(
+		HttpServletResponse response,
+		@PathVariable long id, 
+		Model model, HttpSession session) throws IOException {		
+			
+			Reserva target = entityManager.find(Reserva.class, id);
+			User requester = (User)session.getAttribute("u");
+
+			if (requester.getId() != target.getNegocio().getPropietario().getId() &&
+				!requester.hasRole(Role.ADMIN)) {
+			
+				log.warn("El usuario " + requester.getUsername() + " esta intentando realizar una accion que no esta permitida en la reserva " + target.getId() + " del negocio " + target.getNegocio().getNombre() + " hecha por el usuario " + target.getUsuario().getUsername());
+
+				return "redirect:/user/"+ requester.getId();
+			}
+
+			model.addAttribute("r", target);
+			
+			
+			target.setEstado(Reserva.Estado.CANCELADA);
+			
+	
+			// update user session so that changes are persisted in the session, too
+			session.setAttribute("r", target);
+
+		return "redirect:/negocio/"+target.getNegocio().getId();
+	}
+
+	@PostMapping("/{id}/confirmar")
+	@Transactional
+	public String confirmarReserva(
+		HttpServletResponse response,
+		@PathVariable long id, 
+		Model model, HttpSession session) throws IOException {		
+			
+			Reserva target = entityManager.find(Reserva.class, id);
+			User requester = (User)session.getAttribute("u");
+
+			if (requester.getId() != target.getNegocio().getPropietario().getId() &&
+				!requester.hasRole(Role.ADMIN)) {
+			
+				log.warn("El usuario " + requester.getUsername() + " esta intentando realizar una accion que no esta permitida en la reserva " + target.getId() + " del negocio " + target.getNegocio().getNombre() + " hecha por el usuario " + target.getUsuario().getUsername());
+
+				return "redirect:/user/"+ requester.getId();
+			}
+
+			model.addAttribute("r", target);
+			
+			target.setEstado(Reserva.Estado.CONFIRMADA);
 	
 			// update user session so that changes are persisted in the session, too
 			session.setAttribute("r", target);

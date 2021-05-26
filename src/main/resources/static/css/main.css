@@ -155,7 +155,6 @@ nav>*{
 }
 
 .botonesNegocio {
-
 	display: flex;
 	justify-content: flex-start;
 }
@@ -172,7 +171,7 @@ nav>*{
 	text-decoration: none;
 	color: black;
 	padding: 4px;
-	background-color: rgb(255, 116, 116);
+	background-color: rgb(121, 255, 116);
 	border: 1px solid black;
 }
 
