@@ -2,146 +2,144 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-	<title>Perfil</title>
+    <title>Perfil</title>
 
-	<script th:src="@{/js/simple-datatables-2.1.10.min.js}"></script>
-	<link th:href="@{/css/simple-datatables-2.1.10.css}" rel="stylesheet">
-	<link rel="stylesheet" th:href="@{/css/perfilUsuario.css}" href="css/perfilUsuario.css" type="text/css" />
+    <script th:src="@{/js/simple-datatables-2.1.10.min.js}"></script>
+    <link th:href="@{/css/simple-datatables-2.1.10.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/perfilUsuario.css}" href="css/perfilUsuario.css" type="text/css" />
 </head>
 
 <body>
-	<th:block th:replace="fragments/head :: header" />
-	<nav th:replace="fragments/nav.html :: nav">
-		Nav goes here
-	</nav>
+    <th:block th:replace="fragments/head :: header" />
+    <nav th:replace="fragments/nav.html :: nav">
+        Nav goes here
+    </nav>
 
-	<div class="container">
-		<div class="main">
+    <div class="container">
+        <div class="main">
 
-			<div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
-				<div class="botonesNegocio">
-					<p class="titulo">Información del usuario <span th:text="${user.username}">Pepe</span></p>
+            <div th:if="(${session.u.id} eq ${user.id}) or ${session.u.hasRole('ADMIN')}">
+                <div class="botonesNegocio">
+                    <p class="titulo">Información del usuario <span th:text="${user.username}">Pepe</span></p>
 
-					<div class="enlacesReserva">
-						<a th:href="@{/user/{id}/editar(id=${session.u.id})}">Editar Perfil</a>
-					</div>
-				</div>
+                    <div class="enlacesReserva">
+                        <a th:href="@{/user/{id}/editar(id=${session.u.id})}">Editar Perfil</a>
+                    </div>
+                </div>
 
-				<img th:src="@{/user/{id}/photo(id=${user.id})}" width="60px" height="60px">
-				<p><span class="titulo2">Nombre de usuario:</span><span th:text="${user.firstName}">x</span></p>
-				<p><span class="titulo2">Primer apellido:</span><span th:text="${user.lastName1}">x</span></p>
-				<p><span class="titulo2">Segundo apellido:</span><span th:text="${user.lastName2}">x</span></p>
-				<p><span class="titulo2">Edad:</span><span th:text="${user.age}">x</span></p>
-				<p><span class="titulo2">Teléfono:</span><span th:text="${user.tlf}">x</span></p>
-				<p><span class="titulo2">Dirección:</span><span th:text="${user.address}">x</span></p>
-				<p><span class="titulo2">Ciudad:</span><span th:text="${user.city}">x</span></p>
-				<p><span class="titulo2">Provincia:</span><span th:text="${user.province}">x</span></p>
-				<p><span class="titulo2">Código Postal:</span><span th:text="${user.postalCode}">x</span></p>
+                <img th:src="@{/user/{id}/photo(id=${user.id})}" width="60px" height="60px">
+                <p><span class="titulo2">Nombre de usuario:</span><span th:text="${user.firstName}">x</span></p>
+                <p><span class="titulo2">Primer apellido:</span><span th:text="${user.lastName1}">x</span></p>
+                <p><span class="titulo2">Segundo apellido:</span><span th:text="${user.lastName2}">x</span></p>
+                <p><span class="titulo2">Edad:</span><span th:text="${user.age}">x</span></p>
+                <p><span class="titulo2">Teléfono:</span><span th:text="${user.tlf}">x</span></p>
+                <p><span class="titulo2">Dirección:</span><span th:text="${user.address}">x</span></p>
+                <p><span class="titulo2">Ciudad:</span><span th:text="${user.city}">x</span></p>
+                <p><span class="titulo2">Provincia:</span><span th:text="${user.province}">x</span></p>
+                <p><span class="titulo2">Código Postal:</span><span th:text="${user.postalCode}">x</span></p>
 
-				<div class="botonesReserva">
-					<h2>Negocios</h2>
-					<div class="enlacesReserva">
-						<a id="newReserva" th:href="@{/negocio/}">Crea tu negocio</a>
-					</div>
-				</div>
-				<div th:if="${negocios.isEmpty()}">
-					<h3>No tienes ningún negocio creado</h3>
-				</div>
-				<div th:unless="${negocios.isEmpty()}">
-					<table class="tablaNeg">
-						<tr>
-							<th>Nombre</th>
-							<th>Eliminar</th>
-						</tr>
-						<tr th:each="n: ${negocios}" th:id="'neg_' + ${n.id}">
-							<td><a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.nombre}">123</a></td>
-							<td>
+                <div class="botonesReserva">
+                    <h2>Negocios</h2>
+                    <div class="enlacesReserva">
+                        <a id="newReserva" th:href="@{/negocio/}">Crea tu negocio</a>
+                    </div>
+                </div>
+                <div th:if="${negocios.isEmpty()}">
+                    <h3>No tienes ningún negocio creado</h3>
+                </div>
+                <div th:unless="${negocios.isEmpty()}">
+                    <table class="tablaNeg">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Eliminar</th>
+                        </tr>
+                        <tr th:each="n: ${negocios}" th:id="'neg_' + ${n.id}">
+                            <td><a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.nombre}">123</a></td>
+                            <td>
 
-								<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-									<button th:id="'negocio_' + ${n.id}" type="submit">Eliminar ❌</button>
-								</form>
-								<!--'negocio_' + ${n.id}-->
+                                <form method="post" class="elimina_negocio" th:data-id="'neg_' + ${n.id}" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
+                                    <button th:id="'negocio_' + ${n.id}" type="submit">Eliminar ❌</button>
+                                </form>
+                                <!--'negocio_' + ${n.id}-->
 
-							</td>
-						</tr>
-					</table>
-				</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-				<h2>Reservas</h2>
-				<div class="contReservas">
-					<div th:if="${reservas.isEmpty()}">
-						<h3>¡Todavía no has hecho ninguna reserva!</h3>
-					</div>
-					<div th:unless="${reservas.isEmpty()}">
-						<div th:each="r: ${reservas}">
-							<div th:if="${r.estado.name() == 'SOLICITADA'}">
-								<div class="divReservas">
-									<div class="divReserva1">
-										<p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
-												th:text="${r.id}">x</span> del negocio <span
-												th:text="${r.negocio.nombre}">x</span></p>
-									</div>
+                <h2>Reservas</h2>
+                <div class="contReservas">
+                    <div th:if="${reservas.isEmpty()}">
+                        <h3>¡Todavía no has hecho ninguna reserva!</h3>
+                    </div>
+                    <div th:unless="${reservas.isEmpty()}">
+                        <div th:each="r: ${reservas}">
+                            <div th:if="${r.estado.name() == 'SOLICITADA'}">
+                                <div class="divReservas">
+                                    <div class="divReserva1">
+                                        <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span th:text="${r.id}">x</span> del negocio <span th:text="${r.negocio.nombre}">x</span></p>
+                                    </div>
 
-									<div class="divReserva2">
-										<span>Fecha de la reserva: <span class="infoReserva"
+                                    <div class="divReserva2">
+                                        <span>Fecha de la reserva: <span class="infoReserva"
 												th:text="${r.inicio}">x</span></span>
-										<span>Capacidad maxima: <span class="infoReserva"
+                                        <span>Capacidad maxima: <span class="infoReserva"
 												th:text="${r.capacidad}">x</span></span>
-										<span>Numero de personas: <span class="infoReserva"
+                                        <span>Numero de personas: <span class="infoReserva"
 												th:text="${r.numPersonas}">x</span></span>
-										<div class="divReserva3">
-											<form method="post" th:action="@{/reserva/{id}/cancelar(id=${r.id})}">
-												<button class="botonRes" type="submit">Cancelar reserva</button>
-											</form>
-										</div>
+                                        <div class="divReserva3">
+                                            <form method="post" th:action="@{/reserva/{id}/cancelar(id=${r.id})}">
+                                                <button class="botonRes" type="submit">Cancelar reserva</button>
+                                            </form>
+                                        </div>
 
-									</div>
-								</div>
-							</div>
-							<div th:unless="${r.estado.name() == 'SOLICITADA'}"></div>
-						</div>
-					</div>
-				</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:unless="${r.estado.name() == 'SOLICITADA'}"></div>
+                        </div>
+                    </div>
+                </div>
 
-				<form method="post" th:action="@{/user/{id}/eliminar(id=${session.u.id})}">
-					<button class="eliminarCuenta" type="submit">Eliminar cuenta</button>
-				</form>
+                <form method="post" th:action="@{/user/{id}/eliminar(id=${session.u.id})}">
+                    <button class="eliminarCuenta" type="submit">Eliminar cuenta</button>
+                </form>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
-	<script>
-		function formatDate(d) {
-			// 2020-03-23T10:48:11.074 => 23/3/2020@10:48:18
-			return new Date(d).toLocaleString("es-ES").split(" ").join(" ")
-		}
+    <script>
+        function formatDate(d) {
+            // 2020-03-23T10:48:11.074 => 23/3/2020@10:48:18
+            return new Date(d).toLocaleString("es-ES").split(" ").join(" ")
+        }
 
-		// envío de mensajes vía AJAX, sin recargar la página
-		document.addEventListener("DOMContentLoaded", () => {
-			let b = document.getElementById("negocio_3");
-			b.onclick = (e) => {
-				//let idOfTarget = +document.getElementById("idOfTarget").value;
-				//let idOfTarget = +b.dataset.id;
-				//let url = b.parentNode.action.replace("idOfTarget", 3);
-				let url = b.parentNode.action;
+        // envío de mensajes vía AJAX, sin recargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            let bs = document.querySelectorAll(".elimina_negocio");
+            for (let b of bs) {
+                b.onclick = (e) => {
+                    let idOfTarget = b.dataset.id;
+                    let url = b.action;
+                    console.log("he pillado el evento", b, idOfTarget, url);
 
-				e.preventDefault();
-				console.log(b, b.parentNode)
-				go(url, 'POST')
-					.then(d => {
-						console.log("happy");
-						document.getElementById("neg_3").remove();
-					})
-			}
-		});
+                    e.preventDefault();
+                    console.log(b, b.parentNode)
+                    go(url, 'POST')
+                        .then(d => {
+                            console.log("happy");
+                            document.getElementById(idOfTarget).remove();
+                        })
+                }
+            }
+        });
 
-		//document.getElementById("#tablanegocios").removeChild(document.getElementById("#n"+id))
+        //document.getElementById("#tablanegocios").removeChild(document.getElementById("#n"+id))
 
-		//document.getElementById("#n"+id).remove()
-
-	</script>
-	<th:block th:replace="fragments/footer.html" />
+        //document.getElementById("#n"+id).remove()
+    </script>
+    <th:block th:replace="fragments/footer.html" />
 </body>
 
 </html>

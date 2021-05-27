@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <img   th:src= "@{/negocio/{id}/photo(id=${n.id})}">  
+        <img th:src="@{/negocio/{id}/photo(id=${n.id})}">
 
         <!--<p><span class="titulo2">Nombre del negocio:  </span><span th:text="${n.nombre}">x</span></p>-->
         <p><span class="titulo2">Descripción:</span><span th:text="${n.descripcion}">x</span></p>
@@ -52,13 +52,11 @@
                         <h3>No hay reservas</h3>
                     </div>
                     <div th:unless="${reservas.isEmpty()}">
-                        
+
                         <div th:each="r: ${reservas}">
                             <div class="divReservas">
                                 <div class="divReserva1">
-                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
-                                            th:text="${r.id}">x</span> del negocio <span
-                                            th:text="${r.negocio.nombre}">x</span>
+                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span th:text="${r.id}">x</span> del negocio <span th:text="${r.negocio.nombre}">x</span>
                                     </p>
 
                                 </div>
@@ -97,7 +95,7 @@
                                 </div>
                             </div>
 
-                           
+
                         </div>
 
                     </div>
@@ -150,12 +148,11 @@
 
         </script> -->
 
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly"
-        async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly" async></script>
 
     <script>
         let map;
+
         function initMap() {
             var latitud = "[[${n.latitud}]]";
             var longitud = "[[${n.longitud}]]";
@@ -177,15 +174,11 @@
                 title: nombre
             });
         }
-
     </script>
 
     <script type="text/javascript">
-
-
-
-        window.onload = function () {
-
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("hola mundo");
             var dias = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do']
             var mes = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
 
@@ -227,33 +220,30 @@
             for (var i = 0; i < 6; i++) {
                 tr = document.createElement("tr");
                 for (var j = 1; j < 8; j++) {
-
+                    let mes = dateTemp.getMonth() + 1;
                     td = document.createElement("td");
                     td.style.color = "red";
-                    td.id = "";
-                    td.addEventListener('click', () => {
-                        window.alert();
-                    });
-                    if ((((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) || (num > diasDelMes)) {
+                    td.id = "m" + mes + "d" + num;
+                    console.log(td.id);
+                    let isNotRealDay = (((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) ||
+                        (num > diasDelMes);
 
+                    if (isNotRealDay) {
                         text = document.createTextNode("");
-                        td.appendChild(text);
-
                     } else {
                         text = document.createTextNode((num++));
-                        //div = document.createElement("div");
-                        td.appendChild(text);
+                        td.addEventListener('click', (e) => {
+                            window.alert(e.target.id);
+                        });
                     }
 
+                    td.appendChild(text);
                     tr.appendChild(td);
-
                 }
                 table.appendChild(tr);
             }
-
-        }
-
-
+            console.log("fin");
+        })
     </script>
 
     <th:block th:replace="fragments/footer.html" />

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitar Reserva</title>
 </head>
+
 <body>
-   
-    <th:block th:replace="fragments/head.html"></th:block> 
+
+    <th:block th:replace="fragments/head.html"></th:block>
     <nav th:replace="fragments/nav.html :: nav">
-		Nav goes here
-	</nav>
+        Nav goes here
+    </nav>
 
     <div class="container">
         <form id="reservamod" class="formulario" th:action="@{/reserva/{id}(id=${r.id})}" method="POST">
@@ -27,39 +29,41 @@
 
             <label for="numPersonas" class="sr-only">Capacidad: </label>
             <span id="numPersonas2" name="numPersonas2" th:text="${r.capacidad}"></span>
-            
+
             <p></p>
 
             <label for="numPersonas" class="sr-only">Número de personas: </label>
             <input type="int" id="numPersonas" required name="numPersonas"></input>
-    
+
             <p>
                 <label class="sr-only">Reserva realizada para el negocio <span th:text="${r.negocio.nombre}"></span></label>
             </p>
-            
+
             <button id="solicitar" class="btn btn-lg btn-primary btn-block" type="submit">Solicitar</button>
-            
+
         </form>
     </div>
-	<script>
-		// esto es algo feo, y se podría sacar a un JS externo
-		document.addEventListener("DOMContentLoaded", () => {
-			// selecciona los campos de contraseña
-			//let num = document.querySelector('#reservamod > input[type="int"]')
+    <script>
+        // esto es algo feo, y se podría sacar a un JS externo
+        document.addEventListener("DOMContentLoaded", () => {
+            // selecciona los campos de contraseña
+            //let num = document.querySelector('#reservamod > input[type="int"]')
             let num = document.getElementById("numPersonas");
             let envio = document.getElementById("solicitar");
             //let capacidad = document.querySelector('#reservamod > span[id="numPersonas2"]')
-			let capacidad = "[[${r.capacidad}]]";
+            let capacidad = "[[${r.capacidad}]]";
             // cada vez que cambie uno de ellos...
-			envio.onclick = () => {              
-				// dice que si no son iguales, el segundo no es válido
-				num.setCustomValidity(num.value <= capacidad ? 
-						"" : "No puedes superar la capacidad maxima");
-			}
-		});	
-	</script>
+            envio.onclick = () => {
+                // dice que si no son iguales, el segundo no es válido
+                console.log(num.value, capacidad);
+                num.setCustomValidity(+num.value <= +capacidad ?
+                    "" : "No puedes superar la capacidad maxima");
+            }
+        });
+    </script>
 
     <th:block th:replace="fragments/footer.html"></th:block>
-   
+
 </body>
+
 </html>
