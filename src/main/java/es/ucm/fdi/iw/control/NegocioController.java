@@ -392,7 +392,7 @@ public class NegocioController {
 
 	@GetMapping(value="/{id}/photo")
 	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
-		File f = localData.getFile("negocio", ""+id);
+		File f = localData.getFile("negocio", ""+id+".jpg");
 		InputStream in;
 		if (f.exists()) {
 			in = new BufferedInputStream(new FileInputStream(f));
@@ -424,7 +424,7 @@ public class NegocioController {
 		if ( !compruebaPropietario(requester,n)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, 
 					"No eres administrador, y éste no es tu perfil");
-				return "DateFirst";
+				return "editarNegocio";
 		}
 		
 		log.info("Updating photo for negocio {}", id);

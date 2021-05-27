@@ -110,6 +110,12 @@ nav>*{
 	padding-top: 25px;
 	padding-bottom: 25px;
 }
+.negocioImag{
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 100px;
+	height: 60px;
+}
 
 .nombreNeg {
 	text-decoration: none;
