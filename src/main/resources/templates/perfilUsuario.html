@@ -117,15 +117,6 @@
 			return new Date(d).toLocaleString("es-ES").split(" ").join(" ")
 		}
 
-		document.addEventListener("DOMContentLoaded", () => {
-			var reservas = "[[${reservas}]]";
-			console.log(reservas);
-			for (r in reservas) {
-				r.inicio = formatDate(r.inicio);
-			}
-
-		});
-
 		// envío de mensajes vía AJAX, sin recargar la página
 		document.addEventListener("DOMContentLoaded", () => {
 			let b = document.getElementById("negocio_3");

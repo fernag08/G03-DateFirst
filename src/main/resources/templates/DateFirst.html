@@ -51,11 +51,8 @@
                 <div th:if="${n.enabled == 1}">
                     <div class="divNegocios">
                         <div class="divNegocio1">
-                            
-                            <a  th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}">
-                                <img class="negocioImag"  th:src= "@{/negocio/{id}/photo(id=${n.id})}">  
-                                <span class="nombreNeg"  th:text="${n.nombre}" >                        
-                            </a>                            
+                            <img class="negocioImag"  th:src= "@{/negocio/{id}/photo(id=${n.id})}" th:href="@{/negocio/{id}(id=${n.id})}">  
+                            <a class="nombreNeg" th:text="${n.nombre}" th:href="@{/negocio/{id}(id=${n.id})}"></a>                                                   
                         </div>
 
                         <div class="divNegocio2">

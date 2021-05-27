@@ -39,7 +39,7 @@ INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direcc
 
 INSERT INTO NEGOCIO(id, aforo_maximo, ciudad, codigo_postal, descripcion, direccion, enabled, latitud, longitud, nombre, provincia, telefono, propietario_id) VALUES 
 (2, 40, 'Madrid', 28015, 'Rio Nalon, Restaurante Argentino en Madrid, representa el concepto de Parrilla Argentina con caracter contemporaneo.
- Personalidad inconfundible y maestria a las brasas, con un punto de equilibrio, que siempre sorprende.',
+ Personalidad inconfundible y maestria a las brasas, con un punto de equilibrio que siempre sorprende a todo el que lo pruebe.',
   'Calle de Donoso Cortes, 8', 1, '40.43616155031258', '-3.7054870463800778', 'Meson Restaurante Rio Nalon', 'Madrid', '656789675', 3	
 );
 
