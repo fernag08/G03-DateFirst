@@ -45,6 +45,7 @@
         </form>
 
         <p class="tituloPortada2">Todos los negocios</p>
+
         <div class="contNegocios">
             <div th:each="n:${negocios}">
                 <div th:if="${n.enabled == 1}">
@@ -52,9 +53,9 @@
                         <div class="divNegocio1">
                             <a class="nombreNeg" th:id="'negocio_' + ${n.id}" th:href="@{/negocio/{id}(id=${n.id})}"
                                 th:text="${n.nombre}">
-                                <!-- <img class="negocioImag" th:src= "@{/negocio/{id}/photo(id=$(n.id))}"> -->
-                            </a>
+                            </a>                            
                         </div>
+                         <img class="negocioImag"  th:src= "@{/negocio/{id}/photo(id=${n.id})}">
 
                         <div class="divNegocio2">
                             <span class="descripcionNeg" th:text="${n.descripcion}">x</span>

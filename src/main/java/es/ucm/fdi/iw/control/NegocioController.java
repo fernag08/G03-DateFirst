@@ -390,7 +390,7 @@ public class NegocioController {
 		return true;
 	}
 
-	/*@GetMapping(value="/{id}/photo")
+	@GetMapping(value="/{id}/photo")
 	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
 		File f = localData.getFile("negocio", ""+id);
 		InputStream in;
@@ -398,7 +398,7 @@ public class NegocioController {
 			in = new BufferedInputStream(new FileInputStream(f));
 		} else {
 			in = new BufferedInputStream(getClass().getClassLoader()
-					.getResourceAsStream("static/img/unknown-user.jpg"));
+					.getResourceAsStream("static/img/logo.png"));
 		}
 		return new StreamingResponseBody() {
 			@Override
@@ -417,16 +417,14 @@ public class NegocioController {
 		Negocio n = entityManager.find(Negocio.class, id);
 		model.addAttribute("n", n);
 
-
-		User target = entityManager.find(User.class, Long.parseLong(id));
+		User prop= n.getPropietario();
 		
 		// check permissions
 		User requester = (User)session.getAttribute("u");
-		if (requester.getId() != target.getId() &&
-				! requester.hasRole(Role.ADMIN)) {
+		if ( !compruebaPropietario(requester,n)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, 
 					"No eres administrador, y éste no es tu perfil");
-				return "editarNegocio";
+				return "DateFirst";
 		}
 		
 		log.info("Updating photo for negocio {}", id);
@@ -444,6 +442,6 @@ public class NegocioController {
 			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
 		}
 		return "editarNegocio";
-	}*/
+	}
 	
 }
