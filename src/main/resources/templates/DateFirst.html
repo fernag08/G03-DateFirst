@@ -18,18 +18,33 @@
     </nav>
 
     <div class="container">
-        <img class="img_cuerpo"
-            src="https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/1aaa70d7-e97d-4b2c-91c0-c765e46c59da/32ad11d9-2568-469d-a72b-fe5af21ac985.jpg"
-            alt="Imagen DateFirst">
+        <div class="slider">
+            <ul>
+                <li><img src="https://c.pxhere.com/photos/17/ec/photo-1410553.jpg!d" alt="oficina"></li>
+                <li><img src="https://c.pxhere.com/photos/9e/22/architecture_caf_chair_coffee_coffee_table_contemporary_curtain_dining-1540841.jpg!d" alt="restaurante"></li>
+                <li><img src="https://c.pxhere.com/photos/7b/92/accounting_business_businesswoman_desk_entrepreneur_HTC_job_mac-914939.jpg!d" alt="informatica"></li>
+                <li><img src="https://c.pxhere.com/photos/a8/a4/bikes_body_Bright_Building_cardio_Equipment_Exercise_Fitness-1623008.jpg!d" alt="gimnasio"></li>
+            </ul>
+        
 
-        <p class="tituloPortada">¡Bienvenido a DateFirst!</p>
-        <p>Aquí encontrarás una gran cantidad de negocios con los que podrás concertar una cita o hacer una reserva,
-            además
-            de utilizar nuestro buscador aplicando diferentes filtros para poder encontrar el negocio que buscas.</p>
-        <p class="tituloPortada2">¿Eres propietario de un negocio?</p>
-        <p>Si eres propietario de un negocio puedes registrarte y dar de alta a tu negocio en DateFirst. Aquí podrás
-            generar diferentes
-            citas o reservas que el resto de usuarios podrán solicitar para acudir a tu negocio.</p>
+        <!--<img class="img_cuerpo"
+            src="https://res.cloudinary.com/tf-lab/image/upload/w_600,h_337,c_fill,g_auto:subject,q_auto,f_auto/restaurant/1aaa70d7-e97d-4b2c-91c0-c765e46c59da/32ad11d9-2568-469d-a72b-fe5af21ac985.jpg"
+            alt="Imagen DateFirst">-->
+
+            <div class="subSlider">
+                <p class="tituloPortada">¡Bienvenido a DateFirst!</p>
+                <p>Aquí encontrarás una gran cantidad de negocios por los que podrás navegar y obtener toda la información que desees. 
+                    Busca hasta en el último rincón de tu ciudad y concerta una cita o haz una reserva en tu restaurante favorito,
+                    la papelería más cercana o el bar de copas que más te guste. Además, también puedes utilizar nuestro buscador 
+                    aplicando cualquier filtro para poder encontrar ese negocio que buscas.</p>
+                <p class="tituloPortada2">¿Eres propietario de un negocio?</p>
+                <p>Si eres propietario de un negocio puedes registrarte y dar de alta a tu negocio en DateFirst. Podrás registrar los
+                    negocios que quieras, y también podrás generar diferentes citas o reservas que el resto de usuarios podrán solicitar 
+                    para acudir a tu negocio. ¡No dudes y empieza tu legado en DateFirst!</p>
+            </div>
+            
+
+        </div>
 
         <form class="formularioBusq" th:action="@{/buscar}" method="POST">
             <input type="text" id="criterio" placeholder="Introduce el criterio de busqueda" size="40"

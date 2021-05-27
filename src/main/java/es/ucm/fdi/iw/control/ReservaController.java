@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.time.format.*;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -73,6 +75,28 @@ public class ReservaController {
 	 		throws JsonProcessingException {		
 	 	
 	 	return "nuevaReserva";
+	}
+
+	@GetMapping("/listaReservas")
+	@Transactional
+	 public String getListaReservas(@RequestParam String fecha, Model model, HttpSession session) {	
+	 	
+		log.info("CONTROLEEEEEEEEEEEEEEEEEEEER");
+		System.out.println("prueba");
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		LocalDateTime inicioP = LocalDateTime.parse(fecha+" 00:00:00", formatter);
+		LocalDateTime finP = LocalDateTime.parse(fecha+" 23:59:59", formatter);
+
+		List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
+				"Reserva.reservaByDia")
+				.setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+				.getResultList();
+
+		model.addAttribute("listaReservas",lr);
+
+	 	return "redirect:/reserva/listaReservas";
 	}
 
 	@PostMapping("/{id}/cancelar")

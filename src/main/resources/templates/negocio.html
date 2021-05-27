@@ -44,7 +44,8 @@
                 <div class="botonesReserva">
                     <h3>Reservas actuales</h3>
                     <div class="enlacesReserva">
-                        <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar reservas</a>
+                        <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar
+                            reservas</a>
                     </div>
                 </div>
                 <div class="contReservas">
@@ -56,7 +57,9 @@
                         <div th:each="r: ${reservas}">
                             <div class="divReservas">
                                 <div class="divReserva1">
-                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span th:text="${r.id}">x</span> del negocio <span th:text="${r.negocio.nombre}">x</span>
+                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
+                                            th:text="${r.id}">x</span> del negocio <span
+                                            th:text="${r.negocio.nombre}">x</span>
                                     </p>
 
                                 </div>
@@ -74,20 +77,24 @@
                                     <div class="divReserva3">
                                         <div th:if="${r.estado.name() == 'CANCELADA'}">
                                             <form method="post" th:action="@{/reserva/{id}/habilitar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Habilitar" type="submit">Habilitar</button>
+                                                <button class="botonRes" th:text="Habilitar"
+                                                    type="submit">Habilitar</button>
                                             </form>
                                         </div>
                                         <div th:if="${r.estado.name() == 'SOLICITADA'}">
                                             <form method="post" th:action="@{/reserva/{id}/confirmar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Confirmar" type="submit">Confirmar</button>
+                                                <button class="botonRes" th:text="Confirmar"
+                                                    type="submit">Confirmar</button>
                                             </form>
                                             <form method="post" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Cancelar" type="submit">Cancelar</button>
+                                                <button class="botonRes" th:text="Cancelar"
+                                                    type="submit">Cancelar</button>
                                             </form>
                                         </div>
                                         <div th:if="${r.estado.name() == 'CONFIRMADA'}">
                                             <form method="post" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Cancelar" type="submit">Cancelar</button>
+                                                <button class="botonRes" th:text="Cancelar"
+                                                    type="submit">Cancelar</button>
                                             </form>
                                         </div>
                                     </div>
@@ -148,7 +155,9 @@
 
         </script> -->
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly" async></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAbP1WaZFO_pba4drPCI1v9pbfotSvKgs&callback=initMap&libraries=places&v=weekly"
+        async></script>
 
     <script>
         let map;
@@ -223,7 +232,19 @@
                     let mes = dateTemp.getMonth() + 1;
                     td = document.createElement("td");
                     td.style.color = "red";
-                    td.id = "m" + mes + "d" + num;
+                    let n, m;
+                    if (num < 10)
+                        n = "0" + num;
+                    else
+                        n = num;
+                    if ((miFecha.getMonth()+1) < 10)
+
+                        m = "0" + (miFecha.getMonth()+1);
+                    else
+                        m = miFecha.getMonth() + 1;
+
+                    //let fechaActual = new LocalDateTime.parse(miFecha.getFullYear()+"-"+(miFecha.getMonth() + 1)+n+"T00:00");
+                    td.id = miFecha.getFullYear() + "-" + m  + "-" + n;
                     console.log(td.id);
                     let isNotRealDay = (((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) ||
                         (num > diasDelMes);
@@ -232,8 +253,13 @@
                         text = document.createTextNode("");
                     } else {
                         text = document.createTextNode((num++));
+                        
                         td.addEventListener('click', (e) => {
-                            window.alert(e.target.id);
+                            //window.alert(e.target.id);
+                            console.log("HOLA EEE")
+                            go(config.rootUrl + "/reserva/listaReservas?fecha=" + e.target.id, 'GET', {})
+                            
+                            console.log("ADIOSSSS")
                         });
                     }
 
@@ -250,3 +276,23 @@
 </body>
 
 </html>
+
+<!--
+<html>
+<head>
+</head>
+<body onLoad=cargar_pagina()>
+<script language=Javascript>
+function cargar_pagina(){
+form1.action='pagina.php';
+form1.submit();
+}
+</script>
+<form method=POST name=form1>
+<input type=hidden name=Friend1 value=$Friend1>
+<input type=hidden name=Friend2 value=$Friend2>
+</form>
+</body>
+</html>";
+
+-->

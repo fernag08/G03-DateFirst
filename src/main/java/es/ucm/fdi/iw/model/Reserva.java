@@ -19,19 +19,19 @@ import java.util.List;
 import lombok.Data;
 
 
-/*@NamedQueries({
-    @NamedQuery(name="User.byUsername",
-            query="SELECT u FROM User u "
-                    + "WHERE u.username = :username AND u.enabled = 1"),
-    @NamedQuery(name="User.hasUsername",
-            query="SELECT COUNT(u) "
-                    + "FROM User u "
-                    + "WHERE u.username = :username")
-})*/
-
+@NamedQueries({
+    @NamedQuery(name="reservaByDia",
+                query="SELECT r FROM Reserva r "
+                        + "WHERE r.inicio >= :diaBuscadaIni AND r.fin <= diaBuscadaFin "),
+    @NamedQuery(name="Reserva.delEsteDia",
+            query="SELECT COUNT(r) "
+                    + "FROM Reserva r "
+                    + "WHERE r.inicio <= :diaBuscadaIni AND r.fin>=diaBuscadaFin ")
+})
+   
 @Entity
 @Data
-public class Reserva {
+public class Reserva {       
 
     public enum Estado {LIBRE, SOLICITADA, CANCELADA, CONFIRMADA};
 
