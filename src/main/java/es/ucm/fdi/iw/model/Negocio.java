@@ -65,6 +65,7 @@ public class Negocio implements Transferable<Negocio.Transfer> {
     private String latitud;
     private String longitud;
     private byte enabled;
+   
 
 
     @ManyToOne

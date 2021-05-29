@@ -76,7 +76,7 @@ public class ReservaController {
 	 	
 	 	return "nuevaReserva";
 	}
-
+/*
 	@GetMapping("/listaReservas")
 	@Transactional
 	 public String getListaReservas(@RequestParam String fecha, Model model, HttpSession session) {	
@@ -98,6 +98,33 @@ public class ReservaController {
 
 	 	return "redirect:/reserva/listaReservas";
 	}
+*/
+
+	@PostMapping("/listaReservas")
+	@Transactional
+	public String getListaReservas(
+		HttpServletResponse response,
+		@RequestParam String fecha, 
+		Model model, HttpSession session) throws IOException {
+
+			log.info("CONTROLEEEEEEEEEEEEEEEEEEEER");
+			
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+			LocalDateTime inicioP = LocalDateTime.parse(fecha+" 00:00:00", formatter);
+			LocalDateTime finP = LocalDateTime.parse(fecha+" 23:59:59", formatter);
+
+			List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
+					"Reserva.reservaByDia")
+					.setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+					.getResultList();
+
+			model.addAttribute("listaR",lr);
+
+			return "listaReservas";
+	}
+
 
 	@PostMapping("/{id}/cancelar")
 	@Transactional

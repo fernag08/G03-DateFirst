@@ -39,7 +39,7 @@
         <p><span class="titulo2">Aforo máximo:</span><span th:text="${n.aforoMaximo}">x</span></p>
         <p><span class="titulo2">Teléfono:</span><span th:text="${n.telefono}">x</span></p>
 
-        <div th:if="${session.u}">
+        <div th:if="(${session.u})">
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
                 <div class="botonesReserva">
                     <h3>Reservas actuales</h3>
@@ -48,103 +48,20 @@
                             reservas</a>
                     </div>
                 </div>
-                <div class="contReservas">
-                    <div th:if="${reservas.isEmpty()}">
-                        <h3>No hay reservas</h3>
-                    </div>
-                    <div th:unless="${reservas.isEmpty()}">
-
-                        <div th:each="r: ${reservas}">
-                            <div class="divReservas">
-                                <div class="divReserva1">
-                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
-                                            th:text="${r.id}">x</span> del negocio <span
-                                            th:text="${r.negocio.nombre}">x</span>
-                                    </p>
-
-                                </div>
-                                <div class="divReserva2">
-                                    <span th:if="${r.estado.name() != 'LIBRE'}">
-                                        Usuario de reserva: <span class="infoReserva"
-                                            th:text="${r.usuario.username}">x</span></span>
-                                    <span>Inicio reserva: <span class="infoReserva"
-                                            th:text="${r.inicio}">x</span></span>
-                                    <span>Fin reserva: <span class="infoReserva" th:text="${r.fin}">x</span></span>
-                                    <span>Numero de personas: <span class="infoReserva"
-                                            th:text="${r.numPersonas}">x</span></span>
-                                    <span>Estado de reserva: <span class="infoReserva"
-                                            th:text="${r.estado.name()}">x</span></span>
-                                    <div class="divReserva3">
-                                        <div th:if="${r.estado.name() == 'CANCELADA'}">
-                                            <form method="post" th:action="@{/reserva/{id}/habilitar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Habilitar"
-                                                    type="submit">Habilitar</button>
-                                            </form>
-                                        </div>
-                                        <div th:if="${r.estado.name() == 'SOLICITADA'}">
-                                            <form method="post" th:action="@{/reserva/{id}/confirmar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Confirmar"
-                                                    type="submit">Confirmar</button>
-                                            </form>
-                                            <form method="post" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Cancelar"
-                                                    type="submit">Cancelar</button>
-                                            </form>
-                                        </div>
-                                        <div th:if="${r.estado.name() == 'CONFIRMADA'}">
-                                            <form method="post" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
-                                                <button class="botonRes" th:text="Cancelar"
-                                                    type="submit">Cancelar</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div th:if="(${session.u.id} neq ${n.propietario.id})">
-                <h3>Reservas disponibles</h3>
-                <div th:each="r: ${reservas}">
-                    <div th:if="${r.estado.name() == 'LIBRE'}">
-                        <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
-
-                        <h5 th:text="${r}">Texto de la reserva</h5>
-                        <p><a th:id="'reserva_' + ${r.id}" th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-        <div th:unless="${session.u}">
-
-            <h3>Reservas disponibles</h3>
-            <div th:each="r: ${reservas}">
-                <div th:if="${r.estado.name() == 'LIBRE'}">
-                    <p><a th:href="@{/reserva/{id}(id=${r.id})}" th:text="${r.id}">123</a></p>
-                    <h5 th:text="${r}">Texto de la reserva</h5>>
-                    <p><a th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
-                </div>
             </div>
         </div>
+        <div th:unless="(${session.u})"></div>
 
         <div id="calendario">
             <table>
 
             </table>
-
         </div>
+
+        <form method="post" id="formCalendar" th:action="@{/reserva/listaReservas}">
+            <input type="hidden" id="fecha" name="fecha" value=""></input>
+        </form>
+
 
         <div id="map" style="height: 400px; width: 400px;"> </div>
 
@@ -225,7 +142,8 @@
 
             var num = 1;
             var dateTemp = new Date(miFecha.getFullYear() + '-' + (miFecha.getMonth() + 1) + '-1');
-
+            var lista = "[[${disponiblesDia}]]";
+            window.alert(lista);
             for (var i = 0; i < 6; i++) {
                 tr = document.createElement("tr");
                 for (var j = 1; j < 8; j++) {
@@ -237,14 +155,16 @@
                         n = "0" + num;
                     else
                         n = num;
-                    if ((miFecha.getMonth()+1) < 10)
+                    if ((miFecha.getMonth() + 1) < 10)
 
-                        m = "0" + (miFecha.getMonth()+1);
+                        m = "0" + (miFecha.getMonth() + 1);
                     else
                         m = miFecha.getMonth() + 1;
 
                     //let fechaActual = new LocalDateTime.parse(miFecha.getFullYear()+"-"+(miFecha.getMonth() + 1)+n+"T00:00");
-                    td.id = miFecha.getFullYear() + "-" + m  + "-" + n;
+
+
+                    td.id = miFecha.getFullYear() + "-" + m + "-" + n;
                     console.log(td.id);
                     let isNotRealDay = (((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) ||
                         (num > diasDelMes);
@@ -252,13 +172,31 @@
                     if (isNotRealDay) {
                         text = document.createTextNode("");
                     } else {
-                        text = document.createTextNode((num++));
                         
+                        if(lista[+num]==0)
+                       {
+                        
+                        td.style.color = "green";
+                       }
+                       
+                        text = document.createTextNode((num++)+"\nDisponibles: "+lista[+num-1]);
+                      
+
                         td.addEventListener('click', (e) => {
+
+                            form = document.getElementById("formCalendar");
+                            input = document.getElementById("fecha");
+                            input.setAttribute("value", e.target.id);
+
+                            //append to form element that you want.
+
                             //window.alert(e.target.id);
+
+                            form.submit();
+                            /*
                             console.log("HOLA EEE")
                             go(config.rootUrl + "/reserva/listaReservas?fecha=" + e.target.id, 'GET', {})
-                            
+                            */
                             console.log("ADIOSSSS")
                         });
                     }
@@ -276,23 +214,3 @@
 </body>
 
 </html>
-
-<!--
-<html>
-<head>
-</head>
-<body onLoad=cargar_pagina()>
-<script language=Javascript>
-function cargar_pagina(){
-form1.action='pagina.php';
-form1.submit();
-}
-</script>
-<form method=POST name=form1>
-<input type=hidden name=Friend1 value=$Friend1>
-<input type=hidden name=Friend2 value=$Friend2>
-</form>
-</body>
-</html>";
-
--->

@@ -55,7 +55,7 @@
 					<th>Eliminar (🗑)</th>
 				</tr>
 						
-				<tr th:each="n: ${negocios}">
+				<tr th:each="n: ${negocios}" th:id="'negAdmin_' + ${n.id}">
 					<td><a th:href="@{/negocio/{id}(id=${n.id})}" th:text="${n.nombre}">X</a></td>
 					<td>
 						<form method="post" th:action="@{/admin/toggleBusiness(id=${n.id})}">
@@ -63,16 +63,45 @@
 						</form>
 					</td>
 					<td>
-						<form method="post" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-							<button th:text="Eliminar" type="submit" >🗑</button>
+
+						<form method="post" class="elimina_negocioAdmin" th:data-id="'negAdmin_' + ${n.id}" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
+							<button type="submit">Eliminar</button>
 						</form>
+						<!--'negocio_' + ${n.id}-->
+
 					</td>
 				</tr>
 			</table>
 
-
 		</div>
 	</div>
+
+	<script>
+
+        // envío de mensajes vía AJAX, sin recargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            let bs = document.querySelectorAll(".elimina_negocioAdmin");
+            for (let b of bs) {
+                b.onclick = (e) => {
+                    let idOfTarget = b.dataset.id;
+                    let url = b.action;
+                    console.log("he pillado el evento", b, idOfTarget, url);
+
+                    e.preventDefault();
+                    console.log(b, b.parentNode)
+                    go(url, 'POST')
+                        .then(d => {
+                            console.log("happy", idOfTarget, d.id);
+                            document.getElementById(idOfTarget).remove();
+                        })
+                }
+            }
+        });
+
+        //document.getElementById("#tablanegocios").removeChild(document.getElementById("#n"+id))
+
+        //document.getElementById("#n"+id).remove()
+    </script>
 
 	<footer th:replace="fragments/footer.html :: footer">
 		Footer goes here

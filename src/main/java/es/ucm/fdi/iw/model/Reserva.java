@@ -19,14 +19,14 @@ import java.util.List;
 import lombok.Data;
 
 
-@NamedQueries({
-    @NamedQuery(name="reservaByDia",
+@NamedQueries({//REPASAR CONSULTAS
+    @NamedQuery(name="Reserva.reservaByDia",
                 query="SELECT r FROM Reserva r "
-                        + "WHERE r.inicio >= :diaBuscadaIni AND r.fin <= diaBuscadaFin "),
+                        + "WHERE r.negocio =:negocioBuscado AND r.inicio >= :diaBuscadaIni AND r.fin <= :diaBuscadaFin "),
     @NamedQuery(name="Reserva.delEsteDia",
             query="SELECT COUNT(r) "
                     + "FROM Reserva r "
-                    + "WHERE r.inicio <= :diaBuscadaIni AND r.fin>=diaBuscadaFin ")
+                    + "WHERE r.inicio >= :diaBuscadaIni AND r.fin <= :diaBuscadaFin AND r.estado = 0")
 })
    
 @Entity
