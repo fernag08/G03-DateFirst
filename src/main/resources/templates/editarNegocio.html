@@ -50,7 +50,12 @@
 					
 					<button type="submit" class="botonEnviar">Modificar</button>
 				</form>
+				<form th:action="@{/negocio/{id}/photo(id=${n.id})}" method="POST" enctype="multipart/form-data">
+					Nueva foto <input type="file" name="photo" />
+					<button type="submit">Actualizar</button>
+				</form>
 			</div>
+			<img th:src="@{/negocio/{id}/photo(id=${n.id})}">
 		</div>
 	</div>
 

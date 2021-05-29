@@ -404,7 +404,7 @@ public class NegocioController {
 	public String postPhoto(
 			HttpServletResponse response,
 			@RequestParam("photo") MultipartFile photo,
-			@PathVariable("id") String id, Model model, HttpSession session) throws IOException {
+			@PathVariable long id, Model model, HttpSession session) throws IOException {
 		
 		Negocio n = entityManager.find(Negocio.class, id);
 		model.addAttribute("n", n);
@@ -420,7 +420,7 @@ public class NegocioController {
 		}
 		
 		log.info("Updating photo for negocio {}", id);
-		File f = localData.getFile("negocio", id);
+		File f = localData.getFile("negocio", ""+id+".jpg");
 		if (photo.isEmpty()) {
 			log.info("failed to upload photo: emtpy file?");
 		} else {
