@@ -58,7 +58,7 @@
                             <td>
 
                                 <form method="post" class="elimina_negocio" th:data-id="'neg_' + ${n.id}" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-                                    <button th:id="'negocio_' + ${n.id}" type="submit">Eliminar ❌</button>
+                                    <button type="submit">Eliminar ❌</button>
                                 </form>
                                 <!--'negocio_' + ${n.id}-->
 
@@ -128,7 +128,7 @@
                     console.log(b, b.parentNode)
                     go(url, 'POST')
                         .then(d => {
-                            console.log("happy");
+                            console.log("happy", idOfTarget);
                             document.getElementById(idOfTarget).remove();
                         })
                 }

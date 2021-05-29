@@ -1,5 +1,4 @@
 package es.ucm.fdi.iw.control;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -10,8 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.format.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -124,6 +122,43 @@ public class NegocioController {
     public String getNegocio(@PathVariable long id, Model model, HttpSession session) 			
 	 		throws JsonProcessingException {		
 	 	Negocio n = entityManager.find(Negocio.class, id);
+		Calendar fecha = new GregorianCalendar();
+		int mes = fecha.get(Calendar.MONTH);
+		int anyo = fecha.get(Calendar.YEAR);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ArrayList dias=new ArrayList<>();
+		String m="";
+		if(mes<10)
+			 m="0"+mes;
+		else
+			m=""+mes;
+		LocalDateTime inicioP;
+		LocalDateTime finP;
+		int dia=1;
+		String d="";
+		for(int i=0;i<31;i++)
+		{
+			if(dia<10)
+				d="0"+dia;
+			else 
+				d=""+dia;
+
+			inicioP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 00:00:00", formatter);
+			finP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 23:59:59", formatter);
+			int num= (int)entityManager.createNamedQuery(
+				"Reserva.reservaByDia")
+				.setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+				.getResultList().size();
+
+				//log.info("VALORRRRRR");
+				//log.info(""+num);
+			
+			
+			dias.add(num);
+			dia=i+1;
+		}
+		model.addAttribute("disponiblesDia", dias);	
+
 		model.addAttribute("n", n);
 			
 		// pasa a la vista todas las reservas de ese negocio
