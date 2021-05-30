@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -127,6 +128,7 @@ public class NegocioController {
 		int anyo = fecha.get(Calendar.YEAR);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		ArrayList dias=new ArrayList<>();
+		
 		String m="";
 		if(mes<10)
 			 m="0"+mes;
@@ -145,13 +147,14 @@ public class NegocioController {
 
 			inicioP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 00:00:00", formatter);
 			finP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 23:59:59", formatter);
-			int num= (int)entityManager.createNamedQuery(
-				"Reserva.reservaByDia")
-				.setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
-				.getResultList().size();
-
-				//log.info("VALORRRRRR");
-				//log.info(""+num);
+			
+			List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
+					"Reserva.reservaByDia")
+					.setParameter("negocioBuscado", n).setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+					.getResultList();
+			int num=lr.size();
+				log.info("VALORRRRRR");
+				log.info(""+num);
 			
 			
 			dias.add(num);
@@ -177,6 +180,46 @@ public class NegocioController {
 
 		Negocio target = entityManager.find(Negocio.class, id);
 		User requester = (User)session.getAttribute("u");
+
+		Calendar fecha = new GregorianCalendar();
+		int mes = fecha.get(Calendar.MONTH);
+		int anyo = fecha.get(Calendar.YEAR);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ArrayList dias=new ArrayList<>();
+		
+		String m="";
+		if(mes<10)
+			 m="0"+mes;
+		else
+			m=""+mes;
+		LocalDateTime inicioP;
+		LocalDateTime finP;
+		int dia=1;
+		String d="";
+		for(int i=0;i<31;i++)
+		{
+			if(dia<10)
+				d="0"+dia;
+			else 
+				d=""+dia;
+
+			inicioP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 00:00:00", formatter);
+			finP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 23:59:59", formatter);
+			
+			List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
+					"Reserva.reservaByDia")
+					.setParameter("negocioBuscado", target).setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+					.getResultList();
+			int num=lr.size();
+				log.info("VALORRRRRR");
+				log.info(""+num);
+			
+			
+			dias.add(num);
+			dia=i+1;
+		}
+		model.addAttribute("disponiblesDia", dias);	
+
 
 		if(!compruebaPropietario(requester, target)){		
 			return "redirect:/negocio/"+ target.getId();

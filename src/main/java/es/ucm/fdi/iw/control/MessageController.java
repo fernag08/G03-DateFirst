@@ -36,8 +36,9 @@ public class MessageController {
 		
 	@GetMapping("/")
 	public String getMessages(Model model, HttpSession session) {
-		model.addAttribute("users", entityManager.createQuery(
-			"SELECT u FROM User u").getResultList());
+		
+		model.addAttribute("negocios", entityManager.createQuery(
+			"SELECT n FROM Negocio n").getResultList());
 		return "messages";
 	}
 

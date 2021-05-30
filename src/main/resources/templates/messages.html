@@ -26,12 +26,15 @@
     <div class="sidebar">
         <form th:action="@{/user/idOfTarget/msg}" method="POST">
             <select id="idOfTarget">
-			<option th:each="user: ${users}" th:value="${user.id}" th:text="${user.username}">mfreire</option>
-		</select>
-            <textarea id="message" placeholder="escribe al usuario seleccionado" rows="4" cols="20"></textarea>
+               
+                    <option th:each="negocio: ${negocios}" th:if="(${negocio.propietario.id} neq ${session.u.id})" th:value="${negocio.propietario.id}" th:text="${negocio.nombre}">mfreire</option>
+               
+            </select>
+            <textarea id="message" placeholder="Escribe al negocio seleccionado" rows="4" cols="20"></textarea>
             <button id="sendmsg" type="submit">Enviar</button>
         </form>
     </div>
+
 
     <script>
         function formatDate(d) {
@@ -42,22 +45,22 @@
         // mostrando una tabla dinámica con datos cargados del servidor vía AJAX
         let dt = new simpleDatatables.DataTable(
             '#datatable', {
-                ajax: {
-                    url: config.rootUrl + "message/received", // empieza siempre por config.rootUrl
-                    load: function(xhr) {
-                        let data = JSON.parse(xhr.responseText);
-                        for (let i = 0; i < data.length; i++) {
-                            let row = data[i];
-                            row.sent = formatDate(row.sent);
-                            if (row.received) {
-                                row.received = formatDate(row.received);
-                            }
+            ajax: {
+                url: config.rootUrl + "message/received", // empieza siempre por config.rootUrl
+                load: function (xhr) {
+                    let data = JSON.parse(xhr.responseText);
+                    for (let i = 0; i < data.length; i++) {
+                        let row = data[i];
+                        row.sent = formatDate(row.sent);
+                        if (row.received) {
+                            row.received = formatDate(row.received);
                         }
-
-                        return JSON.stringify(data);
                     }
+
+                    return JSON.stringify(data);
                 }
             }
+        }
         );
 
         // envío de mensajes vía AJAX, sin recargar la página
@@ -69,8 +72,8 @@
                 e.preventDefault();
                 console.log(b, b.parentNode)
                 go(url, 'POST', {
-                        message: document.getElementById("message").value
-                    })
+                    message: document.getElementById("message").value
+                })
                     .then(d => console.log("happy", d))
                     .catch(e => console.log("sad", e))
             }

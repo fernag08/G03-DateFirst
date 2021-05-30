@@ -105,10 +105,11 @@ public class ReservaController {
 	public String getListaReservas(
 		HttpServletResponse response,
 		@RequestParam String fecha, 
+		@RequestParam long negocioBuscado, 
 		Model model, HttpSession session) throws IOException {
 
 			log.info("CONTROLEEEEEEEEEEEEEEEEEEEER");
-			
+			Negocio n = entityManager.find(Negocio.class, negocioBuscado);
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -117,7 +118,7 @@ public class ReservaController {
 
 			List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
 					"Reserva.reservaByDia")
-					.setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+					.setParameter("negocioBuscado", n).setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
 					.getResultList();
 
 			model.addAttribute("listaR",lr);
@@ -132,15 +133,13 @@ public class ReservaController {
 		HttpServletResponse response,
 		@PathVariable long id, 
 		Model model, HttpSession session) throws IOException {
-	
+		
 		Reserva target = entityManager.find(Reserva.class, id);
 		User requester = (User)session.getAttribute("u");
 
 		if(!compruebaPropietario(requester, target)){		
 			return "redirect:/user/"+ requester.getId();
 		}
-
-		model.addAttribute("r", target);
 
         target.setEstado(Reserva.Estado.CANCELADA);
 

@@ -325,6 +325,7 @@ public class UserController {
 			HttpServletResponse response,
 			@RequestParam("photo") MultipartFile photo,
 			@PathVariable("id") String id, Model model, HttpSession session) throws IOException {
+		
 		User target = entityManager.find(User.class, Long.parseLong(id));
 		model.addAttribute("user", target);
 		
