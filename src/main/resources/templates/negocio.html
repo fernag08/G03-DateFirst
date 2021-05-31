@@ -141,7 +141,7 @@
             var num = 1;
             var dateTemp = new Date(miFecha.getFullYear() + '-' + (miFecha.getMonth() + 1) + '-1');
             let lista = "[[${disponiblesDia}]]";
-            var posicion=0;
+            var posicion=1;
             
             window.alert(lista);
             
@@ -173,15 +173,21 @@
                     if (isNotRealDay) {
                         text = document.createTextNode("");
                     } else {
-                        /*
-                        if(lista[+poscicion]==0)
-                       {
-                        
-                        td.style.color = "green";
-                       }+"\nDisponibles: "+lista[+posicion]
-                       */
-                        text = document.createTextNode((num++));
-                        posicion=posicion+2;
+                            
+                        if(lista[+posicion]!=0)
+                        {
+                            td.style.color = "green";
+                            text = document.createTextNode((num+"\nDisponibles: "+lista[+posicion]));
+                        }
+                        else
+                        {
+                            text = document.createTextNode((num));
+                        }
+
+                        posicion= +posicion+3;
+                        num++;
+
+
 
                         td.addEventListener('click', (e) => {
 

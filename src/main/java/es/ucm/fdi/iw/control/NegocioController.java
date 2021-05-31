@@ -124,7 +124,7 @@ public class NegocioController {
 	 		throws JsonProcessingException {		
 	 	Negocio n = entityManager.find(Negocio.class, id);
 		Calendar fecha = new GregorianCalendar();
-		int mes = fecha.get(Calendar.MONTH);
+		int mes = fecha.get(Calendar.MONTH)+1;
 		int anyo = fecha.get(Calendar.YEAR);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		ArrayList dias=new ArrayList<>();
@@ -136,14 +136,13 @@ public class NegocioController {
 			m=""+mes;
 		LocalDateTime inicioP;
 		LocalDateTime finP;
-		int dia=1;
 		String d="";
-		for(int i=0;i<31;i++)
+		for(int i=1;i<=31;i++)
 		{
-			if(dia<10)
-				d="0"+dia;
+			if(i<10)
+				d="0"+i;
 			else 
-				d=""+dia;
+				d=""+i;
 
 			inicioP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 00:00:00", formatter);
 			finP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 23:59:59", formatter);
@@ -156,9 +155,8 @@ public class NegocioController {
 				log.info("VALORRRRRR");
 				log.info(""+num);
 			
-			
+
 			dias.add(num);
-			dia=i+1;
 		}
 		model.addAttribute("disponiblesDia", dias);	
 
@@ -182,7 +180,7 @@ public class NegocioController {
 		User requester = (User)session.getAttribute("u");
 
 		Calendar fecha = new GregorianCalendar();
-		int mes = fecha.get(Calendar.MONTH);
+		int mes = fecha.get(Calendar.MONTH)+1;
 		int anyo = fecha.get(Calendar.YEAR);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		ArrayList dias=new ArrayList<>();
