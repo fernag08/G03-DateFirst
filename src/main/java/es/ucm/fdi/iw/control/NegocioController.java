@@ -192,14 +192,13 @@ public class NegocioController {
 			m=""+mes;
 		LocalDateTime inicioP;
 		LocalDateTime finP;
-		int dia=1;
 		String d="";
-		for(int i=0;i<31;i++)
+		for(int i=1;i<=31;i++)
 		{
-			if(dia<10)
-				d="0"+dia;
+			if(i<10)
+				d="0"+i;
 			else 
-				d=""+dia;
+				d=""+i;
 
 			inicioP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 00:00:00", formatter);
 			finP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 23:59:59", formatter);
@@ -214,7 +213,6 @@ public class NegocioController {
 			
 			
 			dias.add(num);
-			dia=i+1;
 		}
 		model.addAttribute("disponiblesDia", dias);	
 
