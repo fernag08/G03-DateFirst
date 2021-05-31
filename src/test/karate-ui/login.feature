@@ -20,7 +20,7 @@ Scenario: login using chrome
 
   Given driver 'http://localhost:8080/'
   * click("a[id=botonLogin]")
-  * input('#username', 'b')
+  * input('#username', 'Fernango99')
   * input('#password', 'aa')
   * submit().click("button[type=submit]")
   * match html('title') contains 'Perfil'

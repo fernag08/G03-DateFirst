@@ -23,6 +23,7 @@ body {
 	width: 115.5%;
 	margin-left: -10%;
 	margin-top: -3.6%;
+	margin-bottom: 4%;
 	overflow: hidden;
 	height: 520px;
 	position: relative;
@@ -137,6 +138,12 @@ nav>*{
 	font-size: 40px;
 	margin-top: 25px;
 	margin-bottom: 15px;
+}
+
+.nombreMapa {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .contNegocios {

@@ -45,6 +45,7 @@ public class RootController {
 	@Autowired
 	private Environment env;
 
+/*Te lleva a DateFirst.html */
     @GetMapping("/")            // <-- en qué URL se expone, y por qué métodos (GET)        
     public String index(        // <-- da igual, sólo para desarrolladores
             Model model)        // <-- hay muchos, muchos parámetros opcionales
@@ -56,15 +57,14 @@ public class RootController {
 				"SELECT n FROM Negocio n").getResultList());
 	 return "DateFirst";
 	}
-
-	@PostMapping("/buscar")            // <-- en qué URL se expone, y por qué métodos (GET)       
+/*Te lleva a negocioBuscado.html o el unico negocio encontrado segun el filtro de busqueda en DateFirst.html */
+	@PostMapping("/buscar")              
 	@Transactional 
-    public String busca(        // <-- da igual, sólo para desarrolladores
+    public String busca(        
             Model model,
 			@RequestParam String consulta,
-			@RequestParam String filtro)        // <-- hay muchos, muchos parámetros opcionales
-    { 
-		
+			@RequestParam String filtro)        
+	{	
 		List<Negocio> ln = null;
 		try {
 			if(filtro.equals("name")){
@@ -93,16 +93,15 @@ public class RootController {
 			return "redirect:/";
 		}
 		
-		if (ln.size() == 1)
+		if (ln.size() == 1) {
 			return "redirect:/negocio/" + ln.get(0).getId(); 
-		else 
-		{
+		}
+		else {
 			model.addAttribute("listNegocios", ln); 
 			return "negocioBuscado"; 
 		}
 		
 	}
-
 	
 	@GetMapping("/chat")
 	public String chat(Model model, HttpServletRequest request) {

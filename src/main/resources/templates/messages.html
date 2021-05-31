@@ -16,22 +16,20 @@
 
     <div class="container">
         <div class="main">
-            <h1>Mensajes recibidos</h1>
+            <p class="titulo">Mensajes recibidos</p>
 
             <table class="datatable" id="datatable"></table>
 
         </div>
-    </div>
 
-    <div class="sidebar">
-        <form th:action="@{/user/idOfTarget/msg}" method="POST">
+        <form class="formularioMsg" th:action="@{/user/idOfTarget/msg}" method="POST">
             <select id="idOfTarget">
                
                     <option th:each="negocio: ${negocios}" th:if="(${negocio.propietario.id} neq ${session.u.id})" th:value="${negocio.propietario.id}" th:text="${negocio.nombre}">mfreire</option>
                
             </select>
             <textarea id="message" placeholder="Escribe al negocio seleccionado" rows="4" cols="20"></textarea>
-            <button id="sendmsg" type="submit">Enviar</button>
+            <button id="sendmsg" class="botonEnviar" type="submit">Enviar</button>
         </form>
     </div>
 

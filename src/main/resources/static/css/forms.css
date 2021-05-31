@@ -73,8 +73,8 @@
 	border:2px solid gray;
 	width: auto;
 	padding:15px 30px;
-	margin-bottom: 50px;
-	margin-top: 4%;
+	margin-bottom: 5%;
+	margin-top: 2%;
 }
 
 .formularioBusq input[type="text"] {
@@ -96,6 +96,17 @@
 .formularioBusq input:focus, .formularioBusq select:focus {
 	outline:0;
 	border-color:#091066;
+}
+
+
+/*----------------Formulario de mensajes--------------------*/
+
+.formularioMsg {
+	padding-left: 10px;
+}
+
+.formularioMsg * {
+	margin-top: 10px;
 }
 
 /*----------------Resto de formularios--------------------*/
@@ -141,14 +152,14 @@
     font-family: Candara;
 }
 
-.formulario textarea {
+textarea {
 	font-size:18px;
 	display:block;
 	width:40%;
 	height:100%;
 	padding:5px 10px;
 	padding-top: 10px;
-	background:none;
+	background-color:white;
 	background-image:none;
 	border:1px solid;
 	color:black;

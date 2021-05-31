@@ -100,13 +100,15 @@ public class UserController {
 		return passwordEncoder.encode(rawPassword);
 	}
 
+    /* Crear un usuario nuevo cuando clickeas sobre boton registrar sin login en la barra de navegacion nav.html*/
 	@GetMapping("/")
 	 public String getUsuario(Model model, HttpSession session) 			
 	 		throws JsonProcessingException {		
 	 	
 	 	return "nuevoUsuario";
 	}
-
+	
+	/* Se llama desde nuevoUsurio.html cuando insertamos un usuario*/
 	@PostMapping("/")
 	@Transactional
 	public String addUsuario(
@@ -148,7 +150,7 @@ public class UserController {
 
 	    return "login";
 	}
-
+   /*Para hacer la validacion del username en creacion de nuevo usuario en nuevoUsuario.html */
 	@GetMapping("/username")
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
 	public String getUsername(@RequestParam (required=false) String uname) {
@@ -159,7 +161,8 @@ public class UserController {
 
 		return "{ \"count\": " + u + "}";
 	}
-
+	
+	/*Hace de intermediario para ir al perfil de usuario y se llama desde fragmets/*/
 	@GetMapping("/{id}")
 	@Transactional
 	public String getUser(@PathVariable long id, Model model, HttpSession session) 			
@@ -233,6 +236,7 @@ public class UserController {
 		return "perfilUsuario";
 	}
 
+	/* Es llamdo desde el perfil de usuario cuando se pula sobre eliminar cuenta */
 	@PostMapping("/{id}/eliminar")
 	@Transactional
     public String eliminarUsuario(@PathVariable long id, Model model, HttpSession session) 			

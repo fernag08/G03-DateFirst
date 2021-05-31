@@ -28,9 +28,9 @@ Scenario: new negocio using chrome
   # El usuario genera nuevas reservas
   * click("a[id=generarReservas]")
   * match html('title') contains 'Generar Reservas'
-  * input('#Finicio', '15/03/2021')
+  * input('#Finicio', '31/05/2021')
   * input('#inicio', '20:00')
-  * input('#Ffin', '15/03/2021')
+  * input('#Ffin', '31/05/2021')
   * input('#fin', '21:30')
   * input('#cuantas', '2')
   * input('#duracionEnMinutos', '30')

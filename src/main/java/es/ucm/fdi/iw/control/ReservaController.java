@@ -53,11 +53,6 @@ import es.ucm.fdi.iw.model.Reserva;
 import es.ucm.fdi.iw.model.User.Role;
 
 
-/**
- * User-administration controller
- * 
- * @author mfreire
- */
 @Controller()
 @RequestMapping("reserva")
 public class ReservaController {
@@ -70,36 +65,8 @@ public class ReservaController {
     @Autowired
 	private LocalData localData;
 
-	@GetMapping("/")
-	 public String getReserva(Model model, HttpSession session) 			
-	 		throws JsonProcessingException {		
-	 	
-	 	return "nuevaReserva";
-	}
-/*
-	@GetMapping("/listaReservas")
-	@Transactional
-	 public String getListaReservas(@RequestParam String fecha, Model model, HttpSession session) {	
-	 	
-		log.info("CONTROLEEEEEEEEEEEEEEEEEEEER");
-		System.out.println("prueba");
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-		LocalDateTime inicioP = LocalDateTime.parse(fecha+" 00:00:00", formatter);
-		LocalDateTime finP = LocalDateTime.parse(fecha+" 23:59:59", formatter);
-
-		List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
-				"Reserva.reservaByDia")
-				.setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
-				.getResultList();
-
-		model.addAttribute("listaReservas",lr);
-
-	 	return "redirect:/reserva/listaReservas";
-	}
-*/
-
+	/*Este metodo es llamado desde el negocio.html cuando pinchamos sobre un dia del calendario y nos lleva a listaReservas */
 	@PostMapping("/listaReservas")
 	@Transactional
 	public String getListaReservas(
@@ -108,17 +75,21 @@ public class ReservaController {
 		@RequestParam long negocioBuscado, 
 		Model model, HttpSession session) throws IOException {
 
-			log.info("CONTROLEEEEEEEEEEEEEEEEEEEER");
+			log.info("CONTROLER");
 			Negocio n = entityManager.find(Negocio.class, negocioBuscado);
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+			log.warn("FECHA" + fecha);
 
 			LocalDateTime inicioP = LocalDateTime.parse(fecha+" 00:00:00", formatter);
 			LocalDateTime finP = LocalDateTime.parse(fecha+" 23:59:59", formatter);
 
 			List<Reserva> lr = (List<Reserva>)entityManager.createNamedQuery(
 					"Reserva.reservaByDia")
-					.setParameter("negocioBuscado", n).setParameter("diaBuscadaIni", inicioP).setParameter("diaBuscadaFin", finP)
+					.setParameter("negocioBuscado", n)
+					.setParameter("diaBuscadaIni", inicioP)
+					.setParameter("diaBuscadaFin", finP)
 					.getResultList();
 
 			model.addAttribute("listaR",lr);
@@ -126,7 +97,9 @@ public class ReservaController {
 			return "listaReservas";
 	}
 
+	
 
+	/* Llamado desde el perfil del usuario cuando pincha sobre cancelar una reserva */
 	@PostMapping("/{id}/cancelar")
 	@Transactional
 	public String cancelarReserva(
@@ -150,6 +123,7 @@ public class ReservaController {
 		return "redirect:/user/"+requester.getId();
 	}
 	
+	/* Llamada por el propietario del negocio o el Admin para habilitar la reserva cancelada como reserva libre en el listaReserva.html*/
 	@PostMapping("/{id}/habilitar")
 	@Transactional
 	public String habilitarReserva(
@@ -180,7 +154,9 @@ public class ReservaController {
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
-	//Este metodo se encarga de cambiar el estado de una reserva a cancelada
+
+	
+	/*Este metodo se encarga de cambiar el estado de una reserva a cancelada, es llamada desde la lista de reservas*/
 	@PostMapping("/{id}/eliminar")
 	@Transactional
 	public String eliminarReserva(
@@ -210,7 +186,8 @@ public class ReservaController {
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
-
+	
+	/*Este metodo se encarga de cambiar el estado de una reserva a confirmada, es llamada desde la lista de reservas */
 	@PostMapping("/{id}/confirmar")
 	@Transactional
 	public String confirmarReserva(
@@ -238,7 +215,8 @@ public class ReservaController {
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
-
+	
+	/* Llamada por el usuario clickeando boton solicitar para solicitar una reserva libre en listaReserva.html*/
 	@GetMapping("/{id}")
 	public String getReserva(@PathVariable long id, Model model, HttpSession session) 			
 			throws JsonProcessingException {		
@@ -246,19 +224,10 @@ public class ReservaController {
 		Reserva r = entityManager.find(Reserva.class, id);
 		model.addAttribute("r", r);
 
-		// construye y envía mensaje JSON
-		// User requester = (User)session.getAttribute("u");
-		// ObjectMapper mapper = new ObjectMapper();
-		// ObjectNode rootNode = mapper.createObjectNode();
-		// rootNode.put("text", requester.getUsername() + " is looking up " + id);
-		// String json = mapper.writeValueAsString(rootNode);
-		
-		// messagingTemplate.convertAndSend("/topic/admin", json);
-
 		return "reserva";
 	}
 
-
+	/*Se llama tras rellenar los datos de la reserva y pulsar sobre solicitar en reerva.html */
 	@PostMapping("/{id}")
 	@Transactional
 	public String postReserva(
@@ -284,6 +253,8 @@ public class ReservaController {
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
 
+	// Este método comprueba que el usuario que quiere realizar una acción sobre una reserva es el usaurio logueado o el admin
+	// Si es un usuario que no tiene permisos para realizar esa acción, se manda un aviso
 	public boolean compruebaPropietario(User req, Reserva r){
 		if (req.getId() != r.getUsuario().getId() &&
 				!req.hasRole(Role.ADMIN)) {

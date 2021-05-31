@@ -1,12 +1,53 @@
 #calendario {
-    width: 70%;
-    height: 400px;
-    margin: 100px;
-    border: 1px solid black;
+    margin-top: 50px;
+    margin-bottom: 50px;
     font-size: 24px;
 }
 
-th,
-td {
-    text-align: center;
+#tablaCalendario {
+    width: 90%;
+    height: 450px;
+    margin-left: 5%;
+    border-collapse: collapse;
 }
+
+#tablaCalendario caption {
+    font-size: 150%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10%;
+    padding-right: 10%;
+    font-family: 'Staatliches', cursive;
+}
+
+#tablaCalendario th {
+    background-color: rgb(106, 165, 255);
+    width: 14.28%;
+    text-align: center;
+    font-family: 'Staatliches', cursive;
+}
+
+#tablaCalendario td {
+    background-color: rgb(255, 255, 255);
+    text-align: right;
+    padding-right: 25px;
+    font-family: 'Roboto';
+}
+
+#tablaCalendario td:hover {
+    background-color: rgb(177, 208, 255);
+}
+
+#tablaCalendario td span {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.spanTexto {
+    font-size: 12px;
+}
+
+/*th, td {
+    text-align: center;
+}*/

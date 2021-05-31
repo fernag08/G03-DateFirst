@@ -1,3 +1,16 @@
+.tituloPerfil {
+	font-family: 'Staatliches', cursive;
+	font-size: 36px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.botonesPerfil {
+	display: flex;
+	justify-content: flex-start;
+	margin-top: 40px;
+}
+
 .contReservas {
 	/*margin-left: 8%;*/
     margin: 10px;
@@ -106,4 +119,13 @@
 }
 .tablaNeg td{
     width: 25%;
+}
+
+#eliminarReservas {
+    text-decoration: none;
+    color: black;
+    padding: 4px;
+    background-color: rgb(121, 255, 116);
+    border: 1px solid black;
+	margin-top: 20px;
 }

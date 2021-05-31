@@ -4,9 +4,9 @@ Background:
   # para escribir tus propias pruebas, lee https://github.com/intuit/karate/tree/master/karate-core
   # driver: chromium bajo linux; si usas google-chrome, puedes quitar executable (que es lo que usaría por defecto)
   * configure driver = { type: 'chrome', showDriverLog: true }
-  * call read('crearNegocio.feature')
 
 Scenario: new user using chrome
+  Given driver 'http://localhost:8080/'
   # Crea el nuevo usuario
   * click("a[id=botonRegistro]")
   * match html('title') contains 'Registro'

@@ -13,9 +13,7 @@
 
     <div class="container">
         <div class="main">
-            <h1 th:text="#{index.welcome}">Bienvenido a Date First</h1>
-
-            <h4>Crear nuevo usuario</h4>
+            <p class="titulo" th:text="#{index.welcome}">Bienvenido a Date First</p>
 
             <!-- puedes cambiar todo -->
             <form id="usermod" class="formulario" th:action="@{/user/}" method="POST">

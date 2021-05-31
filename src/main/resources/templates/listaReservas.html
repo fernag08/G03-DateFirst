@@ -38,7 +38,8 @@
                             <div class="divReserva2"   >
                                 <span th:if="${r.estado.name() != 'LIBRE'}">
                                     Usuario de reserva: <span class="infoReserva"
-                                        th:text="${r.usuario.username}">x</span></span>
+                                        th:text="${r.usuario.username}">x</span>
+                                </span>
                                 <span>Inicio reserva: <span class="infoReserva" th:text="${r.inicio}">x</span></span>
                                 <span>Fin reserva: <span class="infoReserva" th:text="${r.fin}">x</span></span>
                                 <span>Numero de personas: <span class="infoReserva"
@@ -68,7 +69,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div th:unless="(${session.u.id} eq ${r.negocio.propietario.id} or ${session.u.hasRole('ADMIN')})"><!-- Solo muestra las reservas que están libres (para usuarios comunes)-->
+                        <div th:unless="(${session.u.id} eq ${r.negocio.propietario.id} or ${session.u.hasRole('ADMIN')} )"><!-- Solo muestra las reservas que están libres (para usuarios comunes)-->
                             <div class="divReservas" th:if="${r.estado.name() == 'LIBRE'}">
 
                                 <div class="divReserva1" >

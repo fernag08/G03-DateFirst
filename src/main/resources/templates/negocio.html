@@ -28,8 +28,11 @@
             </div>
         </div>
 
-        <img th:src="@{/negocio/{id}/photo(id=${n.id})}">
+        <div class="nombreMapa">
+            <img th:src="@{/negocio/{id}/photo(id=${n.id})}">
 
+            <div id="map" style="width: 350px;"> </div>
+        </div>
         
         <p><span class="titulo2">Descripción:</span><span th:text="${n.descripcion}">x</span></p>
         <p><span class="titulo2">Dirección:</span><span id="txtDireccion" th:text="${n.direccion}">x</span></p>
@@ -42,18 +45,15 @@
         <div th:if="(${session.u})">
             <div th:if="(${session.u.id} eq ${n.propietario.id})">
                 <div class="botonesReserva">
-                    <h3>Reservas actuales</h3>
-                    <div class="enlacesReserva">
-                        <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar
-                            reservas</a>
-                    </div>
+                    <a id="eliminarReservas" th:href="@{/negocio/{id}/eliminarReservas(id=${n.id})}">Eliminar
+                        reservas</a>
                 </div>
             </div>
         </div>
         <div th:unless="(${session.u})"></div>
 
         <div id="calendario">
-            <table>
+            <table id="tablaCalendario">
 
             </table>
         </div>
@@ -62,9 +62,6 @@
             <input type="hidden" id="fecha" name="fecha" value=""></input>
             <input type="hidden" id="negocioBuscado" name="negocioBuscado" th:value="${n.id}"></input>
         </form>
-
-
-        <div id="map" style="height: 400px; width: 400px;"> </div>
 
     </div>
 
@@ -103,7 +100,7 @@
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", () => {
             console.log("hola mundo");
-            var dias = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do']
+            var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
             var mes = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
 
             //creamos objeto fecha y calculamos los días que tiene el mes, al usar miFecha.getFullYear() ya tendremos correcto el año bisiesto
@@ -111,18 +108,18 @@
             var diasDelMes = (Date.UTC(miFecha.getFullYear(), miFecha.getMonth() + 1, 1) - Date.UTC(miFecha.getFullYear(), miFecha.getMonth(), 1)) / 1000 / 60 / 60 / 24;
 
             //centramos div
-            document.getElementById("calendario").style.left = (document.body.clientWidth - 600) / 2 + "px";
+            //document.getElementById("calendario").style.left = (document.body.clientWidth - 600) / 2 + "px";
 
             //creamos variables para usarlas como nodos y redimensionamos la tabla
             var th, tr, td, text;
             var table = document.getElementsByTagName("table")[0];
-            table.style.width = "300px";
+            /*table.style.width = "300px";
             table.style.height = "300px";
-            table.style.margin = "0 auto";
+            table.style.margin = "0 auto";*/
 
             //CAPTION como cabecera de la tabla, donde irá "MES de AÑO"
             var caption = document.createElement("caption");
-            var captionText = document.createTextNode(mes[miFecha.getMonth()] + " DE " + miFecha.getFullYear());
+            var captionText = document.createTextNode(mes[miFecha.getMonth()] + " " + miFecha.getFullYear());
             caption.appendChild(captionText);
             table.appendChild(caption);
 
@@ -143,14 +140,14 @@
             let lista = "[[${disponiblesDia}]]";
             var posicion=1;
             
-            window.alert(lista);
+            //window.alert(lista);
             
             for (var i = 0; i < 6; i++) {
                 tr = document.createElement("tr");
                 for (var j = 1; j < 8; j++) {
                     let mes = dateTemp.getMonth() + 1;
                     td = document.createElement("td");
-                    td.style.color = "red";
+                    //td.style.color = "red";
                     let n, m;
                     if (num < 10)
                         n = "0" + num;
@@ -165,50 +162,58 @@
                     //let fechaActual = new LocalDateTime.parse(miFecha.getFullYear()+"-"+(miFecha.getMonth() + 1)+n+"T00:00");
 
 
-                    td.id = miFecha.getFullYear() + "-" + m + "-" + n;
+                    td.id = "t"+ miFecha.getFullYear() + "-" + m + "-" + n;
                     console.log(td.id);
+
+
                     let isNotRealDay = (((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) ||
                         (num > diasDelMes);
+
+                    let spanDia = document.createElement("span");
+                    let spanTexto = document.createElement("span");
+                    //spanDia.id = td.id;
+                    //spanTexto.id = td.id;
+                    spanTexto.className = "spanTexto";
 
                     if (isNotRealDay) {
                         text = document.createTextNode("");
                     } else {
-                            
-                        if(lista[+posicion]!=0)
-                        {
-                            td.style.color = "green";
-                            text = document.createTextNode((num+"\nDisponibles: "+lista[+posicion]));
+                        var spanContent;
+
+                        if(lista[posicion] == 0){
+                            spanContent = "No hay reservas";
+                            spanTexto.style.color = "red";
                         }
-                        else
+                        else{
+                            spanContent = "Reservas disponibles: " + lista[posicion];
+                            spanTexto.style.color = "green";
+                        }
+                        spanText = document.createTextNode(spanContent);
+
+                        text = document.createTextNode((num++));
+                        
+                        
+                        spanDia.appendChild(text);
+                        spanTexto.appendChild(spanText);
+
+                        if (lista[posicion] != 0)
                         {
-                            text = document.createTextNode((num));
+                            td.addEventListener('click', (e) => {
+                                let idValido = e.target.closest("td").id.substring(1);
+                                form = document.getElementById("formCalendar");
+                                input = document.getElementById("fecha");
+                                input.setAttribute("value", idValido);
+                                console.log("ACCEDIENDO A FECHA " + idValido, e.target.closest("td"));
+
+                                form.submit();
+                            });
                         }
 
-                        posicion= +posicion+3;
-                        num++;
-
-
-
-                        td.addEventListener('click', (e) => {
-
-                            form = document.getElementById("formCalendar");
-                            input = document.getElementById("fecha");
-                            input.setAttribute("value", e.target.id);
-
-                            //append to form element that you want.
-
-                            //window.alert(e.target.id);
-
-                            form.submit();
-                            /*
-                            console.log("HOLA EEE")
-                            go(config.rootUrl + "/reserva/listaReservas?fecha=" + e.target.id, 'GET', {})
-                            */
-                            console.log("ADIOSSSS")
-                        });
+                        posicion=posicion+3;
                     }
 
-                    td.appendChild(text);
+                    td.appendChild(spanDia);
+                    td.appendChild(spanTexto);
                     tr.appendChild(td);
                 }
                 table.appendChild(tr);

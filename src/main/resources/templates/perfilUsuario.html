@@ -38,10 +38,10 @@
                 <p><span class="titulo2">Provincia:</span><span th:text="${user.province}">x</span></p>
                 <p><span class="titulo2">Código Postal:</span><span th:text="${user.postalCode}">x</span></p>
 
-                <div class="botonesReserva">
-                    <h2>Negocios</h2>
+                <div class="botonesPerfil">
+                    <p class="tituloPerfil">Negocios</p>
                     <div class="enlacesReserva">
-                        <a id="newReserva" th:href="@{/negocio/}">Crea tu negocio</a>
+                        <a id="newNegocio" th:href="@{/negocio/}">Crea tu negocio</a>
                     </div>
                 </div>
                 <div th:if="${negocios.isEmpty()}">
@@ -58,7 +58,7 @@
                             <td>
 
                                 <form method="post" class="elimina_negocio" th:data-id="'neg_' + ${n.id}" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-                                    <button type="submit">Eliminar ❌</button>
+                                    <button th:id="'ne_' + ${n.id}" type="submit">Eliminar ❌</button>
                                 </form>
                                 <!--'negocio_' + ${n.id}-->
 
@@ -67,7 +67,9 @@
                     </table>
                 </div>
 
-                <h2>Reservas</h2>
+                <div class="botonesPerfil">
+                    <p class="tituloPerfil">Reservas</p>
+                </div>
                 <div class="contReservas">
                     <div th:if="${reservas.isEmpty()}">
                         <h3>¡Todavía no has hecho ninguna reserva!</h3>

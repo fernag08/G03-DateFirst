@@ -13,14 +13,19 @@ Scenario: new reserva using chrome
   * driver.screenshot()
 
   # Click sobre un negocio
-  * click("a[id=negocio_3]")
+  * click("a[id=negocio_1]")
+  * waitForUrl('/negocio/1')
   * match html('title') contains 'Negocio'
   * driver.screenshot()
+
+  # Click en calendario
+  * click("td[id=t2021-05-16]")
+  * match html('title') contains 'Lista reservas'
 
   # Solicitar una reserva
   * click("a[id=reserva_1]")
   * match html('title') contains 'Solicitar Reserva'
-  * input('#numPersonas', '3')
+  * input('#numPersonas', '1')
   * click("button[id=solicitar]")
   * match html('title') contains 'Negocio'
   * driver.screenshot()

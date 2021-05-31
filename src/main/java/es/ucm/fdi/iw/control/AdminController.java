@@ -25,7 +25,7 @@ import es.ucm.fdi.iw.model.Negocio;
  * @author mfreire
  */
 @Controller()
-@RequestMapping("admin")
+@RequestMapping("admin") 
 public class AdminController {
 	
 	private static final Logger log = LogManager.getLogger(AdminController.class);
@@ -39,6 +39,7 @@ public class AdminController {
 	@Autowired
 	private Environment env;
 	
+	/* Este método es llamado cuando haces login o cuando pinchas en el botón de administrar */
 	@GetMapping("/")
 	public String index(Model model) {
 		model.addAttribute("activeProfiles", env.getActiveProfiles());
@@ -53,7 +54,8 @@ public class AdminController {
 		
 		return "admin";
 	}
-	
+
+	/* Método que deshabilita o habilita un usuario */
 	@PostMapping("/toggleuser")
 	@Transactional
 	public String delUser(Model model,	@RequestParam long id) {
@@ -73,6 +75,9 @@ public class AdminController {
 		return index(model);
 	}	
 
+
+	// Igual que el método anterior pero para los negocios. Habilita o deshabilita un negocio.
+	// Si deshabilitas un negocio desaparecerá para los usuarios que no sean el propietario.
 	@PostMapping("/toggleBusiness")
 	@Transactional
 	public String delBusiness(Model model,	@RequestParam long id) {
@@ -81,6 +86,7 @@ public class AdminController {
 			
 			// disable negocio
 			target.setEnabled((byte)0); 
+			
 		} else {
 			// enable negocio
 			target.setEnabled((byte)1);

@@ -46,6 +46,8 @@
 
         </div>
 
+        <p class="tituloPortada2">Busca tu negocio</p>
+
         <form class="formularioBusq" th:action="@{/buscar}" method="POST">
             <input type="text" id="criterio" placeholder="Introduce el criterio de busqueda" size="40"
                 name="consulta" />
@@ -76,7 +78,7 @@
                             <span th:text="${n.ciudad}">x</span>
 
                             <div class="divNegocio3">
-                                <a class="botonNeg" th:href="@{/negocio/{id}(id=${n.id})}">¡Quiero saber más!</a>
+                                <a th:id="'negocio_' + ${n.id}" class="botonNeg" th:href="@{/negocio/{id}(id=${n.id})}">¡Quiero saber más!</a>
                             </div>
                         </div>
                     </div>
