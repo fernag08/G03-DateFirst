@@ -267,7 +267,7 @@ public class UserController {
 	
 	@GetMapping(value="/{id}/photo")
 	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
-		File f = localData.getFile("user", ""+id);
+		File f = localData.getFile("user", ""+id+".jpg");
 		InputStream in;
 		if (f.exists()) {
 			in = new BufferedInputStream(new FileInputStream(f));
