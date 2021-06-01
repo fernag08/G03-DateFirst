@@ -303,8 +303,6 @@ public class NegocioController {
 		
 		log.info("Negocio con id {} borrado correctamente...", id);
 
-		messagingTemplate.convertAndSend("/user/"+u.getUsername()+"/queue/updates");
-
 		return "{\"id\": " + id + "}";
 	}
 
@@ -421,7 +419,7 @@ public class NegocioController {
 			in = new BufferedInputStream(new FileInputStream(f));
 		} else {
 			in = new BufferedInputStream(getClass().getClassLoader()
-					.getResourceAsStream("static/img/logo.png"));
+					.getResourceAsStream("static/img/negocioPorDefecto.jpg"));
 		}
 		return new StreamingResponseBody() {
 			@Override

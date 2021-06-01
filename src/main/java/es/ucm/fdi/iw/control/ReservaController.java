@@ -75,12 +75,11 @@ public class ReservaController {
 		@RequestParam long negocioBuscado, 
 		Model model, HttpSession session) throws IOException {
 
-			log.info("CONTROLER");
 			Negocio n = entityManager.find(Negocio.class, negocioBuscado);
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			log.info("Cargando la lista de reservas para el negocio {} con id {}...", n.getNombre(), negocioBuscado);
 
-			log.warn("FECHA" + fecha);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 			LocalDateTime inicioP = LocalDateTime.parse(fecha+" 00:00:00", formatter);
 			LocalDateTime finP = LocalDateTime.parse(fecha+" 23:59:59", formatter);
@@ -94,14 +93,15 @@ public class ReservaController {
 
 			model.addAttribute("listaR",lr);
 
+			log.info("Lista de reservas cargada correctamente para el negocio con id {}...", n.getId());
+
 			return "listaReservas";
 	}
-
-	
 
 	/* Llamado desde el perfil del usuario cuando pincha sobre cancelar una reserva */
 	@PostMapping("/{id}/cancelar")
 	@Transactional
+	@ResponseBody
 	public String cancelarReserva(
 		HttpServletResponse response,
 		@PathVariable long id, 
@@ -118,16 +118,17 @@ public class ReservaController {
 
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("r", target);
-			
 
-		return "redirect:/user/"+requester.getId();
+		log.info("Reserva con id {} cancelada correctamente por el usuario {}...", id, target.getUsuario().getId());
+
+		//return "redirect:/user/"+requester.getId();
+		return "{\"id\": " + id + "}";
 	}
 	
 	/* Llamada por el propietario del negocio o el Admin para habilitar la reserva cancelada como reserva libre en el listaReserva.html*/
 	@PostMapping("/{id}/habilitar")
 	@Transactional
 	public String habilitarReserva(
-		HttpServletResponse response,
 		@PathVariable long id, 
 		Model model, HttpSession session) throws IOException {		
 			
@@ -147,14 +148,14 @@ public class ReservaController {
 			target.setNumPersonas(0);
 			target.setEstado(Reserva.Estado.LIBRE);
 			target.setUsuario(null);
-				
 	
 			// update user session so that changes are persisted in the session, too
 			session.setAttribute("r", target);
 
+			log.info("Reserva con id {} habilitada con exito por el usuario {}...", id, requester.getId());
+
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
-
 	
 	/*Este metodo se encarga de cambiar el estado de una reserva a cancelada, es llamada desde la lista de reservas*/
 	@PostMapping("/{id}/eliminar")
@@ -177,12 +178,12 @@ public class ReservaController {
 
 			model.addAttribute("r", target);
 			
-			
 			target.setEstado(Reserva.Estado.CANCELADA);
-			
 	
 			// update user session so that changes are persisted in the session, too
 			session.setAttribute("r", target);
+
+			log.info("Reserva con id {} cancelada correctamente por el usuario {}...", id, requester.getId());
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
@@ -213,6 +214,8 @@ public class ReservaController {
 			// update user session so that changes are persisted in the session, too
 			session.setAttribute("r", target);
 
+			log.info("Reserva con id {} confirmada con exito por el usuario {}...", id, requester.getId());
+
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}
 	
@@ -224,10 +227,12 @@ public class ReservaController {
 		Reserva r = entityManager.find(Reserva.class, id);
 		model.addAttribute("r", r);
 
+		log.info("Obteniendo la informacion de la reserva con id {} para que sea reservada...", id);
+
 		return "reserva";
 	}
 
-	/*Se llama tras rellenar los datos de la reserva y pulsar sobre solicitar en reerva.html */
+	/*Se llama tras rellenar los datos de la reserva y pulsar sobre solicitar en reserva.html */
 	@PostMapping("/{id}")
 	@Transactional
 	public String postReserva(
@@ -241,6 +246,7 @@ public class ReservaController {
 		
 		User requester = (User)session.getAttribute("u");
 
+		log.info("Solicitando la reserva con id {} y numero de personas {} por el usuario {}...", id, numPersonas, requester.getId());
       
         target.setNumPersonas(numPersonas);
         target.setEstado(Reserva.Estado.SOLICITADA);
@@ -249,6 +255,8 @@ public class ReservaController {
 
 		// update user session so that changes are persisted in the session, too
 		session.setAttribute("r", target);
+
+		log.info("Reserva con id {} solicitada correctamente por el usuario {}...", id, requester.getId());
 
 		return "redirect:/negocio/"+target.getNegocio().getId();
 	}

@@ -42,10 +42,19 @@
 		</li>
 		</ul>
 	</p>
-    
+   
 	<h2>Base de datos</h2>
-	<img src="arquitectura_bbdd.PNG" alt="Esquema de la BD">
+	<img src="Arquitectura_BBDD.PNG" alt="Diagrama de la BD">
 	
+    <h2>Usuarios registrados</h2>
+    <p>Aquí proporcionamos la lista con los usuarios registrados para hacer las pruebas y comprobaciones pertinentes</p>
+    <ul>
+        <li>Username: admin        Password: aa (Usuario administrador propietario)
+        <li>Username: Fernango99   Password: aa (Usuario registrado propietario)
+        <li>Username: Paulagarci2  Password: aa (Usuario registrado propietario)
+        <li>Username: cami         Password: aa (Usuario registrado normal)
+    </ul>
+
 	<h2>Vistas</h2>
     <ul>
         <li><a href="http://localhost:8080/">DateFirst</a> Vista de la página principal, con el titulo, una breve descripción, una lista con los comercios registrados y un buscador que te permite hacer una búsqueda de un negocio concreto o filtrar de diferentes formas. Accede a DateFirst.html
@@ -58,37 +67,61 @@
         <li><a href="http://localhost:8080/negocio/id/editar">Editar negocio</a> Vista con los datos de un negocio, pero en esta ocasión con la posibilidad de editar sus datos para actualizar el negocio. Accede a editarNegocio.html
         <li><a href="http://localhost:8080/negocio/id/genera">Generar reservas</a> Vista con un formulario para rellenar los datos necesarios para generar reservas de un negocio. Accede a generarReservas.html
         <li><a href="http://localhost:8080/negocio/id/eliminarReservas">Eliminar reservas</a> Vista con un formulario para seleccionar la franja horaria y el día de las reservas que se quieren eliminar. Accede a eliminarReservas.html
+        <li><a href="http://localhost:8080/reserva/listaReservas">Ver las reservas disponibles</a> Vista con información acerca de las reservas disponibles para un día concreto. Accede a listaReservas.html
         <li><a href="http://localhost:8080/reserva/id">Ver reserva</a> Vista con información de la reserva solicitada en la que el usuario tendrá que rellenar el campo perteneciente al número de personas. Accede a reserva.html
+        <li><a href="http://localhost:8080/buscar">Ver negocios buscados</a>Vista de la lista de negocios buscados desde la página DateFirst
+        <li><a href="http://localhost:8080/login">Login con un usuario</a>Vista del formulario para que un usuario ya registrado pueda hacer login
+        <li><a href="http://localhost:8080/message">Vista de mensajes</a>Vista del usuario para enviar mensajes al propietario de un negocio
     </ul>
-    <h2>Funcionamiento</h2>
+
+    <h2>Comentarios de funcionamiento</h2>
     <p>
-       Al acceder a la pagina puede registrarse un usuario, loguearse, o naverar sin identificarse, si se quiere registrar un usuario
-       se deben rellenar todos los campos y asegurarse que las contraseñas coinciden ya que está bajo la validación de contraseñas.
+       Al acceder a la pagina puede registrarse un usuario, loguearse, o navegar sin identificarse. Si un nuevo usuario quiere registrarse
+       debe rellenar todos los campos y asegurarse que las contraseñas coinciden, ya que está bajo la validación de contraseñas, y también 
+       deberá introducir un nombre de usuario que no exista en la BBDD.
     </p>
     <p>
-       Un usuario registrado será capaz de crear un negocio, pero también de hacer reservas en otros negocios y gestionar sus reservas
-       así como eliminar los negocios.
+       Un usuario registrado será capaz de crear un negocio y de realizar diferentes funcionalidades relacionadas con él. Entre ellas se 
+       encuentran generar y gestionar reservas, editar los datos del negocio y eliminar el negocio, siempre que el usuario sea propietario 
+       del mismo.
     </p>
     <p>
-        Generar reservas: Después de que un nuevo negocio haya sido creado, puedes acceder a él para ver su información desde la página de inicio.
+        Generar reservas: Después de que un nuevo negocio haya sido creado, un usuario puede acceder a él para ver su información desde la página de inicio.
         Una vez ahí, si eres el propietario del negocio, tienes la opción de editar el negocio o generar reservas para ese negocio. Al pulsar en
-        generar, debes rellenar un formulario donde validamos que la fecha y hora de fin sea posterior a la fecha y hora de inicio. Después de
-        completar el formulario, al volver a la página del negocio se muestran las reservas que tiene el negocio.
+        generar, el usuario debe rellenar un formulario donde validamos que la fecha y hora de fin sea posterior a la fecha y hora de inicio, así
+        como que dichas fechas seleccionadas no sean anteriores al día actual. Después de completar el formulario, al volver a la página del
+        negocio se muestran las reservas que tiene el negocio, incluyendo las que han sido generadas.
     </p>
     <p>
-        Solicitar una reserva: Un usuario registrado puede solicitar una reserva rellenando un formulario en el que se debe indicar el número 
-        de personas que asistiran, en este formulario también existe una validación para asegurarnos que el número de asistentes no es 
-        mayor que el número de plazas disponibles en dichas reservas.
+        Solicitar una reserva: Un usuario registrado puede solicitar una reserva la visitar un negocio. Ahí el usuario podrá ver un calendario
+        con todos los días del mes y las reservas disponibles en cada uno de ellos. Lo único que tendrá que hacer es pinchar en un día con 
+        reservas disponibles y posteriormente tendrá que rellenar un formulario en el que se debe indicar el número de personas que asistirán,
+        en este formulario también existe una validación para asegurarnos que el número de asistentes no es mayor que el número de plazas
+        disponibles en dichas reservas.
     </p>
     <p>
-        Cancelar una reserva: Cuando un usuario solicita una reserva, puede verla desde su perfil y tiene la posibilidad de cancelarla. Cuando
-        la cancela, la reserva queda como cancelada y es el propietario del negocio el que puede activar otra vez la reserva como libre desde su
-        perfil de usuario.
+        Cancelar una reserva(un usuario no propietario): Cuando un usuario solicita una reserva, puede verla desde su perfil y tiene la posibilidad de cancelarla. Cuando
+        la cancela, la reserva queda en estado de cancelada y el propietario del negocio podrá volver a activar la reserva otra vez cambiando su
+        estado a libre desde la vista de su negocio.
+    </p>
+    <p>
+        Confirmar una reserva: Cuando un usuario solicita una reserva, esta se descontara de las reservas disponibles mostradas en el calendario y
+        el propietario debera confirmar dicha reserva para considerar esta reserva como valida. 
+    </p>
+    <p>
+        Habilitar una reserva: Cuando un usuario cancela una reserva, esta se quedara con el estado cancelada y el propietario del 
+        negocio debe pinchar sobre el botón de Habilitar para marcar esta reserva como libre. 
+    </p>
+    <p>
+        Cancelar una reserva(el propietario del negocio): Desde la lista de reservas que se gerenar al pinchar en un día del calendario,
+        el propietario tiene la posibilidad de cancelar tanto las reservas confirmadas como las solicitadas. 
     </p>
     <p>
         Eliminar reservas generadas: Tras generar reservas el propietario del negocio puede elegir eliminar ciertas reservas de modo que ya no esten
         disponibles, para ello se debe indicar el rango de fechas en el que se desea eliminar la reserva y el rango de horas eliminandose todas aquellas 
-        reservas que se inicien en dicho rango, incluyendo los limites.
+        reservas que se inicien en dicho rango, incluyendo los limites. También existe la posibilidad de que el usuario propietario quiera cancelar 
+        alguna reserva concreta, esto lo podrá hacer desde la lista de reservas disponibles al pinchar en un día del calendario. En este caso las reservas
+        se eliminan de la base de datos, pueder usarse si se han generado las reservas de manera incorrecta.
     </p>
     <p>
         Búsqueda de negocios: En la página de inicio de la aplicación, existe un campo de búsqueda donde puedes buscar el negocio que deseas a través de
@@ -96,32 +129,26 @@
         si la búsqueda obtiene más de un resultado, te redirecciona a una vista con todos los resultados obtenidos para que allí selecciones el negocio que
         deseas.
     </p>
-    
-    <h2>Comentarios de funcionamiento</h2>
-    
-    <p></p>
-    
-    <h2>Clases de model</h2>
-    <ul>
-        <li>src/main/java/es/ucm/fdi/iw/model/Menssage.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/model/Transferable.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/model/Negocio.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/model/Reserva.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/model/User.java</li>
-    </ul>
-    <h2>Clases control</h2>
-    <ul>
-        <li>src/main/java/es/ucm/fdi/iw/control/MessageController.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/control/AdminController.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/control/NegocioController.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/control/ReservaController.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/control/RootController.java</li>
-        <li>src/main/java/es/ucm/fdi/iw/control/UserController.java</li>       
-    </ul>
-    
+    <p>
+        Eliminar negocio: Hemos implementado esta funcionalidad de tal forma que el propietario de un negocio puede eliminarlo fácilmente
+        clickando en un botón que lo borrará al instante, sin necesidad de recargar la página entera.
+    </p>
+    <p>
+        Como se ha mencionado anteriormente, en la vista del negocio hemos implementado un calendario mediante el que se podrán ver las 
+        reservas disponibles de cada día perteneciente al mes actual. El usuario lo único que tendrá que hacer es pinchar en el día que 
+        prefiera y solicitar una reserva de todas las que hay en la lista.
+    </p>
 
 	<h2>Recursos</h2>
-    <ul>
+    <ul> 
+        <li>
+            <a href="https://aprenderaprogramar.com/foros/index.php?topic=6037.0">https://aprenderaprogramar.com/foros/index.php?topic=6037.0</a>
+            <p>Código utilzado para generar el calendario </p>
+        </li>
+        <li>
+            <a href="https://app.dbdesigner.net/">https://app.dbdesigner.net/</a>
+            <p>App utilizada para realizar el diagrama de la BBDD </p>
+        </li>
         <li>
             <a href="https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png">https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png</a>
             <p>Extraido de google imágenes con licencia creative commons</p>
@@ -135,22 +162,21 @@
 			<a href="https://app.dbdesigner.net/designer/schema/new" >https://app.dbdesigner.net/designer/schema/new </a>
             <p>Enlace proporcionado por el profesor</p>
         </li>
+        <li>
+			<a href="https://picsum.photos/" >https://picsum.photos/ </a>
+            <p>Extraido de imagenes desde The Lorem Ipsum for photos.</p>
+        </li>
 
     </ul>
 
-    <h2>Cosas que no funcionan</h2>
-    <ul>
-        <li>
-            <p>Al eliminar un negocio, se elimina correctamente pero solo se muestran los resultados
-                después de recargar la página.
-            </p>
-        </li>
-        <li>
-            <p>Comprobar en la pagina nuevoUsuario que el nombre de usuario con el que te quieres registrar
-                no existe y mostrar un mensaje de alerta.
-            </p>
-        </li>
-    </ul>
+    <h2>Aspectos que no funcionan del todo</h2>
+    <p>
+        1. Poder enviar un mensaje al propietario del negocio cuando el usuario reserva o cancela una reserva o enviárselo al usuario cuando es el propietario quien
+        cancela o confirma una reserva.
+    </p>
+    <p>
+        2. Hacer que un usuario propietario de varios negocios pueda filtrar los mensajes por negocio.
+    </p>
 
 </body>
 </html>

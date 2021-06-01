@@ -103,7 +103,9 @@ public class UserController {
     /* Crear un usuario nuevo cuando clickeas sobre boton registrar sin login en la barra de navegacion nav.html*/
 	@GetMapping("/")
 	 public String getUsuario(Model model, HttpSession session) 			
-	 		throws JsonProcessingException {		
+	 		throws JsonProcessingException {	
+				 
+		log.info("Cargando el formulario para añadir un nuevo usuario...");
 	 	
 	 	return "nuevoUsuario";
 	}
@@ -130,6 +132,8 @@ public class UserController {
 		User u = new User();
 		model.addAttribute("user", u);
 
+		log.info("Añadiendo un nuevo usuario con username {}...", username);
+
 		u.setPassword(encodePassword(password));
 		u.setUsername(username);
 		u.setFirstName(firstName);
@@ -148,29 +152,41 @@ public class UserController {
 		entityManager.flush();
 		session.setAttribute("user", u);
 
+		log.info("Usuario con username {} añadido correctamente, redirigiendo a login...", username);
+
 	    return "login";
 	}
-   /*Para hacer la validacion del username en creacion de nuevo usuario en nuevoUsuario.html */
+
+    /*Para hacer la validacion del username en creacion de nuevo usuario en nuevoUsuario.html */
 	@GetMapping("/username")
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
 	public String getUsername(@RequestParam (required=false) String uname) {
+
+		log.info("Obteniendo el numero de usuarios cuyo username es {}...", uname);
 
 		long u = (Long)entityManager.createNamedQuery(
 				"User.hasUsername")
 				.setParameter("username", uname).getSingleResult();
 
+		log.info("El numero de usuarios cuyo username es {} es {}...", uname, u);
+
 		return "{ \"count\": " + u + "}";
 	}
 	
-	/*Hace de intermediario para ir al perfil de usuario y se llama desde fragmets/*/
+	/*Hace de intermediario para ir al perfil de usuario y se llama desde fragments/*/
 	@GetMapping("/{id}")
 	@Transactional
 	public String getUser(@PathVariable long id, Model model, HttpSession session) 			
 			throws JsonProcessingException {		
 		User u = entityManager.find(User.class, id);
+
+		log.info("Obteniendo la informacion del usuario con id {}...", id);
+
 		model.addAttribute("user", u);
 		model.addAttribute("negocios", new ArrayList<>(u.getNegocios()));
 		model.addAttribute("reservas", new ArrayList<>(u.getReservas()));
+
+		log.info("Informacion del usuario con id {} obtenida correctamente...", id);
 
 		return "perfilUsuario";
 	}	
@@ -187,6 +203,8 @@ public class UserController {
 		User u = entityManager.find(User.class, id);
 
 		model.addAttribute("user", u);
+
+		log.info("Cargando el formulario para editar el usuario con id {}...", id);
 
 	 	return "editarUsuario";
 	}
@@ -207,6 +225,8 @@ public class UserController {
 		if(!compruebaPropietario(requester, target)){		
 			return "redirect:/user/"+ requester.getId();
 		}
+
+		log.info("Editando el usuario con id {}...", id);
 
 		model.addAttribute("u", target);
 		model.addAttribute("negocios", new ArrayList<>(target.getNegocios()));
@@ -233,6 +253,8 @@ public class UserController {
 		entityManager.flush();
 		session.setAttribute("u", target);
 
+		log.info("Usuario con id {} editado correctamente, redirigiendo a su perfil...", id);
+
 		return "perfilUsuario";
 	}
 
@@ -247,6 +269,8 @@ public class UserController {
 		if(!compruebaPropietario(requester, u)){		
 			return "DateFirst";
 		}
+
+		log.info("Eliminando el usuario con id {} y todos sus negocios y sus reservas...", id);
 
 		ArrayList<Negocio> negocios = new ArrayList<Negocio>(u.getNegocios());
 	
@@ -265,6 +289,8 @@ public class UserController {
 
 		session.invalidate();
 		SecurityContextHolder.clearContext();
+		
+		log.info("El usuario con id {} ha sido eliminado correctamente...", id);
 		
 		return "redirect:/";
 	}
@@ -352,7 +378,7 @@ public class UserController {
 			} catch (Exception e) {
 				log.warn("Error uploading " + id + " ", e);
 			}
-			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
+			log.info("Successfully uploaded photo for {} into {}", id, f.getAbsolutePath());
 		}
 		return "editarUsuario";
 	}

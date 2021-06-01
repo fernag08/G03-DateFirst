@@ -45,7 +45,7 @@ public class RootController {
 	@Autowired
 	private Environment env;
 
-/*Te lleva a DateFirst.html */
+	/*Te lleva a DateFirst.html */
     @GetMapping("/")            // <-- en qué URL se expone, y por qué métodos (GET)        
     public String index(        // <-- da igual, sólo para desarrolladores
             Model model)        // <-- hay muchos, muchos parámetros opcionales
@@ -55,9 +55,13 @@ public class RootController {
 		model.addAttribute("debug", env.getProperty("es.ucm.fdi.debug"));
 		model.addAttribute("negocios", entityManager.createQuery(
 				"SELECT n FROM Negocio n").getResultList());
+
+		log.info("Redirigiendo a la pagina principal...");
+		
 	 return "DateFirst";
 	}
-/*Te lleva a negocioBuscado.html o el unico negocio encontrado segun el filtro de busqueda en DateFirst.html */
+
+	/*Te lleva a negocioBuscado.html o el unico negocio encontrado segun el filtro de busqueda en DateFirst.html */
 	@PostMapping("/buscar")              
 	@Transactional 
     public String busca(        
@@ -66,6 +70,9 @@ public class RootController {
 			@RequestParam String filtro)        
 	{	
 		List<Negocio> ln = null;
+
+		log.info("Buscando negocios para la consulta {} con el filtro indicado...", consulta);
+
 		try {
 			if(filtro.equals("name")){
 				ln = (List<Negocio>)entityManager.createNamedQuery(
@@ -94,9 +101,13 @@ public class RootController {
 		}
 		
 		if (ln.size() == 1) {
+			log.info("Redirigiendo al unico negocio encontrado...");
+
 			return "redirect:/negocio/" + ln.get(0).getId(); 
 		}
 		else {
+			log.info("Redirigiendo a la lista de negocios resultado de la busqueda...");
+
 			model.addAttribute("listNegocios", ln); 
 			return "negocioBuscado"; 
 		}

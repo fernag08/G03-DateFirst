@@ -19,7 +19,7 @@ import java.util.List;
 import lombok.Data;
 
 
-@NamedQueries({//REPASAR CONSULTAS
+@NamedQueries({
     @NamedQuery(name="Reserva.reservaByDia",
                 query="SELECT r FROM Reserva r "
                         + "WHERE r.negocio = :negocioBuscado AND r.inicio >= :diaBuscadaIni AND r.fin <= :diaBuscadaFin"), 
@@ -47,10 +47,10 @@ public class Reserva {
     /* Puede convertirse de-a "2021-03-19T11:16:45.633Z", que también viene de JS vía new Date().toISOString();*/
 
     private Estado estado;
+    private int capacidad;
     private int numPersonas;
     private LocalDateTime inicio;
     private LocalDateTime fin;
-    private int capacidad;
     
     public Reserva() {}
     public Reserva(long id, User usuario, Negocio negocio, Estado estado, 

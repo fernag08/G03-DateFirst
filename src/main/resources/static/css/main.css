@@ -146,10 +146,6 @@ nav>*{
 	justify-content: space-between;
 }
 
-.contNegocios {
-	/*margin-left: 8%;*/
-}
-
 .divNegocios {
 	float: left;
 	width: 30%;
@@ -241,8 +237,13 @@ nav>*{
 }
 
 /* setup footer */
-footer {
-  margin-top:auto; 
+footer { 
+ 	padding-top: 15px;
+    height: 30px;
+    text-align: center;
+    background-color: grey;
+    border-top: 1px solid black;
+	border-bottom: 1px solid black;
 }
 footer img {
 	vertical-align: middle;

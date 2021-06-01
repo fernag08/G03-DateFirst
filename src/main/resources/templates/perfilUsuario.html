@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <img th:src="@{/user/{id}/photo(id=${user.id})}" width="60px" height="60px">
+                <img th:src="@{/user/{id}/photo(id=${user.id})}" width="30%">
                 <p><span class="titulo2">Nombre de usuario:</span><span th:text="${user.firstName}">x</span></p>
                 <p><span class="titulo2">Primer apellido:</span><span th:text="${user.lastName1}">x</span></p>
                 <p><span class="titulo2">Segundo apellido:</span><span th:text="${user.lastName2}">x</span></p>
@@ -75,7 +75,7 @@
                         <h3>¡Todavía no has hecho ninguna reserva!</h3>
                     </div>
                     <div th:unless="${reservas.isEmpty()}">
-                        <div th:each="r: ${reservas}">
+                        <div th:each="r: ${reservas}" th:id="'res_' + ${r.id}">
                             <div th:if="${r.estado.name() == 'SOLICITADA'}">
                                 <div class="divReservas">
                                     <div class="divReserva1">
@@ -90,7 +90,7 @@
                                         <span>Numero de personas: <span class="infoReserva"
 												th:text="${r.numPersonas}">x</span></span>
                                         <div class="divReserva3">
-                                            <form method="post" th:action="@{/reserva/{id}/cancelar(id=${r.id})}">
+                                            <form method="post" class="cancela_reserva" th:data-id="'res_' + ${r.id}" th:action="@{/reserva/{id}/cancelar(id=${r.id})}">
                                                 <button class="botonRes" type="submit">Cancelar reserva</button>
                                             </form>
                                         </div>
@@ -118,6 +118,26 @@
         }
 
         // envío de mensajes vía AJAX, sin recargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            let bs = document.querySelectorAll(".cancela_reserva");
+            for (let b of bs) {
+                b.onclick = (e) => {
+                    let idOfTarget = b.dataset.id;
+                    let url = b.action;
+                    console.log("he pillado el evento", b, idOfTarget, url);
+
+                    e.preventDefault();
+                    console.log(b, b.parentNode)
+                    go(url, 'POST')
+                        .then(d => {
+                            console.log("happy", idOfTarget);
+                            document.getElementById(idOfTarget).remove();
+                        })
+                }
+            }
+        });
+
+
         document.addEventListener("DOMContentLoaded", () => {
             let bs = document.querySelectorAll(".elimina_negocio");
             for (let b of bs) {

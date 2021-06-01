@@ -99,7 +99,8 @@
 
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", () => {
-            console.log("hola mundo");
+            console.log("proceso de creacion del calendario");
+            
             var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
             var mes = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
 
@@ -107,17 +108,11 @@
             var miFecha = new Date();
             var diasDelMes = (Date.UTC(miFecha.getFullYear(), miFecha.getMonth() + 1, 1) - Date.UTC(miFecha.getFullYear(), miFecha.getMonth(), 1)) / 1000 / 60 / 60 / 24;
 
-            //centramos div
-            //document.getElementById("calendario").style.left = (document.body.clientWidth - 600) / 2 + "px";
-
             //creamos variables para usarlas como nodos y redimensionamos la tabla
             var th, tr, td, text;
             var table = document.getElementsByTagName("table")[0];
-            /*table.style.width = "300px";
-            table.style.height = "300px";
-            table.style.margin = "0 auto";*/
 
-            //CAPTION como cabecera de la tabla, donde irá "MES de AÑO"
+            //CAPTION como cabecera de la tabla, donde irá "MES AÑO"
             var caption = document.createElement("caption");
             var captionText = document.createTextNode(mes[miFecha.getMonth()] + " " + miFecha.getFullYear());
             caption.appendChild(captionText);
@@ -138,41 +133,42 @@
             var num = 1;
             var dateTemp = new Date(miFecha.getFullYear() + '-' + (miFecha.getMonth() + 1) + '-1');
             let lista = "[[${disponiblesDia}]]";
-            var posicion=1;
+
+            //Quitamos el primer caracter y el ultimo del array, es decir, los corchetes
+            lista = lista.substring(1);
+            lista = lista.substring(0, lista.length - 1);
+
+            //Pasamos la cadena "lista" a un array
+            let array = lista.split(', ');
+
+            //Indice para recorrer todos los días del mes
+            var posicion = 0;
             
-            //window.alert(lista);
-            
-            for (var i = 0; i < 6; i++) {
+            for (var i = 0; i < 5; i++) {
                 tr = document.createElement("tr");
                 for (var j = 1; j < 8; j++) {
                     let mes = dateTemp.getMonth() + 1;
                     td = document.createElement("td");
-                    //td.style.color = "red";
                     let n, m;
+
                     if (num < 10)
                         n = "0" + num;
                     else
                         n = num;
-                    if ((miFecha.getMonth() + 1) < 10)
 
+                    if ((miFecha.getMonth() + 1) < 10)
                         m = "0" + (miFecha.getMonth() + 1);
                     else
                         m = miFecha.getMonth() + 1;
 
-                    //let fechaActual = new LocalDateTime.parse(miFecha.getFullYear()+"-"+(miFecha.getMonth() + 1)+n+"T00:00");
-
-
                     td.id = "t"+ miFecha.getFullYear() + "-" + m + "-" + n;
                     console.log(td.id);
-
 
                     let isNotRealDay = (((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) ||
                         (num > diasDelMes);
 
                     let spanDia = document.createElement("span");
                     let spanTexto = document.createElement("span");
-                    //spanDia.id = td.id;
-                    //spanTexto.id = td.id;
                     spanTexto.className = "spanTexto";
 
                     if (isNotRealDay) {
@@ -180,36 +176,42 @@
                     } else {
                         var spanContent;
 
-                        if(lista[posicion] == 0){
+                        if(array[posicion] == 0){
                             spanContent = "No hay reservas";
                             spanTexto.style.color = "red";
                         }
                         else{
-                            spanContent = "Reservas disponibles: " + lista[posicion];
+                            spanContent = "Reservas disponibles: " + array[posicion];
                             spanTexto.style.color = "green";
                         }
-                        spanText = document.createTextNode(spanContent);
 
                         text = document.createTextNode((num++));
-                        
+                        spanText = document.createTextNode(spanContent);
                         
                         spanDia.appendChild(text);
                         spanTexto.appendChild(spanText);
-
-                        if (lista[posicion] != 0)
-                        {
+                        let admin = "[[${session.u != null && session.u.hasRole('ADMIN')}?true:false]]";
+			            let userId = "[[${session.u != null}?${session.u.id}:-1]]";
+                        let propId = "[[${n.propietario.id}]]";
+                    
+                        let condicion = (array[posicion] != 0 ) || ((userId == propId) || (admin == "true"));
+                        console.log (admin);
+                        console.log (condicion);
+                        if (condicion == true) {
                             td.addEventListener('click', (e) => {
+                                
                                 let idValido = e.target.closest("td").id.substring(1);
                                 form = document.getElementById("formCalendar");
                                 input = document.getElementById("fecha");
                                 input.setAttribute("value", idValido);
-                                console.log("ACCEDIENDO A FECHA " + idValido, e.target.closest("td"));
 
                                 form.submit();
+                               
                             });
                         }
+                       
 
-                        posicion=posicion+3;
+                        posicion++;
                     }
 
                     td.appendChild(spanDia);
@@ -218,7 +220,7 @@
                 }
                 table.appendChild(tr);
             }
-            console.log("fin");
+            console.log("fin calendario");
         })
     </script>
 

@@ -2,12 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-	<th:block th:replace="fragments/head :: header" />
 	<title>Perfil</title>
-</head>
 </head>
 
 <body>
+	<th:block th:replace="fragments/head :: header" />
 	<nav th:replace="fragments/nav.html :: nav">
 		Nav goes here
 	</nav>
@@ -83,7 +82,34 @@
 					"" : "Ambas contraseñas tienen que coincidir");
 			}
 		});
+
+		// manejador que se ejecuta cuando la página se carga, sin machacar otros
+        document.addEventListener("DOMContentLoaded", () => {
+            // selector para elegir sobre qué elementos validar
+            let u = document.querySelectorAll('#usermod > input[id="username"]')[0]
+                // cada vez que cambien, los revalidamos
+            u.oninput = u.onchange = () => validaUsername(u)
+        });
+
+        function validaUsername(u) {
+            return go(config.rootUrl + "user/username?uname=" + u.value, 'GET', {})
+                .then(d => {
+                    console.log(d)
+                    if (d.count == 0) {
+                        u.setCustomValidity(""); // campo valido: sin error!
+                    } else {
+                        u.setCustomValidity("Este nombre de usuario ya existe")
+                    }
+                });
+
+        }
+
 	</script>
+
+	<footer th:replace="fragments/footer.html :: footer">
+		Footer goes here
+	</footer>
+
 </body>
 
 </html>

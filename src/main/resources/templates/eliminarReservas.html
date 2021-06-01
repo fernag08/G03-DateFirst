@@ -1,80 +1,87 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Reservas</title>
 </head>
+
 <body>
     <th:block th:replace="fragments/head.html"></th:block>
     <nav th:replace="fragments/nav.html :: nav">
-		Nav goes here
-	</nav>
+        Nav goes here
+    </nav>
 
     <div class="container">
-        <h1>Introduce la franja horaria de las reservas que quieres eliminar</h1>
-        <form id="reservasnew" class="formulario" th:action="@{/negocio/{id}/eliminarReservas(id=${n.id})}" method="POST">
-            
-            <p>
-                <label for="Finicio" class="sr-only"> Fecha de inicio: </label>
-                <input type="date" id="Finicio" name="Finicio" 
-                class="form-control" required="required"></input>
-            </p>
-            <p>
-                <label for="inicio" class="sr-only"> Hora de inicio: </label>
-                <input type="time" id="inicio" name="inicio" 
-                class="form-control" required="required"></input>
-            </p>
+        <p class="titulo">Introduce la franja horaria de las reservas que quieres eliminar</p>
+        <form id="reservasdel" class="formulario" th:action="@{/negocio/{id}/eliminarReservas(id=${n.id})}" method="POST">
 
-            <p>
-                <label for="Ffin" class="sr-only"> Fecha de fin: </label>
-                <input type="date" id="Ffin" name="Ffin" 
-                class="form-control" required="required"></input>
-            </p>
-            <p>
-                <label for="fin" class="sr-only">Hora de fin:</label>
-                <input type="time" id="fin" name="fin" 
-                class="form-control"  required="required"></input>
-            </p>
+            <label for="Finicio" class="sr-only"> Fecha de inicio: </label>
+            <input type="date" id="Finicio" name="Finicio" class="form-control" required="required"></input>
+
+            <label for="inicio" class="sr-only"> Hora de inicio: </label>
+            <input type="time" id="inicio" name="inicio" class="form-control" required="required"></input>
+
+            <label for="Ffin" class="sr-only"> Fecha de fin: </label>
+            <input type="date" id="Ffin" name="Ffin" class="form-control" required="required"></input>
+
+            <label for="fin" class="sr-only">Hora de fin:</label>
+            <input type="time" id="fin" name="fin" class="form-control" required="required"></input>
 
             <button id="eReserva" class="botonEnviar" type="submit">Eliminar</button>
         </form>
     </div>
 
     <script>
-		document.addEventListener("DOMContentLoaded", () => {
-            //selecciona los campos de la fecha y hora
-			let date = document.querySelectorAll('#reservasnew > input[type="date"]')
-            let time = document.querySelectorAll('#reservasnew > input[type="time"]');
-            var f = new Date();
-            var dia = f.getDate();
-            var mes = f.getMonth() +1;
-            
-            if(mes<10)
-		        mes="0"+mes;            
-            if(dia<10)
-			    dia="0"+dia;
-                
-            var hoy = f.getFullYear()+ "-" + mes+ "-" +dia;
-           
-            
-			// cada vez que cambie uno de ellos...
-            date[0].oninput = date[0].onchange = date[1].oninput = date[1].onchange = () => {
-                date[0].setCustomValidity((date[0].value >= hoy)? 
-						"" : "La fecha de inicio debe ser después de la actual");
-                        
-				date[1].setCustomValidity((date[0].value <= date[1].value)?
-						"" : "La fecha de fin debe ser después de la de inicio");
-			}
-            time[0].oninput = time[0].onchange = time[1].oninput = time[1].onchange = () => {
+        function validateNotBefore(dateSelector, timeSelector, other) {
+            const d = document.querySelector(dateSelector);
+            const t = document.querySelector(timeSelector);
+            const date = new Date(
+                d.value + "T" +
+                t.value);
+            if (date < other) {
+                d.setCustomValidity("No puede ser anterior a la fecha de hoy: " + other);
+                t.setCustomValidity("No puede ser anterior a la fecha de hoy: " + other);
+            } else {
+                d.setCustomValidity("");
+                t.setCustomValidity("");
+            }
 
-				time[1].setCustomValidity(time[0].value <= time[1].value ? 
-						"" : "La hora de fin debe ser después de la de inicio");
-			}
-		});	
-	</script>
+            return date;
+        }
+
+        function validateAfter(dateSelector, timeSelector, other) {
+            const d = document.querySelector(dateSelector);
+            const t = document.querySelector(timeSelector);
+            const date = new Date(
+                d.value + "T" +
+                t.value);
+            if (date <= other) {
+                d.setCustomValidity("Debe ser posterior a la fecha de inicio: " + other);
+                t.setCustomValidity("Debe ser posterior a la fecha de inicio: " + other);
+            } else {
+                d.setCustomValidity("");
+                t.setCustomValidity("");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            //selecciona los campos de la fecha y hora
+            const dates = document.querySelectorAll('#reservasdel > input[type="date"]');
+            const times = document.querySelectorAll('#reservasdel > input[type="time"]');
+
+            // cada vez que cambie uno de ellos...
+            dates[0].oninput = dates[0].onchange = dates[1].oninput = dates[1].onchange =
+                times[0].oninput = times[0].onchange = times[1].oninput = times[1].onchange = () => {
+                    let start = validateNotBefore("#Finicio", "#inicio", new Date()); // new Date() === ahora
+                    validateAfter("#Ffin", "#fin", start);
+                }
+        });
+    </script>
 
     <th:block th:replace="fragments/footer.html"></th:block>
 </body>
+
 </html>
