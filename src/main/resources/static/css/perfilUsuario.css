@@ -26,6 +26,16 @@
 	background-color: white;
 }
 
+.divListaReservas {
+	width: 97%;
+	height: 90px;
+	border: 1px solid black;
+	text-align: center;
+	margin: 16px;
+	/*padding: 6px;*/
+	background-color: white;
+}
+
 .divReserva1 {
 	background-color: rgb(106, 165, 255);
 	font-family: 'Staatliches', cursive;
@@ -45,7 +55,7 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-    padding-top:34px;
+    padding-top: 28px;
 }
 .divReserva2 > span{
     font-size: 20px;
@@ -63,8 +73,27 @@
 	padding-bottom: 20px;
 }
 
+.divReserva2Comun {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+    padding-top: 34px;
+}
+.divReserva2Comun > span{
+    font-size: 20px;
+    font-family: 'Staatliches';
+}
+
 .divReserva3 {
     margin-top: -10px;
+}
+
+.divReserva3Lista {
+    margin-top: -15px;
+	margin-right: 15px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .botonRes {
@@ -84,6 +113,44 @@
 	font-style: italic;
 	background-color: black;
 }
+
+.botonResLista {
+	transition: 0.5s all;
+	padding: 5px;
+	background-color: rgb(255, 116, 116);
+	text-decoration: none;
+	color: black;
+	border: 2px solid black;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	width: 100%;
+}
+
+.botonResLista:hover {
+	transition: 0.7s all;
+	color: white;
+	font-style: italic;
+	background-color: black;
+}
+
+.botonResEliminar {
+	transition: 0.5s all;
+	padding: 4px;
+	background-color: rgb(255, 116, 116);
+	text-decoration: none;
+	color: black;
+	border: 2px solid black;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+}
+
+.botonResEliminar:hover {
+	transition: 0.7s all;
+	color: white;
+	font-style: italic;
+	background-color: black;
+}
+
 .newReserva{
 
 }
@@ -114,11 +181,26 @@
 	background-color: rgb(243, 50, 50);
 	border: 1px solid black;
 }
+
+.tablaNeg {
+	text-align: center;
+	width: 40%;
+	border-collapse: collapse;
+}
 .tablaNeg th{
-    background-color: rgb(96, 230, 223);
+    background-color: rgb(106, 165, 255);
+	font-size: 20px;
 }
 .tablaNeg td{
-    width: 25%;
+    background-color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.tablaNeg td a{
+    text-decoration: none;
+	font-size: 20px;
+	font-family: 'Staatliches', cursive;
+	color: black;
 }
 
 #eliminarReservas {

@@ -58,7 +58,7 @@
                             <td>
 
                                 <form method="post" class="elimina_negocio" th:data-id="'neg_' + ${n.id}" th:action="@{/negocio/{id}/eliminar(id=${n.id})}">
-                                    <button th:id="'ne_' + ${n.id}" type="submit">Eliminar ❌</button>
+                                    <button class="botonResEliminar" th:id="'ne_' + ${n.id}" type="submit">Eliminar</button>
                                 </form>
                                 <!--'negocio_' + ${n.id}-->
 
@@ -76,10 +76,10 @@
                     </div>
                     <div th:unless="${reservas.isEmpty()}">
                         <div th:each="r: ${reservas}" th:id="'res_' + ${r.id}">
-                            <div th:if="${r.estado.name() == 'SOLICITADA'}">
+                            <div th:if="${r.estado.name() == 'SOLICITADA'} or ${r.estado.name() == 'CONFIRMADA'}">
                                 <div class="divReservas">
-                                    <div class="divReserva1">
-                                        <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span th:text="${r.id}">x</span> del negocio <span th:text="${r.negocio.nombre}">x</span></p>
+                                    <div class="divReserva1" >
+                                        <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva <span th:text="${r.estado.name()}">x</span> para el negocio <span th:text="${r.negocio.nombre}">x</span></p>
                                     </div>
 
                                     <div class="divReserva2">
@@ -98,7 +98,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:unless="${r.estado.name() == 'SOLICITADA'}"></div>
+                            <div th:unless="${r.estado.name() == 'SOLICITADA'} or ${r.estado.name() == 'CONFIRMADA'}"></div>
                         </div>
                     </div>
                 </div>

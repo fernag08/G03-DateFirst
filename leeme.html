@@ -178,5 +178,75 @@
         2. Hacer que un usuario propietario de varios negocios pueda filtrar los mensajes por negocio.
     </p>
 
+    <h2>Mejoras realizadas después del examen</h2>
+        <h3>Realizadas por:</h3>
+    <ul> 
+        <li>
+            Paula Piñuela Monjas
+        </li>
+        <li>
+            Camila Belén Pérez Alaniz 
+        </li>
+        <li>
+            Jorge Borja García
+        </li>
+        <li>
+            Fernando González Zamorano
+        </li>
+    </ul>
+
+    <h2>Mejoras</h2>
+        <ul>     
+            <li>
+                Pregunta B implementada.
+            </li>
+            <li>
+                Pregunta D implementada.
+            </li>
+            <li>
+                Pregunta E implementada.
+            </li>
+            <li>
+                En el perfil de usuario, ahora aparecen las reservas tanto SOLICITADAS como CONFIRMADAS, y en cada
+                una de ellas se especifica su estado en lugar del id, que ya no aparece.
+            </li>
+            <li>
+                Explicación detallada de como obtener la latitud y longitud al crear un nuevo negocio.
+            </li>
+            <li>
+                Cuando se crea un nuevo negocio se pone por defecto deshabilitado y ningún usuario que no sea el
+                propietario no podrá verlo, y el negocio solo será visible cuando el administrador lo habilite.
+            </li>
+            <li>
+                Al enviar un mensaje con éxito, el contenido del TextArea se elimina, de esta manera el usuario sabrá 
+                que se ha podido enviar y se eviten mensajes duplicados.
+            </li>
+            <li>
+                Hemos pasado el código del mapa del negocio a un archivo .js
+            </li>
+            <li>
+                Hemos arreglado el problema que había al modificar la foto de perfil del usuario, ahora se actualiza correctamente.
+            </li>
+            <li>
+                En los mensajes, hemos implementado la lista de gente que ha escrito a un usuario, haciendo posible que dicho
+                usuario pueda escribir a otro que le ha mandado un mensaje previamente, es decir, responder al mensaje previo.
+                Si no te ha escrito nadie anteriormente, no se mostrará nada.
+            </li>
+            <li>
+                Al intenter acceder a un negocio que no existe o que no esta habilitado redirige a la página principal, 
+                Excepto si eres el propietario de negocio, que podras entrar a ver tu negocio tanto si esta habilidado como si no.
+            </li>
+            <li>
+                Ahora el propietario no puede pinchar en un día del calendario que no tiene reservas disponibles, pero sí en el caso
+                de que haya reservas solicitadas, canceladas o confirmadas para poder realizar nuevas acciones sobre ellas.
+                Si eres un usuario normal, no puedes pinchar en días en los que no hay reservas.
+            </li>
+            <li>
+                Mejora en los botones de la lista de reservas de un negocio: ya no hay ninguno sin estilo y ahora no se salen de su contenedor.
+            </li>
+            <li>
+                Mejora en los botones de la lista de negocios en perfil de usuario: tiene el mismo estilo que el resto de la página y ahora los botones con estilo.
+            </li>
+        </ul>
 </body>
 </html>

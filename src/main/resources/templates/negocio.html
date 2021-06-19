@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/calendario.css}" href="css/calendario.css" type="text/css" />
+
+    <script th:src="@{/js/calendar.js}" src="js/calendar.js" href="js/calendar.js" type="text/javascript"></script>
+    <script th:src="@{/js/map.js}" src="js/map.js" href="js/map.js" type="text/javascript"></script>
+
     <title>Negocio</title>
 </head>
 
@@ -72,156 +76,21 @@
         async></script>
 
     <script>
-        let map;
-
         function initMap() {
             var latitud = "[[${n.latitud}]]";
             var longitud = "[[${n.longitud}]]";
             var nombre = "[[${n.nombre}]]";
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: parseFloat(latitud),
-                    lng: parseFloat(longitud)
-                },
-                zoom: 16,
-            });
-
-            var marker = new google.maps.Marker({
-                position: {
-                    lat: parseFloat(latitud),
-                    lng: parseFloat(longitud)
-                },
-                map: map,
-                title: nombre
-            });
+            m.map(latitud,longitud, nombre)
         }
     </script>
 
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("proceso de creacion del calendario");
-            
-            var dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-            var mes = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
-
-            //creamos objeto fecha y calculamos los días que tiene el mes, al usar miFecha.getFullYear() ya tendremos correcto el año bisiesto
-            var miFecha = new Date();
-            var diasDelMes = (Date.UTC(miFecha.getFullYear(), miFecha.getMonth() + 1, 1) - Date.UTC(miFecha.getFullYear(), miFecha.getMonth(), 1)) / 1000 / 60 / 60 / 24;
-
-            //creamos variables para usarlas como nodos y redimensionamos la tabla
-            var th, tr, td, text;
-            var table = document.getElementsByTagName("table")[0];
-
-            //CAPTION como cabecera de la tabla, donde irá "MES AÑO"
-            var caption = document.createElement("caption");
-            var captionText = document.createTextNode(mes[miFecha.getMonth()] + " " + miFecha.getFullYear());
-            caption.appendChild(captionText);
-            table.appendChild(caption);
-
-            //creamos los días de la tabla
-            tr = document.createElement("tr");
-            for (var i = 0; i < 7; i++) {
-                th = document.createElement("th");
-                text = document.createTextNode(dias[i]);
-                th.appendChild(text);
-                tr.appendChild(th);
-            }
-            table.appendChild(tr);
-
-            //Creamos calendario, num serán los días y dateTemp una fecha temporal para saber por cual día empieza el mes miFecha.getMonth() del año miFecha.getFullYear() (para saber bisiestos)
-
-            var num = 1;
-            var dateTemp = new Date(miFecha.getFullYear() + '-' + (miFecha.getMonth() + 1) + '-1');
-            let lista = "[[${disponiblesDia}]]";
-
-            //Quitamos el primer caracter y el ultimo del array, es decir, los corchetes
-            lista = lista.substring(1);
-            lista = lista.substring(0, lista.length - 1);
-
-            //Pasamos la cadena "lista" a un array
-            let array = lista.split(', ');
-
-            //Indice para recorrer todos los días del mes
-            var posicion = 0;
-            
-            for (var i = 0; i < 5; i++) {
-                tr = document.createElement("tr");
-                for (var j = 1; j < 8; j++) {
-                    let mes = dateTemp.getMonth() + 1;
-                    td = document.createElement("td");
-                    let n, m;
-
-                    if (num < 10)
-                        n = "0" + num;
-                    else
-                        n = num;
-
-                    if ((miFecha.getMonth() + 1) < 10)
-                        m = "0" + (miFecha.getMonth() + 1);
-                    else
-                        m = miFecha.getMonth() + 1;
-
-                    td.id = "t"+ miFecha.getFullYear() + "-" + m + "-" + n;
-                    console.log(td.id);
-
-                    let isNotRealDay = (((j < dateTemp.getDay()) || (dateTemp.getDay() == 0 && j != 7)) && i == 0) ||
-                        (num > diasDelMes);
-
-                    let spanDia = document.createElement("span");
-                    let spanTexto = document.createElement("span");
-                    spanTexto.className = "spanTexto";
-
-                    if (isNotRealDay) {
-                        text = document.createTextNode("");
-                    } else {
-                        var spanContent;
-
-                        if(array[posicion] == 0){
-                            spanContent = "No hay reservas";
-                            spanTexto.style.color = "red";
-                        }
-                        else{
-                            spanContent = "Reservas disponibles: " + array[posicion];
-                            spanTexto.style.color = "green";
-                        }
-
-                        text = document.createTextNode((num++));
-                        spanText = document.createTextNode(spanContent);
-                        
-                        spanDia.appendChild(text);
-                        spanTexto.appendChild(spanText);
-                        let admin = "[[${session.u != null && session.u.hasRole('ADMIN')}?true:false]]";
-			            let userId = "[[${session.u != null}?${session.u.id}:-1]]";
-                        let propId = "[[${n.propietario.id}]]";
-                    
-                        let condicion = (array[posicion] != 0 ) || ((userId == propId) || (admin == "true"));
-                        console.log (admin);
-                        console.log (condicion);
-                        if (condicion == true) {
-                            td.addEventListener('click', (e) => {
-                                
-                                let idValido = e.target.closest("td").id.substring(1);
-                                form = document.getElementById("formCalendar");
-                                input = document.getElementById("fecha");
-                                input.setAttribute("value", idValido);
-
-                                form.submit();
-                               
-                            });
-                        }
-                       
-
-                        posicion++;
-                    }
-
-                    td.appendChild(spanDia);
-                    td.appendChild(spanTexto);
-                    tr.appendChild(td);
-                }
-                table.appendChild(tr);
-            }
-            console.log("fin calendario");
-        })
+    <script>
+        let lista = "[[${disponiblesDia}]]";
+        let lista2 = "[[${reservasNoLibres}]]";
+        let admin = "[[${session.u != null && session.u.hasRole('ADMIN')}?true:false]]";
+        let userId = "[[${session.u != null}?${session.u.id}:-1]]";
+        let propId = "[[${n.propietario.id}]]";
+        c.calendar(lista, lista2, admin, userId, propId);
     </script>
 
     <th:block th:replace="fragments/footer.html" />

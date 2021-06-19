@@ -69,16 +69,16 @@ Disfruta de lo mejor de la cocina turca al mejor precio. Aqui encontraras numero
 
 -- Reservas de prueba generadas para el negocio 1
 INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, negocio_id, usuario_id) VALUES (
-	1, 2, 0, '2021-06-16 13:29:00','2021-06-16 12:59:00', 0, 1, null    
+	1, 2, 0, '2021-06-30 13:29:00','2021-06-30 12:59:00', 0, 1, null    
 );
 INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, negocio_id, usuario_id) VALUES (
-	2, 2, 0, '2021-06-16 13:29:00','2021-06-16 12:59:00', 0, 1, null    
+	2, 2, 0, '2021-06-30 13:29:00','2021-06-30 12:59:00', 0, 1, null    
 );
 INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, negocio_id, usuario_id) VALUES (
-	3, 2, 0, '2021-06-16 13:59:00','2021-06-16 13:29:00', 0, 1, null    
+	3, 2, 0, '2021-06-30 13:59:00','2021-06-30 13:29:00', 0, 1, null    
 );
 INSERT INTO RESERVA(id, capacidad, estado, fin, inicio, num_personas, negocio_id, usuario_id) VALUES (
-	4, 2, 0, '2021-06-16 13:59:00','2021-06-16 13:29:00', 0, 1, null    
+	4, 2, 0, '2021-06-30 13:59:00','2021-06-30 13:29:00', 0, 1, null    
 );
 
 

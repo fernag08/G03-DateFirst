@@ -321,6 +321,46 @@ public class UserController {
 		throws JsonProcessingException {
 		
 		String text = o.get("message").asText();
+		Negocio n=entityManager.find(Negocio.class, id);
+		User u = entityManager.find(User.class, n.getPropietario().getId());
+		User sender = entityManager.find(
+				User.class, ((User)session.getAttribute("u")).getId());
+		model.addAttribute("user", u);
+		
+		// construye mensaje, lo guarda en BD
+		Message m = new Message();
+		m.setRecipient(u);
+		m.setSender(sender);
+		m.setDateSent(LocalDateTime.now());
+		m.setText(text);
+		m.setNegocio(n.getNombre());
+		entityManager.persist(m);
+		entityManager.flush(); // to get Id before commit
+		
+		// construye json
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode rootNode = mapper.createObjectNode();
+		rootNode.put("from", sender.getUsername());
+		rootNode.put("to", u.getUsername());
+		rootNode.put("text", text);
+		rootNode.put("id", m.getId());
+		rootNode.put("negocio",m.getNegocio());
+		String json = mapper.writeValueAsString(rootNode);
+		
+		log.info("Sending a message to {} with contents '{}'", id, json);
+
+		messagingTemplate.convertAndSend("/user/"+u.getUsername()+"/queue/updates", json);
+		return "{\"result\": \"message sent.\"}";
+	}	
+
+	@PostMapping("/{id}/resMsg")
+	@ResponseBody
+	@Transactional
+	public String postMsgUser(@PathVariable long id, 
+			@RequestBody JsonNode o, Model model, HttpSession session) 
+		throws JsonProcessingException {
+		
+		String text = o.get("message").asText();
 		User u = entityManager.find(User.class, id);
 		User sender = entityManager.find(
 				User.class, ((User)session.getAttribute("u")).getId());
@@ -332,6 +372,7 @@ public class UserController {
 		m.setSender(sender);
 		m.setDateSent(LocalDateTime.now());
 		m.setText(text);
+		m.setNegocio("");
 		entityManager.persist(m);
 		entityManager.flush(); // to get Id before commit
 		
@@ -342,6 +383,7 @@ public class UserController {
 		rootNode.put("to", u.getUsername());
 		rootNode.put("text", text);
 		rootNode.put("id", m.getId());
+		//rootNode.put("negocio",null);
 		String json = mapper.writeValueAsString(rootNode);
 		
 		log.info("Sending a message to {} with contents '{}'", id, json);
@@ -367,7 +409,7 @@ public class UserController {
 		}
 		
 		log.info("Updating photo for user {}", id);
-		File f = localData.getFile("user", id);
+		File f = localData.getFile("user", id+".jpg");
 		if (photo.isEmpty()) {
 			log.info("failed to upload photo: emtpy file?");
 		} else {

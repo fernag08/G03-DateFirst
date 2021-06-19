@@ -43,8 +43,11 @@ import lombok.AllArgsConstructor;
                         + "WHERE n.provincia like CONCAT(:negProvince, '%')"),
         @NamedQuery(name="negocioByCodigoPostal",
                 query="SELECT n FROM Negocio n "
-                        + "WHERE n.codigoPostal like CONCAT(:negPostCode, '%')")
-    
+                        + "WHERE n.codigoPostal like CONCAT(:negPostCode, '%')"),
+        @NamedQuery(name="idsNegociosHabilitados",
+                query="SELECT n.id FROM Negocio n WHERE n.enabled = 1"),
+        @NamedQuery(name="idsNegociosNoHabilitados",
+                query="SELECT n.id FROM Negocio n WHERE n.enabled = 0")
 })
 
 public class Negocio implements Transferable<Negocio.Transfer> {

@@ -28,14 +28,8 @@
                 <div th:unless="${listaR.isEmpty()}">
 
                     <div th:each="r: ${listaR}" th:id="'res_' + ${r.id}">
-                        <div class="divReservas" th:if="(${session.u.id} eq ${r.negocio.propietario.id} or ${session.u.hasRole('ADMIN')} )"> <!-- Muestra todas las reservas que hay en ese día (para usuarios propietarios y admin)-->
-                            <div class="divReserva1">
-                                <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
-                                        th:text="${r.id}">x</span> del negocio <span th:text="${r.negocio.nombre}">x</span>
-                                </p>
-
-                            </div>
-                            <div class="divReserva2"   >
+                        <div class="divListaReservas" th:if="(${session.u.id} eq ${r.negocio.propietario.id} or ${session.u.hasRole('ADMIN')} )"> <!-- Muestra todas las reservas que hay en ese día (para usuarios propietarios y admin)-->
+                            <div class="divReserva2">
                                 <span th:if="${r.estado.name() != 'LIBRE'}">
                                     Usuario de reserva: <span class="infoReserva"
                                         th:text="${r.usuario.username}">x</span>
@@ -46,23 +40,23 @@
                                         th:text="${r.numPersonas}">x</span></span>
                                 <span>Estado de reserva: <span class="infoReserva" id ="estadoRes"
                                         th:text="${r.estado.name()}">x</span></span>
-                                <div class="divReserva3" >
+                                <div class="divReserva3Lista" >
                                     <div th:if="${r.estado.name() == 'CANCELADA'}">
                                         <form method="post" class="habilitar_reserva" th:action="@{/reserva/{id}/habilitar(id=${r.id})}">
-                                            <button class="botonRes" th:text="Habilitar" type="submit">Habilitar</button>
+                                            <button class="botonResLista" th:text="Habilitar" type="submit">Habilitar</button>
                                         </form>
                                     </div>
                                     <div th:if="${r.estado.name() == 'SOLICITADA'}">
                                         <form method="post" class="confirmar_reserva" th:action="@{/reserva/{id}/confirmar(id=${r.id})}">
-                                            <button class="botonRes" th:text="Confirmar" type="submit">Confirmar</button>
+                                            <button class="botonResLista" th:text="Confirmar" type="submit">Confirmar</button>
                                         </form>
                                         <form method="post" class="cancelar_reserva" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
-                                            <button class="botonRes" th:text="Cancelar" type="submit">Cancelar</button>
+                                            <button class="botonResLista" th:text="Cancelar" type="submit">Cancelar</button>
                                         </form>
                                     </div>
                                     <div th:if="${r.estado.name() == 'CONFIRMADA'}">
                                         <form method="post" class="cancelar_reserva" th:action="@{/reserva/{id}/eliminar(id=${r.id})}">
-                                            <button class="botonRes" th:text="Cancelar" type="submit">Cancelar</button>
+                                            <button class="botonResLista" th:text="Cancelar" type="submit">Cancelar</button>
                                         </form>
                                     </div>
                                     
@@ -70,15 +64,9 @@
                             </div>
                         </div>
                         <div th:unless="(${session.u.id} eq ${r.negocio.propietario.id} or ${session.u.hasRole('ADMIN')} )"><!-- Solo muestra las reservas que están libres (para usuarios comunes)-->
-                            <div class="divReservas" th:if="${r.estado.name() == 'LIBRE'}">
+                            <div class="divListaReservas" th:if="${r.estado.name() == 'LIBRE'}">
 
-                                <div class="divReserva1" >
-                                    <p class="nombreRes" th:id="'reserva_' + ${r.id}">Reserva numero <span
-                                            th:text="${r.id}">x</span> del negocio <span th:text="${r.negocio.nombre}">x</span>
-                                    </p>
-    
-                                </div>
-                                <div class="divReserva2">
+                                <div class="divReserva2Comun">
                                    
                                     <span>Inicio reserva: <span class="infoReserva" th:text="${r.inicio}">x</span></span>
                                     <span>Fin reserva: <span class="infoReserva" th:text="${r.fin}">x</span></span>
@@ -87,7 +75,7 @@
                                     <span>Estado de reserva: <span class="infoReserva"
                                             th:text="${r.estado.name()}">x</span></span>
                                     <div class="divReserva3">                                     
-                                        <p><a th:id="'reserva_' + ${r.id}" th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
+                                        <p><a class="botonResLista" th:id="'reserva_' + ${r.id}" th:href="@{/reserva/{id}(id=${r.id})}">Solicitar</a></p>
                                     </div>
                                       
                                 </div>

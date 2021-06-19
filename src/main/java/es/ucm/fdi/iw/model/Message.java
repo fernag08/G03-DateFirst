@@ -27,7 +27,10 @@ import lombok.AllArgsConstructor;
 @NamedQueries({
 	@NamedQuery(name="Message.countUnread",
 	query="SELECT COUNT(m) FROM Message m "
-			+ "WHERE m.recipient.id = :userId AND m.dateRead = null")
+			+ "WHERE m.recipient.id = :userId AND m.dateRead = null"),
+	@NamedQuery(name="nombresUsuario",
+		query="SELECT DISTINCT(m.sender) FROM Message m "
+				+ "WHERE m.recipient = :user")
 })
 @Data
 public class Message implements Transferable<Message.Transfer> {
@@ -45,6 +48,7 @@ public class Message implements Transferable<Message.Transfer> {
 	
 	private LocalDateTime dateSent;
 	private LocalDateTime dateRead;
+	private String negocio;
 	
 	/**
 	 * Objeto para persistir a/de JSON
@@ -58,8 +62,9 @@ public class Message implements Transferable<Message.Transfer> {
 		private String sent;
 		private String received;
 		private String text;
-		long id;
 		
+		long id;
+		private String negocio;
 		public Transfer(Message m) {
 			this.from = m.getSender().getUsername();
 			this.to = m.getRecipient().getUsername();
@@ -68,6 +73,7 @@ public class Message implements Transferable<Message.Transfer> {
 					null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(m.getDateRead());
 			this.text = m.getText();
 			this.id = m.getId();
+			this.negocio=m.getNegocio();
 		}
 	}
 
@@ -76,7 +82,7 @@ public class Message implements Transferable<Message.Transfer> {
 		return new Transfer(sender.getUsername(), recipient.getUsername(), 
 			DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(dateSent),
 			dateRead == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(dateRead),
-			text, id
+			text, id,negocio
         );
     }
 }

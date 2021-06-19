@@ -26,7 +26,11 @@ import lombok.Data;
     @NamedQuery(name="Reserva.delEsteDia",
             query="SELECT COUNT(r) "
                     + "FROM Reserva r "
-                    + "WHERE r.negocio = :negocioBuscado AND r.inicio >= :diaBuscadaIni AND r.fin <= :diaBuscadaFin AND r.estado = 0")
+                    + "WHERE r.negocio = :negocioBuscado AND r.inicio >= :diaBuscadaIni AND r.fin <= :diaBuscadaFin AND r.estado = 0"),
+    @NamedQuery(name="Reserva.libSolCan",
+            query="SELECT COUNT(r) "
+                    + "FROM Reserva r "
+                    + "WHERE r.negocio = :negocioBuscado AND r.inicio >= :diaBuscadaIni AND r.fin <= :diaBuscadaFin AND r.estado != 0")
 })
    
 @Entity

@@ -128,13 +128,49 @@ public class NegocioController {
     public String getNegocio(@PathVariable long id, Model model, HttpSession session) 			
 	 		throws JsonProcessingException {		
 
-	 	Negocio n = entityManager.find(Negocio.class, id);
-		 
+		User user = (User)session.getAttribute("u");
+
+		//Si el negocio al que quieres acceder existe
+		List<Long> idsHabilitados = (List<Long>)entityManager.createNamedQuery(
+			"idsNegociosHabilitados")
+			.getResultList();
+
+		List<Long> idsNoHabilitados = (List<Long>)entityManager.createNamedQuery(
+			"idsNegociosNoHabilitados")
+			.getResultList();
+
+		boolean existe = false;
+		boolean habilitado = false;
+		
+		for (long idNeg : idsHabilitados) {
+			if (idNeg == id){
+				habilitado = true;
+				existe = true;		
+			}
+		}
+		for (long idNeg : idsNoHabilitados) {
+			if (idNeg == id){
+				habilitado = false;
+				existe = true;		
+			}
+		}
+
+		Negocio n = null;
+		if(existe){
+			n = entityManager.find(Negocio.class, id);
+		}
+
+		if((!existe) || (!habilitado && (n.getPropietario().getId() != user.getId()))){
+			log.info("El negocio con id {} al que se esta intentando acceder no existe o se encuentra deshabilitado", id);
+			return "redirect:/";	
+		}
+
 		Calendar fecha = new GregorianCalendar();
 		int mes = fecha.get(Calendar.MONTH);
 		int anyo = fecha.get(Calendar.YEAR);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		ArrayList dias = new ArrayList<>();
+		ArrayList reservasSolicitadasyDemas = new ArrayList<>();
 		
 		mes = mes + 1;
 		String m="";
@@ -168,10 +204,23 @@ public class NegocioController {
 					.getSingleResult();
 			
 			dias.add(lr);
+
+			long ls = (Long)entityManager.createNamedQuery(
+					"Reserva.libSolCan")
+					.setParameter("negocioBuscado", n)
+					.setParameter("diaBuscadaIni", inicioP)
+					.setParameter("diaBuscadaFin", finP)
+					.getSingleResult();
+
+			reservasSolicitadasyDemas.add(ls);
+
 			dia++;
 		}
 
 		model.addAttribute("disponiblesDia", dias);	
+		model.addAttribute("reservasNoLibres", reservasSolicitadasyDemas);	
+
+		log.info("reservasNoLibres {}...", reservasSolicitadasyDemas);
 
 		model.addAttribute("n", n);
 
@@ -192,53 +241,6 @@ public class NegocioController {
 		Negocio target = entityManager.find(Negocio.class, id);
 		User requester = (User)session.getAttribute("u");
 
-		Calendar fecha = new GregorianCalendar();
-		int mes = fecha.get(Calendar.MONTH);
-		int anyo = fecha.get(Calendar.YEAR);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		ArrayList dias=new ArrayList<>();
-
-		if(!compruebaPropietario(requester, target)){		
-			return "redirect:/negocio/"+ target.getId();
-		}
-
-		log.info("Editando el negocio {}...", id);
-		
-		mes = mes + 1;
-		String m="";
-		if(mes<10)
-			 m="0"+mes;
-		else
-			m=""+mes;
-
-		LocalDateTime inicioP;
-		LocalDateTime finP;
-		int dia=1;
-		String d="";
-		
-		for(int i=0;i<31;i++)
-		{
-			if(dia<10)
-				d="0"+dia;
-			else 
-				d=""+dia;
-
-			inicioP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 00:00:00", formatter);
-			finP = LocalDateTime.parse(anyo+"-"+m+"-"+d+" 23:59:59", formatter);
-			
-			long lr = (Long)entityManager.createNamedQuery(
-					"Reserva.delEsteDia")
-					.setParameter("negocioBuscado", target)
-					.setParameter("diaBuscadaIni", inicioP)
-					.setParameter("diaBuscadaFin", finP)
-					.getSingleResult();
-			
-			dias.add(lr);
-			dia++;
-		}
-
-		model.addAttribute("disponiblesDia", dias);	
-
 		model.addAttribute("n", target);
 		
         target.setNombre(edited.getNombre());
@@ -258,7 +260,7 @@ public class NegocioController {
 
 		log.info("Negocio {} con id {} editado correctamente...", edited.getNombre(), id);
 
-		return "negocio";
+		return "redirect:/negocio/"+ target.getId();
 	}
 	
 	/*Se llama cuando pulsas en el botón de editar un negocio desde el perfil de ese negocio */

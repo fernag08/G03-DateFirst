@@ -36,9 +36,18 @@ public class MessageController {
 		
 	@GetMapping("/")
 	public String getMessages(Model model, HttpSession session) {
-		
+		User user = ((User)session.getAttribute("u"));
+
 		model.addAttribute("negocios", entityManager.createQuery(
 			"SELECT n FROM Negocio n").getResultList());
+
+		//Query que devuelve una lista con todos los usuarios que te han enviado un mensaje anteriormente, sin duplicar ningún usuario
+		List<User> luser = (List<User>)entityManager.createNamedQuery(
+				"nombresUsuario")
+				.setParameter("user", user).getResultList();
+
+		model.addAttribute("usuarios", luser);
+
 		return "messages";
 	}
 
